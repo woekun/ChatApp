@@ -14,8 +14,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
+import com.example.hippy.chatapp.custom.ChatAdapter;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.models.ChatAdapter;
 import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
 import com.parse.FindCallback;

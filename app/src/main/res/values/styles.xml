@@ -21,9 +21,9 @@
     </style>
 
     <style name="btn_white_large" parent="@style/btn">
-        <item name="android:background">@drawable/green_btn</item>
+        <item name="android:background">@drawable/blue_btn</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">30sp</item>
     </style>
 
 </resources>

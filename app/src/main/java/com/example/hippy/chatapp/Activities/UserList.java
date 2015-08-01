@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.models.UserAdapter;
+import com.example.hippy.chatapp.custom.UserAdapter;
 import com.example.hippy.chatapp.utils.Const;
 import com.parse.FindCallback;
 import com.parse.ParseException;

@@ -1,4 +1,4 @@
-package com.example.hippy.chatapp.models;
+package com.example.hippy.chatapp.custom;
 
 import android.content.Context;
 import android.view.LayoutInflater;

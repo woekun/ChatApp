@@ -12,7 +12,10 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".Activities.Login"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,13 +24,20 @@
         </activity>
         <activity
             android:name=".Activities.Register"
-            android:label="@string/title_activity_register"></activity>
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".Activities.UserList"
-            android:label="@string/title_activity_user_list"></activity>
+            android:label="@string/title_activity_user_list"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
         <activity
             android:name=".Activities.Chat"
-            android:label="@string/title_activity_chat">
+            android:label="@string/title_activity_chat"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
     </application>
 

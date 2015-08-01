@@ -1,4 +1,4 @@
-package com.example.hippy.chatapp.models;
+package com.example.hippy.chatapp.custom;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.hippy.chatapp.R;
+import com.example.hippy.chatapp.models.Conversation;
 
 import java.util.ArrayList;
 
@@ -39,21 +40,26 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
+        Conversation conversation = getItem(position);
 
 
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.item_chat, null);
+            if (conversation.isSent()) {
+                convertView = mLayoutInflater.inflate(R.layout.item_chat_sent, null);
+            } else {
+                convertView = mLayoutInflater.inflate(R.layout.item_chat_receive, null);
+            }
 
             // setup viewHolder
             viewHolder = new ViewHolder();
-            viewHolder.tvMessage = (TextView) convertView.findViewById(R.id.item_chat);
+            viewHolder.tvMessage = (TextView) convertView.findViewById(R.id.tvMessage);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         //bind data
-        Conversation conversation = getItem(position);
+
         viewHolder.tvMessage.setText(conversation.getMessage());
 
         return convertView;
