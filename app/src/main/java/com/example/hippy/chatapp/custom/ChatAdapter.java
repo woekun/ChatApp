@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class ChatAdapter extends BaseAdapter {
 
-    RoundImage roundedImage;
+    private RoundImage roundedImage;
     private ArrayList<Conversation> convList;
     private Context context;
 

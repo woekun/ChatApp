@@ -11,5 +11,5 @@
         android:layout_height="wrap_content"
         android:divider="#ffffff"
         android:dividerHeight="5dp"
-        tools:listitem="@layout/item_list" />
+        tools:listitem="@layout/item_list1" />
 </LinearLayout>

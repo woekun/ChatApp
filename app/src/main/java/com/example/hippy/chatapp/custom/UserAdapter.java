@@ -1,6 +1,8 @@
 package com.example.hippy.chatapp.custom;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,13 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 
 public class UserAdapter extends BaseAdapter {
-    private LayoutInflater mLayoutInflater;
+
+    private RoundImage roundedImage;
     private ArrayList<ParseUser> uList;
+    private Context context;
 
     public UserAdapter(Context context, ArrayList<ParseUser> uList) {
-        this.mLayoutInflater = LayoutInflater.from(context);
+        this.context = context;
         this.uList = uList;
     }
 
@@ -42,11 +46,12 @@ public class UserAdapter extends BaseAdapter {
         final ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.item_list, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_list, null);
 
             // setup viewHolder
             viewHolder = new ViewHolder();
             viewHolder.contactName = (TextView) convertView.findViewById(R.id.list_item);
+            viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
 
             convertView.setTag(viewHolder);
         } else {
@@ -54,8 +59,12 @@ public class UserAdapter extends BaseAdapter {
         }
 
         //bind data
-        ParseUser c = getItem(position);
-        viewHolder.contactName.setText(c.getUsername());
+        ParseUser parseUser = getItem(position);
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.image);
+        roundedImage = new RoundImage(bm);
+
+        viewHolder.avatar.setImageDrawable(roundedImage);
+        viewHolder.contactName.setText(parseUser.getUsername());
 
         return convertView;
     }
