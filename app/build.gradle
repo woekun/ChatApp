@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "22.0.1"
+    buildToolsVersion '22.0.1'
 
     defaultConfig {
         applicationId "com.example.hippy.chatapp"
@@ -20,6 +20,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile files('libs/sinch-android-rtc-3.6.1.jar')
+    compile 'com.parse.bolts:bolts-android:1.+'
+    compile fileTree(include: 'Parse-*.jar', dir: 'libs')
 }
