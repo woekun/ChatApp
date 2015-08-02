@@ -9,7 +9,6 @@
         android:id="@+id/v1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="110dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/rsz_receive_final"
         android:gravity="center_vertical"
@@ -28,8 +27,10 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/ivAvatar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/logo_login" />
 
 </LinearLayout>
