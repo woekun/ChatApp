@@ -9,7 +9,7 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="#00b"
-        android:dividerHeight="1dp"
-        tools:listitem="@layout/item_list"></ListView>
+        android:divider="#ffffff"
+        android:dividerHeight="5dp"
+        tools:listitem="@layout/item_list" />
 </LinearLayout>

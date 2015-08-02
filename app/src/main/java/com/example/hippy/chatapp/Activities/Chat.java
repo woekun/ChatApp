@@ -4,8 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
@@ -93,36 +91,37 @@ public class Chat extends CustomActivity {
     }
 
     private void loadConversation() {
-        ParseQuery<ParseObject> q = ParseQuery.getQuery("Chat");
+        ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Chat");
         if (convList.size() == 0) {
             ArrayList<String> arrayList = new ArrayList<String>();
             arrayList.add(buddy);
             arrayList.add(UserList.user.getUsername());
-            q.whereContainedIn("sender", arrayList);
-            q.whereContainedIn("receiver", arrayList);
+            parseQuery.whereContainedIn("sender", arrayList);
+            parseQuery.whereContainedIn("receiver", arrayList);
         } else {
             if (lastMsgDate != null)
-                q.whereGreaterThan("createdAt", lastMsgDate);
-            q.whereEqualTo("sender", buddy);
-            q.whereEqualTo("receiver", UserList.user.getUsername());
+                parseQuery.whereGreaterThan("createdAt", lastMsgDate);
+            parseQuery.whereEqualTo("sender", buddy);
+            parseQuery.whereEqualTo("receiver", UserList.user.getUsername());
         }
 
-        q.orderByDescending("createdAt");
-        q.setLimit(30);
-        q.findInBackground(new FindCallback<ParseObject>() {
+        parseQuery.orderByDescending("createdAt");
+        parseQuery.setLimit(30);
+        parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (list != null && list.size() > 0) {
                     for (int i = list.size() - 1; i >= 0; i--) {
-                        ParseObject po = list.get(i);
-                        Conversation c = new Conversation(
-                                po.getString("message"),
-                                po.getCreatedAt(),
-                                po.getString("sender"));
-                        convList.add(c);
-                        if (lastMsgDate == null
-                                || lastMsgDate.before(c.getDate()))
-                            lastMsgDate = c.getDate();
+                        ParseObject parseObject = list.get(i);
+                        Conversation conversation = new Conversation(
+                                parseObject.getString("message"),
+                                parseObject.getCreatedAt(),
+                                parseObject.getString("sender"));
+                        convList.add(conversation);
+
+                        if (lastMsgDate == null || lastMsgDate.before(conversation.getDate()))
+                            lastMsgDate = conversation.getDate();
+
                         chatAdapter.notifyDataSetChanged();
                     }
                 }
@@ -159,25 +158,4 @@ public class Chat extends CustomActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_chat, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
