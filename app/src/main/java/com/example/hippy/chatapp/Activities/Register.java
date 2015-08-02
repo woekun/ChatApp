@@ -25,11 +25,11 @@ public class Register extends CustomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-        setTouchNClick(R.id.btnReg_OK);
+        setTouchNClick(R.id.btnReg);
 
-        edtRUser = (EditText) findViewById(R.id.edtRUser);
-        edtRPass = (EditText) findViewById(R.id.edtRPass);
-        edtEmail = (EditText) findViewById(R.id.edtREmail);
+        edtRUser = (EditText) findViewById(R.id.user);
+        edtRPass = (EditText) findViewById(R.id.pwd);
+        edtEmail = (EditText) findViewById(R.id.email);
     }
 
     @Override
