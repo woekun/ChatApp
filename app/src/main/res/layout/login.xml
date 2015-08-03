@@ -66,5 +66,10 @@
                 android:layout_weight="1"
                 android:text="Register" />
         </LinearLayout>
-    </LinearLayout>
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me"
+            android:id="@+id/chkRemember"/>
+    </LinearLayout>s
 </ScrollView>

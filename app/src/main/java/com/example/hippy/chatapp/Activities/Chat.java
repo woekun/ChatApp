@@ -63,7 +63,7 @@ public class Chat extends CustomActivity {
     private void sendMessages() {
         if (edtMess.length() == 0)
             return;
-
+                     //
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(edtMess.getWindowToken(), 0);
 
