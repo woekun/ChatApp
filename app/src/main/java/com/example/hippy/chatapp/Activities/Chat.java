@@ -44,7 +44,7 @@ public class Chat extends CustomActivity {
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
         getActionBar().setTitle(buddy);
-
+        //
         convList = new ArrayList<Conversation>();
         list_chat = (ListView) findViewById(R.id.list_chat);
         chatAdapter = new ChatAdapter(Chat.this, convList);
