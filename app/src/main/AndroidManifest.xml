@@ -22,7 +22,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,6 +47,10 @@
         <activity
             android:name=".Activities.Action_Call"
             android:label="@string/title_activity_call" />
+        <activity
+            android:name=".Activities.NavigatorDrawer"
+            android:label="@string/title_activity_navigator_drawer" >
+        </activity>
     </application>
 
 </manifest>

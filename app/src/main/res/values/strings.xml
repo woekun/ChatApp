@@ -9,4 +9,5 @@
     <string name="title_activity_call">Call</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_navigator_drawer">NavigatorDrawer</string>
 </resources>
