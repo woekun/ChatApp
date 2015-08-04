@@ -31,8 +31,7 @@ public class Login extends CustomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        Parse.initialize(this, "79sEAU8hFXbMAVU3LOVv71g2UtdF6d44t937SC12", "8qIzVeg5CFKzA8mfOeaxOZrnAUiv5w0SuMHMhFtY");
-
+        Parse.initialize(this, "EqJPz7hBmv0VIV42otb71Uvi51oH3zKidng0ZnNo", "glJmZyqdDmeAhNQ8axbClNUt3oQCiK45fKWzibHz");
         setTouchNClick(R.id.btnLogin);
         setTouchNClick(R.id.btnReg);
 
