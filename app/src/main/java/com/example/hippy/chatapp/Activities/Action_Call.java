@@ -9,9 +9,12 @@ import android.widget.TextView;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.utils.Const;
+import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
+import com.sinch.android.rtc.SinchClientListener;
+import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
@@ -55,6 +58,36 @@ public class Action_Call extends CustomActivity {
 
         sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
 
+        sinchClient.addSinchClientListener(new SinchClientListener() {
+            @Override
+            public void onClientStarted(SinchClient sinchClient) {
+                if (call == null) {
+                    call = sinchClient.getCallClient().callUser(buddy);
+                    call.addCallListener(new SinchCallListener());
+                    btnCall.setText("HANG UP");
+                }
+            }
+
+            @Override
+            public void onClientStopped(SinchClient sinchClient) {
+
+            }
+
+            @Override
+            public void onClientFailed(SinchClient sinchClient, SinchError sinchError) {
+
+            }
+
+            @Override
+            public void onRegistrationCredentialsRequired(SinchClient sinchClient, ClientRegistration clientRegistration) {
+
+            }
+
+            @Override
+            public void onLogMessage(int i, String s, String s1) {
+
+            }
+        });
     }
 
     @Override

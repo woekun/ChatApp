@@ -47,10 +47,6 @@
         <activity
             android:name=".Activities.Action_Call"
             android:label="@string/title_activity_call" />
-        <activity
-            android:name=".Activities.NavigatorDrawer"
-            android:label="@string/title_activity_navigator_drawer" >
-        </activity>
     </application>
 
 </manifest>
