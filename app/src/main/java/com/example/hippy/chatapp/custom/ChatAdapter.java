@@ -1,5 +1,6 @@
 package com.example.hippy.chatapp.custom;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,10 +20,10 @@ public class ChatAdapter extends BaseAdapter {
 
     private RoundImage roundedImage;
     private ArrayList<Conversation> convList;
-    private Context context;
+    private LayoutInflater layoutInflater;
 
-    public ChatAdapter(Context context, ArrayList<Conversation> convList) {
-        this.context = context;
+    public ChatAdapter(Activity activity, ArrayList<Conversation> convList) {
+        this.layoutInflater = activity.getLayoutInflater();
         this.convList = convList;
     }
 
@@ -48,9 +49,9 @@ public class ChatAdapter extends BaseAdapter {
 
         if (convertView == null) {
             if (conversation.isSent()) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_sent, null);
+                convertView = layoutInflater.inflate(R.layout.item_chat_sent, null);
             } else {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_recv, null);
+                convertView = layoutInflater.inflate(R.layout.item_chat_recv, null);
             }
 
             // setup viewHolder
@@ -63,7 +64,7 @@ public class ChatAdapter extends BaseAdapter {
         }
 
         //bind data
-        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.image);
+        Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
         roundedImage = new RoundImage(bm);
         viewHolder.ivAvatar.setImageDrawable(roundedImage);
         viewHolder.tvMessage.setText(conversation.getMessage());

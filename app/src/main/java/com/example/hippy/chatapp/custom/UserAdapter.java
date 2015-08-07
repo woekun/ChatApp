@@ -1,5 +1,6 @@
 package com.example.hippy.chatapp.custom;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,10 +20,10 @@ public class UserAdapter extends BaseAdapter {
 
     private RoundImage roundedImage;
     private ArrayList<ParseUser> uList;
-    private Context context;
+    private LayoutInflater layoutInflater;
 
-    public UserAdapter(Context context, ArrayList<ParseUser> uList) {
-        this.context = context;
+    public UserAdapter(Activity activity, ArrayList<ParseUser> uList) {
+        this.layoutInflater = activity.getLayoutInflater();
         this.uList = uList;
     }
 
@@ -46,7 +47,7 @@ public class UserAdapter extends BaseAdapter {
         final ViewHolder viewHolder;
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_list, null);
+            convertView = layoutInflater.inflate(R.layout.item_list, null);
 
             // setup viewHolder
             viewHolder = new ViewHolder();
@@ -60,7 +61,7 @@ public class UserAdapter extends BaseAdapter {
 
         //bind data
         ParseUser parseUser = getItem(position);
-        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.image);
+        Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
         roundedImage = new RoundImage(bm);
 
         viewHolder.avatar.setImageDrawable(roundedImage);

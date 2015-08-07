@@ -95,6 +95,7 @@ public class Chat extends CustomActivity {
         if (convList.size() == 0) {
             ArrayList<String> arrayList = new ArrayList<String>();
             arrayList.add(buddy);
+
             arrayList.add(UserList.user.getUsername());
             parseQuery.whereContainedIn("sender", arrayList);
             parseQuery.whereContainedIn("receiver", arrayList);
