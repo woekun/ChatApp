@@ -44,24 +44,22 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
+        ViewHolder viewHolder;
         Conversation conversation = getItem(position);
 
-        if (convertView == null) {
-            if (conversation.isSent()) {
-                convertView = layoutInflater.inflate(R.layout.item_chat_sent, null);
-            } else {
-                convertView = layoutInflater.inflate(R.layout.item_chat_recv, null);
-            }
-
-            // setup viewHolder
-            viewHolder = new ViewHolder();
-            viewHolder.tvMessage = (TextView) convertView.findViewById(R.id.tvMessage);
-            viewHolder.ivAvatar = (ImageView) convertView.findViewById(R.id.ivAvatar);
-            convertView.setTag(viewHolder);
+        if (conversation.isSent()) {
+            convertView = layoutInflater.inflate(R.layout.item_chat_sent, null);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            convertView = layoutInflater.inflate(R.layout.item_chat_recv, null);
         }
+
+        // setup viewHolder
+        viewHolder = new ViewHolder();
+        viewHolder.tvMessage = (TextView) convertView.findViewById(R.id.tvMessage);
+        viewHolder.ivAvatar = (ImageView) convertView.findViewById(R.id.ivAvatar);
+        convertView.setTag(viewHolder);
+
+        viewHolder = (ViewHolder) convertView.getTag();
 
         //bind data
         Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
