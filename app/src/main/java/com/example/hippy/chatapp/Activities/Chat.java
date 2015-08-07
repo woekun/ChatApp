@@ -1,6 +1,7 @@
 package com.example.hippy.chatapp.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -21,6 +22,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
+import com.sinch.android.rtc.calling.Call;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -159,4 +161,9 @@ public class Chat extends CustomActivity {
         }
     }
 
+    private void testCall() {
+        startActivity(new Intent(getApplicationContext(), Action_Call.class));
+        Intent serviceIntent = new Intent(getApplicationContext(), Call.class);
+        startService(serviceIntent);
+    }
 }

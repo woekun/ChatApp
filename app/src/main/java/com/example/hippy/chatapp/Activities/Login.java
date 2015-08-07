@@ -24,6 +24,7 @@ public class Login extends CustomActivity {
     private EditText edtUser;
     private EditText edtPass;
     private CheckBox chkRemember;
+    private Intent intent;
 
 
     @Override
@@ -36,9 +37,16 @@ public class Login extends CustomActivity {
         setTouchNClick(R.id.btnLogin);
         setTouchNClick(R.id.btnReg);
 
+        intent = new Intent(getApplicationContext(), UserList.class);
+
         edtUser = (EditText) findViewById(R.id.edtUser);
         edtPass = (EditText) findViewById(R.id.edtPass);
         chkRemember = (CheckBox) findViewById(R.id.chkRemember);
+
+        //ParseUser currentUser = ParseUser.getCurrentUser();
+        //if(currentUser!=null){
+        //startActivity(intent);
+        //}
 
         loadSavedPreferences();
     }
@@ -66,7 +74,7 @@ public class Login extends CustomActivity {
                         if(chkRemember.isChecked()){
                             savePreferences("sp_user","sp_pass", user, pass);
                         }
-                        startActivity(new Intent(Login.this, UserList.class));
+                        startActivity(intent);
                         finish();
                     } else {
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
