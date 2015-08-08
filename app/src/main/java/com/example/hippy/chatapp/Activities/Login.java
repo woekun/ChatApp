@@ -2,9 +2,7 @@ package com.example.hippy.chatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,9 +10,10 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
+import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
+import com.example.hippy.chatapp.utils.Helper;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -25,6 +24,7 @@ public class Login extends CustomActivity {
     private EditText edtPass;
     private CheckBox chkRemember;
     private Intent intent;
+    private Intent serviceIntent;
 
 
     @Override
@@ -32,12 +32,11 @@ public class Login extends CustomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        Parse.initialize(this, "79sEAU8hFXbMAVU3LOVv71g2UtdF6d44t937SC12", "8qIzVeg5CFKzA8mfOeaxOZrnAUiv5w0SuMHMhFtY");
-
         setTouchNClick(R.id.btnLogin);
         setTouchNClick(R.id.btnReg);
 
         intent = new Intent(getApplicationContext(), UserList.class);
+        serviceIntent = new Intent(getApplicationContext(), CallService.class);
 
         edtUser = (EditText) findViewById(R.id.edtUser);
         edtPass = (EditText) findViewById(R.id.edtPass);
@@ -48,7 +47,7 @@ public class Login extends CustomActivity {
         //startActivity(intent);
         //}
 
-        loadSavedPreferences();
+        Helper.loadSavedPreferences(this);
     }
 
     @Override
@@ -63,7 +62,7 @@ public class Login extends CustomActivity {
                 Toast.makeText(Login.this, "Please fill all the fields. ", Toast.LENGTH_LONG).show();
                 return;
             }
-            final ProgressDialog dialog = ProgressDialog.show(this, null, "Wait.....");
+            final ProgressDialog dialog = ProgressDialog.show(this, "Loading", "Please wait...");
 
             ParseUser.logInInBackground(user, pass, new LogInCallback() {
                 @Override
@@ -72,10 +71,10 @@ public class Login extends CustomActivity {
                     if (parseUser != null) {
                         UserList.user = parseUser;
                         if(chkRemember.isChecked()){
-                            savePreferences("sp_user","sp_pass", user, pass);
+                            Helper.savePreferences("sp_user", "sp_pass", user, pass, Login.this);
                         }
                         startActivity(intent);
-                        finish();
+                        startService(serviceIntent);
                     } else {
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
                     }
@@ -100,49 +99,10 @@ public class Login extends CustomActivity {
             finish();
     }
 
-    // =================== Shared Preferences Example ================
-    private void loadSavedPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-		/*
-		 * Lấy giá trị SharePreferences với key là sp_checkbox, nếu ko có thì
-		 * mặc định là false
-		 */
-        //boolean checkBoxValue = sharedPreferences.getBoolean("sp_checkbox",false);
-
-		/*
-		 * Lấy giá trị SharePreferences với key là sp_name, nếu ko có thì mặc
-		 * định là null
-		 */
-        String user = sharedPreferences.getString("sp_user", "");
-        String pass = sharedPreferences.getString("sp_pass", "");
-
-        if (user.length() == 0 || pass.length() == 0) {
-            return;
-        } else {
-            ParseUser.logInInBackground(user, pass);
-            startActivity(new Intent(Login.this, UserList.class));
-            finish();
-        }
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, CallService.class));
+        super.onDestroy();
     }
 
-    // Lưu giá trị Checkbox
-    private void savePreferences(String key, boolean value) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(key, value);
-        editor.commit();
-    }
-
-    // Lưu giá trị Edittext
-    private void savePreferences(String key, String key2, String value, String value2) {
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.putString(key2, value2);
-        editor.commit();
-    }
 }

@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
+import com.example.hippy.chatapp.utils.CallService;
+import com.example.hippy.chatapp.utils.Helper;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -19,6 +21,8 @@ public class Register extends CustomActivity {
     private EditText edtRUser;
     private EditText edtRPass;
     private EditText edtEmail;
+    private Intent serviceIntent;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,9 @@ public class Register extends CustomActivity {
         setContentView(R.layout.register);
 
         setTouchNClick(R.id.btnReg);
+
+        intent = new Intent(Register.this, UserList.class);
+        serviceIntent = new Intent(getApplicationContext(), CallService.class);
 
         edtRUser = (EditText) findViewById(R.id.user);
         edtRPass = (EditText) findViewById(R.id.pwd);
@@ -36,9 +43,9 @@ public class Register extends CustomActivity {
     public void onClick(View view) {
         super.onClick(view);
 
-        String user = edtRUser.getText().toString();
-        String pass = edtRPass.getText().toString();
-        String email = edtEmail.getText().toString();
+        final String user = edtRUser.getText().toString();
+        final String pass = edtRPass.getText().toString();
+        final String email = edtEmail.getText().toString();
 
         if (user.length() == 0 || pass.length() == 0 || email.length() == 0) {
             Toast.makeText(Register.this, "Please fill all the fields. ", Toast.LENGTH_LONG).show();
@@ -58,7 +65,9 @@ public class Register extends CustomActivity {
                 dialog.dismiss();
                 if (e == null) {
                     UserList.user = parseUser;
-                    startActivity(new Intent(Register.this, UserList.class));
+                    Helper.savePreferences("user", "pass", user, pass, Register.this);
+                    startActivity(intent);
+                    startService(serviceIntent);
                     setResult(RESULT_OK);
                     finish();
                 } else {

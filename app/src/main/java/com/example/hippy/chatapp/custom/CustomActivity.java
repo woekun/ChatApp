@@ -10,6 +10,7 @@ public class CustomActivity extends FragmentActivity implements View.OnClickList
 
     public static final TouchEffect TOUCH = new TouchEffect();
 
+
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);

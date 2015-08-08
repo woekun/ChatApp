@@ -26,7 +26,7 @@ public class CallService extends Service implements SinchClientListener {
     private CallClient callClient = null;
     private String currentUser;
     private LocalBroadcastManager broadcaster;
-    private Intent broadcastIntent = new Intent(".Ativities.ListUsersActivity");
+    private Intent broadcastIntent = new Intent("com.example.hippy.chatapp.Acivities.UserList");
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -111,7 +111,7 @@ public class CallService extends Service implements SinchClientListener {
         }
     }
 
-    public void removeMessageClientListener(CallClientListener listener) {
+    public void removeCallClientListener(CallClientListener listener) {
         if (callClient != null) {
             callClient.removeCallClientListener(listener);
         }
@@ -124,16 +124,16 @@ public class CallService extends Service implements SinchClientListener {
     }
 
     public class CallServiceInterface extends Binder {
-        public void sendMessage(String recipientUserId, String textBody) {
+        public void sendCall(String recipientUserId, String textBody) {
             CallService.this.sendCall(recipientUserId, textBody);
         }
 
-        public void addMessageClientListener(CallClientListener listener) {
+        public void addCallClientListener(CallClientListener listener) {
             CallService.this.addCallClientListener(listener);
         }
 
-        public void removeMessageClientListener(CallClientListener listener) {
-            CallService.this.removeMessageClientListener(listener);
+        public void removeCallClientListener(CallClientListener listener) {
+            CallService.this.removeCallClientListener(listener);
         }
 
         public boolean isSinchClientStarted() {
