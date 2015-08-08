@@ -10,4 +10,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_navigator_drawer">NavigatorDrawer</string>
+
+    <string name="openDrawer">Open Navigation Drawer</string>
+    <string name="closeDrawer">Close Navigation Drawer</string>
 </resources>

@@ -6,6 +6,7 @@
     android:orientation="vertical"
     tools:context="com.example.hippy.chatapp.Activities.UserList">
 
+    <include layout="@layout/layout_navdrawer"/>
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
