@@ -75,6 +75,7 @@ public class Login extends CustomActivity {
                         }
                         startActivity(intent);
                         startService(serviceIntent);
+                        finish();
                     } else {
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
                     }
@@ -97,12 +98,6 @@ public class Login extends CustomActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Const.REQUEST_CODE && requestCode == RESULT_OK)
             finish();
-    }
-
-    @Override
-    public void onDestroy() {
-        stopService(new Intent(this, CallService.class));
-        super.onDestroy();
     }
 
 }

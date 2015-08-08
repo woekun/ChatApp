@@ -15,7 +15,6 @@ import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
 
-
 public class CallService extends Service implements SinchClientListener {
 
     private static final String APP_KEY = "59ecf280-0506-4d4b-bfa0-4b4ca98d1019";

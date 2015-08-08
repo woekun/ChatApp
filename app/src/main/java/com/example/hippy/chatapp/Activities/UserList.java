@@ -35,7 +35,7 @@ public class UserList extends CustomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_list);
 
-        getActionBar().setDisplayHomeAsUpEnabled(false);
+        //getActionBar().setDisplayHomeAsUpEnabled(false);
 
         showSpinner();
     }
