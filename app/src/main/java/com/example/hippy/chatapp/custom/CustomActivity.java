@@ -1,12 +1,11 @@
 package com.example.hippy.chatapp.custom;
 
-import android.app.ActionBar;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
 import com.example.hippy.chatapp.utils.TouchEffect;
 
-public class CustomActivity extends FragmentActivity implements View.OnClickListener {
+public class CustomActivity extends ActionBarActivity implements View.OnClickListener {
 
     public static final TouchEffect TOUCH = new TouchEffect();
 
@@ -18,11 +17,10 @@ public class CustomActivity extends FragmentActivity implements View.OnClickList
     }
 
     protected void setupActionBar() {
-        final ActionBar actionBar = getActionBar();
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar == null)
             return;
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayUseLogoEnabled(true);
 
         //actionBar.setLogo();

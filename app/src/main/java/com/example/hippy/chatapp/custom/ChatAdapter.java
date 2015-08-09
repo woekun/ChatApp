@@ -1,7 +1,6 @@
 package com.example.hippy.chatapp.custom;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;

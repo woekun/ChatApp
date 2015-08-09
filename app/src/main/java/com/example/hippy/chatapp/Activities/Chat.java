@@ -1,7 +1,6 @@
 package com.example.hippy.chatapp.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -22,7 +21,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
-import com.sinch.android.rtc.calling.Call;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,15 +37,16 @@ public class Chat extends CustomActivity {
     private boolean isRunning;
     private ListView list_chat;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        getActionBar().setTitle(buddy);
+        getSupportActionBar().setTitle(buddy);
 
-        convList = new ArrayList<Conversation>();
+        convList = new ArrayList<>();
         list_chat = (ListView) findViewById(R.id.list_chat);
         chatAdapter = new ChatAdapter(Chat.this, convList);
         list_chat.setAdapter(chatAdapter);
@@ -95,7 +94,7 @@ public class Chat extends CustomActivity {
     private void loadConversation() {
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Chat");
         if (convList.size() == 0) {
-            ArrayList<String> arrayList = new ArrayList<String>();
+            ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(buddy);
 
             arrayList.add(UserList.user.getUsername());
@@ -161,9 +160,5 @@ public class Chat extends CustomActivity {
         }
     }
 
-    private void testCall() {
-        startActivity(new Intent(getApplicationContext(), Action_Call.class));
-        Intent serviceIntent = new Intent(getApplicationContext(), Call.class);
-        startService(serviceIntent);
-    }
+
 }

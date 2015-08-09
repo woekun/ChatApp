@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.utils.CallService;
-import com.example.hippy.chatapp.utils.Helper;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -65,7 +64,7 @@ public class Register extends CustomActivity {
                 dialog.dismiss();
                 if (e == null) {
                     UserList.user = parseUser;
-                    Helper.savePreferences("user", "pass", user, pass, Register.this);
+//                    Helper.savePreferences("user", "pass", user, pass, Register.this);
                     startActivity(intent);
                     startService(serviceIntent);
                     setResult(RESULT_OK);

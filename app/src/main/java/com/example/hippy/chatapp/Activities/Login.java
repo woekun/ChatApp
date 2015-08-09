@@ -12,7 +12,6 @@ import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
-import com.example.hippy.chatapp.utils.Helper;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -47,7 +46,7 @@ public class Login extends CustomActivity {
 //              startActivity(intent);
 //        }
 
-        Helper.loadSavedPreferences(this);
+//        Helper.loadSavedPreferences(this);
     }
 
     @Override
@@ -70,15 +69,14 @@ public class Login extends CustomActivity {
                     dialog.dismiss();
                     if (parseUser != null) {
                         UserList.user = parseUser;
-                        if (chkRemember.isChecked()) {
-                            Helper.savePreferences("sp_user", "sp_pass", user, pass, Login.this);
-                        }
+//                        if (chkRemember.isChecked()) {
+//                            Helper.savePreferences("sp_user", "sp_pass", user, pass, Login.this);
+//                        }
                         startActivity(intent);
                         startService(serviceIntent);
                         finish();
                     } else
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
-
                 }
             });
         } else {
@@ -86,13 +84,6 @@ public class Login extends CustomActivity {
         }
     }
 
-    /**
-     * Dispatch incoming result to the correct fragment.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

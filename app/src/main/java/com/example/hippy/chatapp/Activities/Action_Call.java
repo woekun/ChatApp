@@ -1,49 +1,50 @@
 package com.example.hippy.chatapp.Activities;
 
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
+import android.os.IBinder;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
-import com.sinch.android.rtc.SinchClient;
-import com.sinch.android.rtc.calling.Call;
 
 public class Action_Call extends CustomActivity {
 
-    private Call call;
     private String buddy;
-    private String user;
-    private SinchClient sinchClient;
-    private Button btnCall;
     private TextView callState;
-    private ProgressDialog progressDialog;
-    private BroadcastReceiver receiver = null;
+    private CallService.CallServiceInterface callService;
+    private ServiceConnection serviceConnection = new MyServiceConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.call);
 
-        btnCall = (Button) findViewById(R.id.btnCall);
-        callState = (TextView) findViewById(R.id.callState);
+        bindService(new Intent(this, CallService.class), serviceConnection, BIND_AUTO_CREATE);
 
+        callState = (TextView) findViewById(R.id.callState);
         setTouchNClick(R.id.btnCall);
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        user = UserList.user.getUsername();
+        callService.startCall(buddy);
 
-        showSpinner();
+    }
+
+    private class MyServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            callService = (CallService.CallServiceInterface) iBinder;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            callService = null;
+        }
     }
 
     @Override
@@ -51,38 +52,14 @@ public class Action_Call extends CustomActivity {
         super.onClick(view);
 
         if (view.getId() == R.id.btnCall) {
-            if (call != null) {
-                call.hangup();
-                finish();
-            }
+            callService.endCall(buddy);
         }
-
     }
 
     @Override
-    protected void onDestroy() {
-        stopService(new Intent(this, CallService.class));
+    public void onDestroy() {
+        unbindService(serviceConnection);
         super.onDestroy();
-    }
-
-    private void showSpinner() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading");
-        progressDialog.setMessage("Please wait...");
-        progressDialog.show();
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Boolean success = intent.getBooleanExtra("success", false);
-                progressDialog.dismiss();
-                if (!success) {
-                    Toast.makeText(getApplicationContext(), "Messaging service failed to start", Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(".Activities.Action_Call"));
     }
 }
 
