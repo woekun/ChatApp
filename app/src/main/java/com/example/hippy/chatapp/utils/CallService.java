@@ -6,7 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.example.hippy.chatapp.Activities.UserList;
+import com.parse.ParseUser;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
@@ -25,12 +25,12 @@ public class CallService extends Service implements SinchClientListener {
     private CallClient callClient = null;
     private String currentUser;
     private LocalBroadcastManager broadcaster;
-    private Intent broadcastIntent = new Intent("com.example.hippy.chatapp.Acivities.UserList");
+    private Intent broadcastIntent = new Intent("com.example.hippy.chatapp.Activities.UserList");
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        currentUser = UserList.user.getUsername();
+        currentUser = ParseUser.getCurrentUser().getUsername();
 
         if (currentUser != null && !isSinchClientStarted()) {
             startSinchClient(currentUser);

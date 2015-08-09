@@ -42,10 +42,10 @@ public class Login extends CustomActivity {
         edtPass = (EditText) findViewById(R.id.edtPass);
         chkRemember = (CheckBox) findViewById(R.id.chkRemember);
 
-        //ParseUser currentUser = ParseUser.getCurrentUser();
-        //if(currentUser!=null){
-        //startActivity(intent);
-        //}
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if(currentUser!=null){
+//              startActivity(intent);
+//        }
 
         Helper.loadSavedPreferences(this);
     }
@@ -75,7 +75,7 @@ public class Login extends CustomActivity {
                         }
                         startActivity(intent);
                         startService(serviceIntent);
-                        finish();
+//                        finish();
                     } else {
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
                     }
@@ -99,5 +99,4 @@ public class Login extends CustomActivity {
         if (requestCode == Const.REQUEST_CODE && requestCode == RESULT_OK)
             finish();
     }
-
 }

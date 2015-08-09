@@ -2,10 +2,13 @@ package com.example.hippy.chatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.custom.UserAdapter;
+import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -29,6 +33,8 @@ public class UserList extends CustomActivity {
     private ArrayList<ParseUser> uList;
     private BroadcastReceiver receiver = null;
     private ProgressDialog progressDialog;
+    private ServiceConnection serviceConnection = new MyServiceConnection();
+    private CallService.CallServiceInterface callService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +44,13 @@ public class UserList extends CustomActivity {
         //getActionBar().setDisplayHomeAsUpEnabled(false);
 
         showSpinner();
+        //bindService(new Intent(this, CallService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         loadContacts();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     private void loadContacts() {
@@ -96,5 +98,24 @@ public class UserList extends CustomActivity {
         };
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("com.example.hippy.chatapp.Activities.UserList"));
+    }
+
+    private class MyServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            callService = (CallService.CallServiceInterface) iBinder;
+            //callService.addCallClientListener(callClientListener);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            callService = null;
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, CallService.class));
+        super.onDestroy();
     }
 }

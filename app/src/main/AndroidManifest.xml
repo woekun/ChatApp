@@ -18,6 +18,9 @@
         android:label="@string/app_name"
         android:name=".ChatApp"
         android:theme="@style/AppTheme" >
+
+        <service android:name=".utils.CallService" />
+
         <activity
             android:name=".Activities.Login"
             android:label="@string/app_name"
