@@ -70,15 +70,15 @@ public class Login extends CustomActivity {
                     dialog.dismiss();
                     if (parseUser != null) {
                         UserList.user = parseUser;
-                        if(chkRemember.isChecked()){
+                        if (chkRemember.isChecked()) {
                             Helper.savePreferences("sp_user", "sp_pass", user, pass, Login.this);
                         }
                         startActivity(intent);
                         startService(serviceIntent);
-//                        finish();
-                    } else {
+                        finish();
+                    } else
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
-                    }
+
                 }
             });
         } else {
