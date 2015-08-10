@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 //import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -26,31 +27,27 @@ public class NavigationDrawer extends CustomActivity{
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     ActionBar actionBar;
-    TextView textView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void setContentView(int layoutResID) {
 
-     //   toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setActionBar(toolbar);
+        drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_main, null);
+        LinearLayout linearLayout = (LinearLayout) drawerLayout.findViewById(R.id.customLayout);
+        getLayoutInflater().inflate(layoutResID,linearLayout,true);
 
-        //actionBar = getActionBar();//getSupportActionBar();
-        //actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.navigation_drawer_layout);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        Toast.makeText(this,"abc",Toast.LENGTH_SHORT).show();
+
         if (navigationView != null) {
             setupNavigationDrawerContent(navigationView);
-            Toast.makeText(this,"Loi",Toast.LENGTH_SHORT).show();
+
         }
-
-     //   setupNavigationDrawerContent(navigationView);
-
+        super.setContentView(drawerLayout);
     }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

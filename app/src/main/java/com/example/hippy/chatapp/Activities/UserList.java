@@ -41,10 +41,10 @@ public class UserList extends NavigationDrawer {
 
         super.onCreate(savedInstanceState);
 
-        Layout mylayout = getLayoutInflater().;
+
 
         //getActionBar().setDisplayHomeAsUpEnabled(false);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.user_list);
         showSpinner();
     }
 

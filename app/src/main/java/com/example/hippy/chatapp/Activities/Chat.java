@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Chat extends CustomActivity {
+public class Chat extends NavigationDrawer {
 
     private static Handler handler;
     private ArrayList<Conversation> convList;
