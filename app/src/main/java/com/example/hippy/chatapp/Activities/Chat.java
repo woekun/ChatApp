@@ -45,7 +45,7 @@ public class Chat extends CustomActivity {
         setContentView(R.layout.chat);
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        getSupportActionBar().setTitle(buddy);
+        //getSupportActionBar().setTitle(buddy);
 
         convList = new ArrayList<>();
         list_chat = (ListView) findViewById(R.id.list_chat);

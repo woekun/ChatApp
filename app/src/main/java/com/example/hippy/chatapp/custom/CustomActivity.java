@@ -1,11 +1,13 @@
 package com.example.hippy.chatapp.custom;
 
+import android.app.ActionBar;
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.hippy.chatapp.utils.TouchEffect;
 
-public class CustomActivity extends AppCompatActivity implements View.OnClickListener {
+public class CustomActivity extends Activity implements View.OnClickListener {
 
     public static final TouchEffect TOUCH = new TouchEffect();
 
@@ -13,11 +15,13 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
+
         setupActionBar();
     }
 
     protected void setupActionBar() {
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+       // android.support.v7.app.
+        ActionBar actionBar = getActionBar();
         if (actionBar == null)
             return;
         actionBar.setDisplayShowTitleEnabled(true);

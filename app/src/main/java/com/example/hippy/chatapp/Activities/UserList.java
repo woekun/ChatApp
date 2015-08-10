@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,7 +27,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserList extends CustomActivity {
+public class UserList extends NavigationDrawer {
 
     public static ParseUser user;
     private ArrayList<ParseUser> uList;
@@ -34,11 +37,14 @@ public class UserList extends CustomActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_list);
+
+        Layout mylayout = getLayoutInflater().;
 
         //getActionBar().setDisplayHomeAsUpEnabled(false);
-
+        setContentView(R.layout.activity_main);
         showSpinner();
     }
 

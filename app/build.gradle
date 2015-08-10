@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.hippy.chatapp"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -26,4 +26,5 @@ dependencies {
     compile files('libs/sinch-android-rtc-3.6.1.jar')
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(include: 'Parse-*.jar', dir: 'libs')
+
 }
