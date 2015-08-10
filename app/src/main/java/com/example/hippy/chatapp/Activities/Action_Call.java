@@ -1,93 +1,57 @@
 package com.example.hippy.chatapp.Activities;
 
-import android.media.AudioManager;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
+import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
-import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
-import com.sinch.android.rtc.SinchClientListener;
-import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
 import com.sinch.android.rtc.calling.CallListener;
 
-import java.util.List;
-
 public class Action_Call extends CustomActivity {
 
-    private Call call;
     private String buddy;
-    private String user;
-    private SinchClient sinchClient;
-    private Button btnCall;
     private TextView callState;
+    private CallService.CallServiceInterface callService;
+    private ServiceConnection serviceConnection = new MyServiceConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.call);
 
-        btnCall = (Button) findViewById(R.id.btnCall);
-        callState = (TextView) findViewById(R.id.callState);
+        bindService(new Intent(this, CallService.class), serviceConnection, BIND_AUTO_CREATE);
 
+        callState = (TextView) findViewById(R.id.callState);
         setTouchNClick(R.id.btnCall);
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        user = UserList.user.getUsername();
+        callService.startCall(buddy);
 
-        sinchClient = Sinch.getSinchClientBuilder()
-                .context(this)
-                .userId(user)
-                .applicationKey("59ecf280-0506-4d4b-bfa0-4b4ca98d1019")
-                .applicationSecret("qd4AsZncokSj+UNrSdD5TA==")
-                .environmentHost("sandbox.sinch.com")
-                .build();
+    }
 
-        sinchClient.setSupportCalling(true);
-        sinchClient.startListeningOnActiveConnection();
-        sinchClient.start();
+    private class MyServiceConnection implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            callService = (CallService.CallServiceInterface) iBinder;
+        }
 
-        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
-
-        sinchClient.addSinchClientListener(new SinchClientListener() {
-            @Override
-            public void onClientStarted(SinchClient sinchClient) {
-                if (call == null) {
-                    call = sinchClient.getCallClient().callUser(buddy);
-                    call.addCallListener(new SinchCallListener());
-                    btnCall.setText("HANG UP");
-                }
-            }
-
-            @Override
-            public void onClientStopped(SinchClient sinchClient) {
-
-            }
-
-            @Override
-            public void onClientFailed(SinchClient sinchClient, SinchError sinchError) {
-
-            }
-
-            @Override
-            public void onRegistrationCredentialsRequired(SinchClient sinchClient, ClientRegistration clientRegistration) {
-
-            }
-
-            @Override
-            public void onLogMessage(int i, String s, String s1) {
-
-            }
-        });
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            callService = null;
+        }
     }
 
     @Override
@@ -95,54 +59,15 @@ public class Action_Call extends CustomActivity {
         super.onClick(view);
 
         if (view.getId() == R.id.btnCall) {
-            if (call == null) {
-                call = sinchClient.getCallClient().callUser(buddy);
-                call.addCallListener(new SinchCallListener());
-                btnCall.setText("HANG UP");
-            } else {
-                call.hangup();
-            }
-        }
-
-    }
-
-    private class SinchCallListener implements CallListener {
-        @Override
-        public void onCallEnded(Call endedCall) {
-            call = null;
-            btnCall.setText("CALL");
-            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
-            //startActivity(new Intent(Action_Call.this, Chat.class));
-            //finish();
-        }
-
-        @Override
-        public void onCallEstablished(Call establishedCall) {
-            setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
-        }
-
-        @Override
-        public void onCallProgressing(Call progressingCall) {
-            callState.setText("ringing");
-        }
-
-        @Override
-        public void onShouldSendPushNotification(Call call, List<PushPair> pushPairs) {
+            callService.endCall(buddy);
         }
     }
 
-    private class SinchCallClientListener implements CallClientListener {
-        @Override
-        public void onIncomingCall(CallClient callClient, Call incomingCall) {
-            call = incomingCall;
-            call.answer();
-            call.addCallListener(new SinchCallListener());
-            btnCall.setText("HANG UP");
-        }
-
+    @Override
+    public void onDestroy() {
+        unbindService(serviceConnection);
+        super.onDestroy();
     }
-
-
 }
 
 

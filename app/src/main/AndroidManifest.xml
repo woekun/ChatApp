@@ -16,13 +16,17 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:name=".ChatApp"
+        android:theme="@style/Theme.AppCompat">
+
+        <service android:name=".utils.CallService" />
+
         <activity
             android:name=".Activities.Login"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="stateHidden" >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +36,7 @@
         <activity
             android:name=".Activities.Register"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activities.UserList"
@@ -43,14 +47,10 @@
             android:name=".Activities.Chat"
             android:label="@string/title_activity_chat"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:parentActivityName=".Activities.UserList"/>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".Activities.Action_Call"
             android:label="@string/title_activity_call" />
-        <activity android:name=".custom.NavigationDrawer"
-            android:label="NavDrawer">
-        </activity>
     </application>
 
 </manifest>

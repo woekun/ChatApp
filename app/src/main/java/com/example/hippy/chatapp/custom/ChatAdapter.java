@@ -1,6 +1,6 @@
 package com.example.hippy.chatapp.custom;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -19,10 +19,10 @@ public class ChatAdapter extends BaseAdapter {
 
     private RoundImage roundedImage;
     private ArrayList<Conversation> convList;
-    private Context context;
+    private LayoutInflater layoutInflater;
 
-    public ChatAdapter(Context context, ArrayList<Conversation> convList) {
-        this.context = context;
+    public ChatAdapter(Activity activity, ArrayList<Conversation> convList) {
+        this.layoutInflater = activity.getLayoutInflater();
         this.convList = convList;
     }
 
@@ -43,27 +43,25 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
+        ViewHolder viewHolder;
         Conversation conversation = getItem(position);
 
-        if (convertView == null) {
-            if (conversation.isSent()) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_sent, null);
-            } else {
-                convertView = LayoutInflater.from(context).inflate(R.layout.item_chat_recv, null);
-            }
-
-            // setup viewHolder
-            viewHolder = new ViewHolder();
-            viewHolder.tvMessage = (TextView) convertView.findViewById(R.id.tvMessage);
-            viewHolder.ivAvatar = (ImageView) convertView.findViewById(R.id.ivAvatar);
-            convertView.setTag(viewHolder);
+        if (conversation.isSent()) {
+            convertView = layoutInflater.inflate(R.layout.item_chat_sent, null);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            convertView = layoutInflater.inflate(R.layout.item_chat_recv, null);
         }
 
+        // setup viewHolder
+        viewHolder = new ViewHolder();
+        viewHolder.tvMessage = (TextView) convertView.findViewById(R.id.tvMessage);
+        viewHolder.ivAvatar = (ImageView) convertView.findViewById(R.id.ivAvatar);
+        convertView.setTag(viewHolder);
+
+        viewHolder = (ViewHolder) convertView.getTag();
+
         //bind data
-        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.image);
+        Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
         roundedImage = new RoundImage(bm);
         viewHolder.ivAvatar.setImageDrawable(roundedImage);
         viewHolder.tvMessage.setText(conversation.getMessage());

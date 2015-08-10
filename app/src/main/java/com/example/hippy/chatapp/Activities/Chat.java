@@ -38,15 +38,16 @@ public class Chat extends CustomActivity {
     private boolean isRunning;
     private ListView list_chat;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        getActionBar().setTitle(buddy);
+        getSupportActionBar().setTitle(buddy);
 
-        convList = new ArrayList<Conversation>();
+        convList = new ArrayList<>();
         list_chat = (ListView) findViewById(R.id.list_chat);
         chatAdapter = new ChatAdapter(Chat.this, convList);
         list_chat.setAdapter(chatAdapter);
@@ -94,8 +95,9 @@ public class Chat extends CustomActivity {
     private void loadConversation() {
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Chat");
         if (convList.size() == 0) {
-            ArrayList<String> arrayList = new ArrayList<String>();
+            ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(buddy);
+
             arrayList.add(UserList.user.getUsername());
             parseQuery.whereContainedIn("sender", arrayList);
             parseQuery.whereContainedIn("receiver", arrayList);
@@ -158,5 +160,6 @@ public class Chat extends CustomActivity {
             sendMessages();
         }
     }
+
 
 }
