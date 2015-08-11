@@ -6,6 +6,15 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="AppTheme.ActionBar.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+    </style>
+
+    <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">@color/md_light_blue_A700</item>
+        <item name="colorPrimary">@color/md_light_blue_A400</item>
+    </style>
+
     <style name="editext_graybg" parent="android:Widget.EditText">
         <item name="android:background">@drawable/editext_bg_gray</item>
         <item name="android:drawablePadding">10dp</item>
@@ -44,5 +53,7 @@
     <style name="NavigationViewTheme" parent="AppTheme">
         <item name="textAppearanceListItem">@style/TextAppearance.AppCompat.Body2</item>
     </style>
+
+
 
 </resources>

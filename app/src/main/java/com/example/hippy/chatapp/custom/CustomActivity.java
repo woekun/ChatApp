@@ -1,8 +1,11 @@
 package com.example.hippy.chatapp.custom;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.View;
 
 import com.example.hippy.chatapp.R;
@@ -15,10 +18,21 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
     ActionBar actionBar;
 
 
+
     @Override
     public void setContentView(int layoutResID) {
+
         setupActionBar();
         super.setContentView(layoutResID);
+
+        TypedValue colorDarkPrimary = new TypedValue();
+        this.getTheme().resolveAttribute(R.attr.colorPrimaryDark, colorDarkPrimary, true);
+
+        if(Build.VERSION.SDK_INT>=21){
+            getWindow().setStatusBarColor(colorDarkPrimary.data);
+        }
+
+
     }
 
     protected void setupActionBar() {

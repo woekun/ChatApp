@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
@@ -25,14 +26,13 @@ public class NavigationDrawer extends CustomActivity{
 
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_main, null);
         LinearLayout linearLayout = (LinearLayout) drawerLayout.findViewById(R.id.customLayout);
-        getLayoutInflater().inflate(layoutResID,linearLayout,true);
+        getLayoutInflater().inflate(layoutResID, linearLayout, true);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+
+   //     actionBar = getSupportActionBar();
+   //     actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+   //     actionBar.setDisplayHomeAsUpEnabled(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -41,6 +41,10 @@ public class NavigationDrawer extends CustomActivity{
         }
 
         super.setContentView(drawerLayout);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
 
