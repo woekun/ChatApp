@@ -80,15 +80,7 @@ public class Chat extends NavigationDrawer {
         parseObject.put("receiver", buddy);
         parseObject.put("message", mess);
 
-        parseObject.saveEventually(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null)
-                    Toast.makeText(Chat.this, e.toString(), Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(Chat.this, "OK!!", Toast.LENGTH_LONG).show();
-            }
-        });
+        parseObject.saveEventually();
 
     }
 
