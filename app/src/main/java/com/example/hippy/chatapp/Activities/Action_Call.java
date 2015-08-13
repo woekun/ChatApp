@@ -12,6 +12,13 @@ import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
+import com.sinch.android.rtc.PushPair;
+import com.sinch.android.rtc.Sinch;
+import com.sinch.android.rtc.SinchClient;
+import com.sinch.android.rtc.calling.Call;
+import com.sinch.android.rtc.calling.CallClient;
+import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.calling.CallListener;
 
 public class Action_Call extends CustomActivity {
 

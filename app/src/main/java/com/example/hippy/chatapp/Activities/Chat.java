@@ -1,6 +1,7 @@
 package com.example.hippy.chatapp.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Chat extends CustomActivity {
+public class Chat extends NavigationDrawer {
 
     private static Handler handler;
     private ArrayList<Conversation> convList;
@@ -44,7 +45,7 @@ public class Chat extends CustomActivity {
         setContentView(R.layout.chat);
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        getSupportActionBar().setTitle(buddy);
+        //getSupportActionBar().setTitle(buddy);
 
         convList = new ArrayList<>();
         list_chat = (ListView) findViewById(R.id.list_chat);
@@ -79,15 +80,7 @@ public class Chat extends CustomActivity {
         parseObject.put("receiver", buddy);
         parseObject.put("message", mess);
 
-        parseObject.saveEventually(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null)
-                    Toast.makeText(Chat.this, e.toString(), Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(Chat.this, "OK!!", Toast.LENGTH_LONG).show();
-            }
-        });
+        parseObject.saveEventually();
 
     }
 
