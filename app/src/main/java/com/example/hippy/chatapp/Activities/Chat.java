@@ -103,6 +103,7 @@ public class Chat extends CustomActivity {
         } else {
             if (lastMsgDate != null)
                 parseQuery.whereGreaterThan("createdAt", lastMsgDate);
+
             parseQuery.whereEqualTo("sender", buddy);
             parseQuery.whereEqualTo("receiver", UserList.user.getUsername());
         }
