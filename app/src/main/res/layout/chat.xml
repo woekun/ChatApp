@@ -17,16 +17,19 @@
         android:fastScrollEnabled="true"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
+        android:layout_above="@+id/abc"
         tools:listitem="@layout/item_chat_recv" />
 
     <RelativeLayout
+        android:id="@+id/abc"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:background="#e8e8e8"
         android:layout_gravity="bottom"
         android:padding="5dp"
         android:layout_alignParentBottom="true"
-        tools:context=".MainActivity">
+        tools:context=".MainActivity"
+        >
 
         <EditText
             android:id="@+id/edtMessage"
@@ -34,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Type message"
+            android:inputType="textMultiLine"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/btnSend"/>
