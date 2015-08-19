@@ -7,19 +7,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
-import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.custom.UserAdapter;
-import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
+import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -100,7 +96,7 @@ public class UserList extends NavigationDrawer {
 
     @Override
     public void onDestroy() {
-        stopService(new Intent(this, CallService.class));
+        stopService(new Intent(this, SinchService.class));
         super.onDestroy();
     }
 }

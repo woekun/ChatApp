@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
+import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -36,7 +36,7 @@ public class Login extends CustomActivity {
         setTouchNClick(R.id.btnReg);
 
         intent = new Intent(getApplicationContext(), UserList.class);
-        serviceIntent = new Intent(getApplicationContext(), CallService.class);
+        serviceIntent = new Intent(getApplicationContext(), SinchService.class);
 
         edtUser = (EditText) findViewById(R.id.edtUser);
         edtPass = (EditText) findViewById(R.id.edtPass);

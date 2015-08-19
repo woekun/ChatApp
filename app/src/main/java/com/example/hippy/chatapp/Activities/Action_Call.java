@@ -10,21 +10,14 @@ import android.widget.TextView;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.utils.CallService;
 import com.example.hippy.chatapp.utils.Const;
-import com.sinch.android.rtc.PushPair;
-import com.sinch.android.rtc.Sinch;
-import com.sinch.android.rtc.SinchClient;
-import com.sinch.android.rtc.calling.Call;
-import com.sinch.android.rtc.calling.CallClient;
-import com.sinch.android.rtc.calling.CallClientListener;
-import com.sinch.android.rtc.calling.CallListener;
+import com.example.hippy.chatapp.utils.SinchService;
 
 public class Action_Call extends CustomActivity {
 
     private String buddy;
     private TextView callState;
-    private CallService.CallServiceInterface callService;
+    private SinchService.CallServiceInterface callService;
     private ServiceConnection serviceConnection = new MyServiceConnection();
 
     @Override
@@ -32,7 +25,7 @@ public class Action_Call extends CustomActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.call);
 
-        bindService(new Intent(this, CallService.class), serviceConnection, BIND_AUTO_CREATE);
+        bindService(new Intent(this, SinchService.class), serviceConnection, BIND_AUTO_CREATE);
 
         callState = (TextView) findViewById(R.id.callState);
         setTouchNClick(R.id.btnCall);
@@ -45,7 +38,7 @@ public class Action_Call extends CustomActivity {
     private class MyServiceConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            callService = (CallService.CallServiceInterface) iBinder;
+            callService = (SinchService.CallServiceInterface) iBinder;
         }
 
         @Override

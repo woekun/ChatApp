@@ -20,7 +20,7 @@ public class Helper {
         if (user.length() != 0 || pass.length() != 0) {
             ParseUser.logInInBackground(user, pass);
             Intent intent = new Intent(activity.getApplicationContext(), UserList.class);
-            Intent serviceIntent = new Intent(activity.getApplicationContext(), CallService.class);
+            Intent serviceIntent = new Intent(activity.getApplicationContext(), SinchService.class);
             activity.startActivity(intent);
             activity.startService(serviceIntent);
             activity.finish();
