@@ -44,12 +44,13 @@
 
         <Button
             android:id="@+id/btnSend"
-            style="@style/btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="send"
+            android:text="SEND"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:textColor="#fff"
+            android:background="@drawable/my_button"/>
     </RelativeLayout>
 
 </RelativeLayout>
