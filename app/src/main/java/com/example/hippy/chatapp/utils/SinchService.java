@@ -26,7 +26,7 @@ public class SinchService extends Service implements SinchClientListener {
     private static final String ENVIRONMENT = "sandbox.sinch.com";
     private Intent broadcastIntent = new Intent("com.example.hippy.chatapp.Activities.UserList");
 
-    private final CallServiceInterface serviceInterface = new CallServiceInterface();
+    private final ServiceInterface serviceInterface = new ServiceInterface();
     private SinchClient sinchClient = null;
     private CallClient callClient = null;
     private MessageClient messageClient = null;
@@ -156,23 +156,8 @@ public class SinchService extends Service implements SinchClientListener {
     }
 
 
-    //     Binder fof CallService
-    public class CallServiceInterface extends Binder {
-        public void startCall(String recipientUserId) {
-            SinchService.this.startCall(recipientUserId);
-        }
-
-        public void endCall(String recipientUserId) {
-            SinchService.this.endCall(recipientUserId);
-        }
-
-        public boolean isSinchClientStarted() {
-            return SinchService.this.isSinchClientStarted();
-        }
-    }
-
-    //    Binder for MessageService
-    public class MessageServiceInterface extends Binder {
+    //     Binder fof Service
+    public class ServiceInterface extends Binder {
         public void sendMessage(String recipientUserId, String textBody) {
             SinchService.this.sendMessage(recipientUserId, textBody);
         }
@@ -183,6 +168,14 @@ public class SinchService extends Service implements SinchClientListener {
 
         public void removeMessageClientListener(MessageClientListener listener) {
             SinchService.this.removeMessageClientListener(listener);
+        }
+
+        public void startCall(String recipientUserId) {
+            SinchService.this.startCall(recipientUserId);
+        }
+
+        public void endCall(String recipientUserId) {
+            SinchService.this.endCall(recipientUserId);
         }
 
         public boolean isSinchClientStarted() {

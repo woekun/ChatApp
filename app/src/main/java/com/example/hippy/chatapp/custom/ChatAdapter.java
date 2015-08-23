@@ -21,9 +21,14 @@ public class ChatAdapter extends BaseAdapter {
     private ArrayList<Conversation> convList;
     private LayoutInflater layoutInflater;
 
-    public ChatAdapter(Activity activity, ArrayList<Conversation> convList) {
+    public ChatAdapter(Activity activity) {
         this.layoutInflater = activity.getLayoutInflater();
-        this.convList = convList;
+        convList = new ArrayList<>();
+    }
+
+    public void addMessage(Conversation conversation) {
+        convList.add(conversation);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -46,10 +51,12 @@ public class ChatAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         Conversation conversation = getItem(position);
 
-        if (conversation.isSent()) {
-            convertView = layoutInflater.inflate(R.layout.item_chat_sent, null);
-        } else {
-            convertView = layoutInflater.inflate(R.layout.item_chat_recv, null);
+        if (convertView == null) {
+            if (conversation.isSent()) {
+                convertView = layoutInflater.inflate(R.layout.item_chat_sent, parent, false);
+            } else {
+                convertView = layoutInflater.inflate(R.layout.item_chat_recv, parent, false);
+            }
         }
 
         // setup viewHolder
@@ -63,8 +70,10 @@ public class ChatAdapter extends BaseAdapter {
         //bind data
         Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
         roundedImage = new RoundImage(bm);
+
         viewHolder.ivAvatar.setImageDrawable(roundedImage);
         viewHolder.tvMessage.setText(conversation.getMessage());
+
         return convertView;
     }
 
