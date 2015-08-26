@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -31,7 +29,6 @@ public class UserList extends NavigationDrawer {
     private ArrayList<ParseUser> uList;
     private BroadcastReceiver receiver = null;
     private ProgressDialog progressDialog;
-    private RecyclerView listView;
 
 
     @Override
@@ -45,11 +42,7 @@ public class UserList extends NavigationDrawer {
     @Override
     protected void onResume() {
         super.onResume();
-        listView = (RecyclerView) findViewById(R.id.list);
-        listView.setLayoutManager(new LinearLayoutManager(UserList.this));
         loadContacts();
-
-
     }
 
     private void loadContacts() {
@@ -65,11 +58,16 @@ public class UserList extends NavigationDrawer {
 
 
                             uList = new ArrayList(list);
+                            ListView listView = (ListView) findViewById(R.id.list);
                             listView.setAdapter(new UserAdapter(UserList.this, uList));
-
-
-
-
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    startActivity(new Intent(UserList.this, Chat.class)
+                                            .putExtra(Const.EXTRA_DATA, uList.get(position)
+                                                    .getUsername()));
+                                }
+                            });
                         } else {
                             Toast.makeText(UserList.this, e.toString(), Toast.LENGTH_LONG).show();
                         }

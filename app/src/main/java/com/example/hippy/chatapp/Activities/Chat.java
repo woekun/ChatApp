@@ -33,6 +33,7 @@ import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Chat extends NavigationDrawer {
 
     private ChatAdapter chatAdapter;
@@ -133,10 +134,10 @@ public class Chat extends NavigationDrawer {
         arrayList.add(UserList.user.getUsername());
         parseQuery.whereContainedIn("sender", arrayList);
         parseQuery.whereContainedIn("receiver", arrayList);
+        parseQuery.orderByDescending("createdAt");
 //        parseQuery.whereGreaterThan("createdAt", lastMsgDate);
 
-        parseQuery.orderByDescending("createdAt");
-//        parseQuery.setLimit(30);
+        parseQuery.setLimit(30);
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -173,7 +174,7 @@ public class Chat extends NavigationDrawer {
         @Override
         public void onIncomingMessage(MessageClient messageClient, Message message) {
             if (message.getSenderId().equals(buddy)) {
-                chatAdapter.addMessage(new Conversation(message.getTextBody(),message.getTimestamp(),buddy));
+                chatAdapter.addMessage(new Conversation(message.getTextBody(), message.getTimestamp(), buddy));
             }
         }
 
@@ -186,7 +187,7 @@ public class Chat extends NavigationDrawer {
 
             parseObject.saveEventually();
 
-            chatAdapter.addMessage(new Conversation(message.getTextBody(),message.getTimestamp(), currentUser));
+            chatAdapter.addMessage(new Conversation(message.getTextBody(), message.getTimestamp(), currentUser));
         }
 
         @Override
