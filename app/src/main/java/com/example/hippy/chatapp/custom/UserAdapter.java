@@ -1,21 +1,29 @@
 package com.example.hippy.chatapp.custom;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.hippy.chatapp.Activities.Chat;
+import com.example.hippy.chatapp.Activities.UserList;
 import com.example.hippy.chatapp.R;
+import com.example.hippy.chatapp.utils.Const;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends BaseAdapter {
+import static android.support.v4.app.ActivityCompat.startActivity;
+
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private RoundImage roundedImage;
     private ArrayList<ParseUser> uList;
@@ -26,14 +34,35 @@ public class UserAdapter extends BaseAdapter {
         this.uList = uList;
     }
 
-    @Override
-    public int getCount() {
-        return uList.size();
-    }
+
 
     @Override
-    public ParseUser getItem(int position) {
-        return uList.get(position);
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+        final View convertView = layoutInflater.inflate(R.layout.item_list, null);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parent.getContext().startActivity(new Intent(parent.getContext(), Chat.class)
+                        .putExtra(Const.EXTRA_DATA,
+                                ((TextView)parent.getFocusedChild().findViewById(R.id.list_item)).getText()));
+            }
+        });
+        return new ViewHolder(convertView);
+    }
+
+
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+
+        ParseUser parseUser = uList.get((int)getItemId(position));
+        Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
+        roundedImage = new RoundImage(bm);
+
+        holder.avatar.setImageDrawable(roundedImage);
+        holder.contactName.setText(parseUser.getUsername());
+
+
     }
 
     @Override
@@ -42,35 +71,21 @@ public class UserAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
+    public int getItemCount() {
 
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.item_list, null);
-
-            // setup viewHolder
-            viewHolder = new ViewHolder();
-            viewHolder.contactName = (TextView) convertView.findViewById(R.id.list_item);
-            viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
-
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        //bind data
-        ParseUser parseUser = getItem(position);
-        Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
-        roundedImage = new RoundImage(bm);
-
-        viewHolder.avatar.setImageDrawable(roundedImage);
-        viewHolder.contactName.setText(parseUser.getUsername());
-
-        return convertView;
+        return uList.size();
     }
 
-    static class ViewHolder {
+
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView contactName;
         private ImageView avatar;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+           contactName = (TextView) itemView.findViewById(R.id.list_item);
+            avatar = (ImageView) itemView.findViewById(R.id.avatar);
+        }
     }
 }

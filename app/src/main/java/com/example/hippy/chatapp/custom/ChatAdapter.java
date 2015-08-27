@@ -23,7 +23,7 @@ public class ChatAdapter extends BaseAdapter {
 
     public ChatAdapter(Activity activity) {
         this.layoutInflater = activity.getLayoutInflater();
-        convList = new ArrayList<>();
+        convList = new ArrayList<Conversation>();
     }
 
     public void addMessage(Conversation conversation) {

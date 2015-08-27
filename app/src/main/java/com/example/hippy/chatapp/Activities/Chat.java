@@ -127,7 +127,7 @@ public class Chat extends NavigationDrawer {
 
     private void loadConversation() {
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Chat");
-        ArrayList<String> arrayList = new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<String>();
         arrayList.add(buddy);
 
         arrayList.add(UserList.user.getUsername());
@@ -135,7 +135,7 @@ public class Chat extends NavigationDrawer {
         parseQuery.whereContainedIn("receiver", arrayList);
 //        parseQuery.whereGreaterThan("createdAt", lastMsgDate);
 
-        parseQuery.orderByAscending("createdAt");
+        parseQuery.orderByDescending("createdAt");
         parseQuery.setLimit(30);
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -173,7 +173,7 @@ public class Chat extends NavigationDrawer {
         @Override
         public void onIncomingMessage(MessageClient messageClient, Message message) {
             if (message.getSenderId().equals(buddy)) {
-                chatAdapter.addMessage(message.getTextBody(), date, buddy);
+                chatAdapter.addMessage(new Conversation(message.getTextBody(),message.getTimestamp(),buddy));
             }
         }
 
@@ -186,7 +186,7 @@ public class Chat extends NavigationDrawer {
 
             parseObject.saveEventually();
 
-            chatAdapter.addMessage(new Conversation(message.getTextBody(), date, currentUser));
+            chatAdapter.addMessage(new Conversation(message.getTextBody(),message.getTimestamp(), currentUser));
         }
 
         @Override
