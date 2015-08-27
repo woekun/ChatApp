@@ -42,18 +42,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parent.getContext().startActivity(new Intent(parent.getContext(), Chat.class)
-                        .putExtra(Const.EXTRA_DATA,
-                                ((TextView)parent.getFocusedChild().findViewById(R.id.list_item)).getText()));
+
             }
         });
         return new ViewHolder(convertView);
     }
 
 
-
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         ParseUser parseUser = uList.get((int)getItemId(position));
         Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
@@ -62,6 +59,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.avatar.setImageDrawable(roundedImage);
         holder.contactName.setText(parseUser.getUsername());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(holder.itemView.getContext(), uList.get(holder.getPosition()).getUsername(), Toast.LENGTH_SHORT).show();
+
+                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), Chat.class)
+                        .putExtra(Const.EXTRA_DATA,uList.get(holder.getPosition()).getUsername()));
+            }
+        });
 
     }
 
@@ -86,6 +92,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             super(itemView);
            contactName = (TextView) itemView.findViewById(R.id.list_item);
             avatar = (ImageView) itemView.findViewById(R.id.avatar);
+
+        }
+
         }
     }
-}
+

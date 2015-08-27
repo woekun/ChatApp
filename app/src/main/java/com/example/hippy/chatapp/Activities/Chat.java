@@ -127,7 +127,7 @@ public class Chat extends NavigationDrawer {
 
     private void loadConversation() {
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Chat");
-        ArrayList<String> arrayList = new ArrayList<String>();
+        ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add(buddy);
 
         arrayList.add(UserList.user.getUsername());
@@ -136,7 +136,7 @@ public class Chat extends NavigationDrawer {
 //        parseQuery.whereGreaterThan("createdAt", lastMsgDate);
 
         parseQuery.orderByDescending("createdAt");
-        parseQuery.setLimit(30);
+//        parseQuery.setLimit(30);
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
