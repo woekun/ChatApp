@@ -30,8 +30,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         this.uList = uList;
     }
 
-
-
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final View convertView = layoutInflater.inflate(R.layout.item_list, null);

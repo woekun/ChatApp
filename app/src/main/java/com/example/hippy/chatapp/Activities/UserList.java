@@ -41,14 +41,13 @@ public class UserList extends NavigationDrawer {
     @Override
     protected void onResume() {
         super.onResume();
-        listView = (RecyclerView) findViewById(R.id.list);
-        listView.setLayoutManager(new LinearLayoutManager(UserList.this));
         loadContacts();
-
-
     }
 
     private void loadContacts() {
+
+        listView = (RecyclerView) findViewById(R.id.list);
+        listView.setLayoutManager(new LinearLayoutManager(UserList.this));
 
         ParseUser.getQuery().whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername())
                 .findInBackground(new FindCallback<ParseUser>() {
@@ -59,14 +58,11 @@ public class UserList extends NavigationDrawer {
                             if (list.size() == 0)
                                 Toast.makeText(UserList.this, "No user found!!", Toast.LENGTH_SHORT).show();
 
-
                             uList = new ArrayList<>(list);
                             listView.setAdapter(new UserAdapter(UserList.this, uList));
 
 
-                        } else {
-                            Toast.makeText(UserList.this, e.toString(), Toast.LENGTH_LONG).show();
-                        }
+                        } else Toast.makeText(UserList.this, e.toString(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -87,8 +83,6 @@ public class UserList extends NavigationDrawer {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("com.example.hippy.chatapp.Activities.UserList"));
     }
-
-
 
     @Override
     public void onDestroy() {
