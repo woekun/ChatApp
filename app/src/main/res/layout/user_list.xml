@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
     tools:context="com.example.hippy.chatapp.Activities.UserList">
 
     <android.support.v7.widget.RecyclerView

@@ -17,13 +17,12 @@ import java.util.ArrayList;
 
 public class ChatAdapter extends BaseAdapter {
 
-    private RoundImage roundedImage;
     private ArrayList<Conversation> convList;
     private LayoutInflater layoutInflater;
 
     public ChatAdapter(Activity activity) {
         this.layoutInflater = activity.getLayoutInflater();
-        convList = new ArrayList<Conversation>();
+        convList = new ArrayList<>();
     }
 
     public void addMessage(Conversation conversation) {
@@ -51,12 +50,10 @@ public class ChatAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         Conversation conversation = getItem(position);
 
-        if (convertView == null) {
-            if (conversation.isSent()) {
-                convertView = layoutInflater.inflate(R.layout.item_chat_sent, parent, false);
-            } else {
-                convertView = layoutInflater.inflate(R.layout.item_chat_recv, parent, false);
-            }
+        if (conversation.isSent()) {
+            convertView = layoutInflater.inflate(R.layout.item_chat_sent, parent, false);
+        } else {
+            convertView = layoutInflater.inflate(R.layout.item_chat_recv, parent, false);
         }
 
         // setup viewHolder
@@ -68,10 +65,6 @@ public class ChatAdapter extends BaseAdapter {
         viewHolder = (ViewHolder) convertView.getTag();
 
         //bind data
-        Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
-        roundedImage = new RoundImage(bm);
-
-        viewHolder.ivAvatar.setImageDrawable(roundedImage);
         viewHolder.tvMessage.setText(conversation.getMessage());
 
         return convertView;

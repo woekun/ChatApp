@@ -57,7 +57,7 @@ public class Chat extends NavigationDrawer {
 
         currentUser = UserList.user.getUsername();
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        //getSupportActionBar().setTitle(buddy);
+        getSupportActionBar().setTitle(buddy);
 
         list_chat = (ListView) findViewById(R.id.list_chat);
         chatAdapter = new ChatAdapter(Chat.this);
@@ -77,7 +77,6 @@ public class Chat extends NavigationDrawer {
     protected void onResume() {
         super.onResume();
         isRunning = true;
-        loadConversation();
     }
 
     @Override
@@ -112,18 +111,6 @@ public class Chat extends NavigationDrawer {
         messageService.sendMessage(buddy, mess);
         edtMess.setText(null);
 
-//        final Conversation conversation = new Conversation(mess, new Date(), UserList.user.getUsername());
-//        convList.add(conversation);
-//        chatAdapter.notifyDataSetChanged();
-//        edtMess.setText(null);
-//
-//        ParseObject parseObject = new ParseObject("Chat");
-//        parseObject.put("sender", UserList.user.getUsername());
-//        parseObject.put("receiver", buddy);
-//        parseObject.put("message", mess);
-//
-//        parseObject.saveEventually();
-
     }
 
     private void loadConversation() {
@@ -135,9 +122,6 @@ public class Chat extends NavigationDrawer {
         parseQuery.whereContainedIn("sender", arrayList);
         parseQuery.whereContainedIn("receiver", arrayList);
         parseQuery.orderByDescending("createdAt");
-//        parseQuery.whereGreaterThan("createdAt", lastMsgDate);
-
-        parseQuery.setLimit(30);
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {

@@ -33,7 +33,6 @@ public class UserList extends NavigationDrawer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.user_list);
         showSpinner();
     }

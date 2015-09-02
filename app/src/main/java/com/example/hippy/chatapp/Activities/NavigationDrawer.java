@@ -13,9 +13,7 @@ import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 
 public class NavigationDrawer extends CustomActivity{
-    DrawerLayout drawerLayout;
-    Toolbar toolbar;
-    ActionBar actionBar;
+    private DrawerLayout drawerLayout;
 
     @Override
     public void setContentView(int layoutResID) {
@@ -23,10 +21,6 @@ public class NavigationDrawer extends CustomActivity{
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_main, null);
         LinearLayout linearLayout = (LinearLayout) drawerLayout.findViewById(R.id.customLayout);
         getLayoutInflater().inflate(layoutResID, linearLayout, true);
-
-   //     actionBar = getSupportActionBar();
-   //     actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-   //     actionBar.setDisplayHomeAsUpEnabled(true);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -36,8 +30,13 @@ public class NavigationDrawer extends CustomActivity{
 
         super.setContentView(drawerLayout);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 

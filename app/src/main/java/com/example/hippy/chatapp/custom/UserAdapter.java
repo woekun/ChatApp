@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
-    private RoundImage roundedImage;
     private ArrayList<ParseUser> uList;
     private LayoutInflater layoutInflater;
 
@@ -47,19 +46,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         ParseUser parseUser = uList.get((int) getItemId(position));
-        Bitmap bm = BitmapFactory.decodeResource(layoutInflater.getContext().getResources(), R.drawable.image);
-        roundedImage = new RoundImage(bm);
 
-        holder.avatar.setImageDrawable(roundedImage);
         holder.contactName.setText(parseUser.getUsername());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(holder.itemView.getContext(), uList.get(holder.getPosition()).getUsername(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(holder.itemView.getContext(), uList.get(holder.getAdapterPosition()).getUsername(), Toast.LENGTH_SHORT).show();
 
                 holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), Chat.class)
-                        .putExtra(Const.EXTRA_DATA, uList.get(holder.getPosition()).getUsername()));
+                        .putExtra(Const.EXTRA_DATA, uList.get(holder.getAdapterPosition()).getUsername()));
             }
         });
 
