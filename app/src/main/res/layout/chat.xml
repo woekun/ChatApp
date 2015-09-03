@@ -44,7 +44,7 @@
                 style="@style/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="send" />
+                android:background="@drawable/ic_action_send"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

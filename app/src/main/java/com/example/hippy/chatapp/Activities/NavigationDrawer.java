@@ -63,11 +63,6 @@ public class NavigationDrawer extends CustomActivity{
                          //       textView.setText(menuItem.getTitle());
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.item_navigation_drawer_drafts:
-                                menuItem.setChecked(true);
-                         //       textView.setText(menuItem.getTitle());
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                                return true;
                             case R.id.item_navigation_drawer_settings:
                                 menuItem.setChecked(true);
                          //       textView.setText(menuItem.getTitle());

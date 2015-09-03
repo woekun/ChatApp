@@ -1,35 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <group android:checkableBehavior="single">
-        <item
-            android:checked="true"
-            android:id="@+id/item_navigation_drawer_inbox"
-            android:icon="@drawable/ic_inbox_black_24dp"
-            android:title="Inbox" />
-        <item
-            android:id="@+id/item_navigation_drawer_starred"
-            android:icon="@drawable/ic_action_toggle_star"
-            android:title="Starred" />
-        <item
-            android:id="@+id/item_navigation_drawer_sent_mail"
-            android:icon="@drawable/ic_action_content_send"
-            android:title="Sent mail" />
-        <item
-            android:id="@+id/item_navigation_drawer_drafts"
-            android:icon="@drawable/ic_action_content_drafts"
-            android:title="Drafts" />
-    </group>
-
-    <item android:title="Subheader">
+    <item android:title="Information">
+        <menu>
+            <item
+                android:id="@+id/item_navigation_drawer_inbox"
+                android:icon="@drawable/ic_nav_person"
+                android:title="Profile" />
+            <item
+                android:id="@+id/item_navigation_drawer_starred"
+                android:icon="@drawable/ic_nav_group"
+                android:title="Group" />
+            <item
+                android:id="@+id/item_navigation_drawer_sent_mail"
+                android:icon="@drawable/ic_nav_signout"
+                android:title="Sign out" />
+        </menu>
+    </item>
+    <item android:title="Support">
         <menu>
             <item
                 android:id="@+id/item_navigation_drawer_settings"
-                android:icon="@drawable/ic_action_content_mail"
+                android:icon="@drawable/ic_nav_setting"
                 android:title="Settings" />
             <item
                 android:id="@+id/item_navigation_drawer_help_and_feedback"
-                android:icon="@drawable/ic_action_action_delete"
+                android:icon="@drawable/ic_nav_help"
                 android:title="Help and feedback" />
         </menu>
     </item>
