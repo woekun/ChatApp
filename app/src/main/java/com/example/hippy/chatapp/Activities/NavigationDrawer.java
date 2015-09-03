@@ -5,17 +5,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
 
-
-/**
- * Created by Truong Giang on 8/10/2015.
- */
 public class NavigationDrawer extends CustomActivity{
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -27,8 +23,6 @@ public class NavigationDrawer extends CustomActivity{
         drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_main, null);
         LinearLayout linearLayout = (LinearLayout) drawerLayout.findViewById(R.id.customLayout);
         getLayoutInflater().inflate(layoutResID, linearLayout, true);
-
-
 
    //     actionBar = getSupportActionBar();
    //     actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
@@ -45,27 +39,6 @@ public class NavigationDrawer extends CustomActivity{
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-    }
-
-
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void setupNavigationDrawerContent(NavigationView navigationView) {

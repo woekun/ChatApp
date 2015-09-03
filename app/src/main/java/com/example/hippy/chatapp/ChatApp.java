@@ -9,6 +9,6 @@ public class ChatApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Parse.initialize(this, "EqJPz7hBmv0VIV42otb71Uvi51oH3zKidng0ZnNo", "glJmZyqdDmeAhNQ8axbClNUt3oQCiK45fKWzibHz");
+        Parse.initialize(this, "79sEAU8hFXbMAVU3LOVv71g2UtdF6d44t937SC12", "8qIzVeg5CFKzA8mfOeaxOZrnAUiv5w0SuMHMhFtY");
     }
 }

@@ -15,19 +15,24 @@ import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.messaging.MessageClient;
+import com.sinch.android.rtc.messaging.MessageClientListener;
+import com.sinch.android.rtc.messaging.WritableMessage;
 
-public class CallService extends Service implements SinchClientListener {
+public class SinchService extends Service implements SinchClientListener {
 
     private static final String APP_KEY = "59ecf280-0506-4d4b-bfa0-4b4ca98d1019";
     private static final String APP_SECRET = "qd4AsZncokSj+UNrSdD5TA==";
     private static final String ENVIRONMENT = "sandbox.sinch.com";
+    private Intent broadcastIntent = new Intent("com.example.hippy.chatapp.Activities.UserList");
+
     private final CallServiceInterface serviceInterface = new CallServiceInterface();
     private SinchClient sinchClient = null;
     private CallClient callClient = null;
+    private MessageClient messageClient = null;
     private String currentUser;
     private Call call;
     private LocalBroadcastManager broadcaster;
-    private Intent broadcastIntent = new Intent("com.example.hippy.chatapp.Activities.UserList");
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -55,8 +60,11 @@ public class CallService extends Service implements SinchClientListener {
         sinchClient.addSinchClientListener(this);
 
         sinchClient.setSupportCalling(true);
+        sinchClient.setSupportMessaging(true);
         sinchClient.setSupportActiveConnectionInBackground(true);
+
         sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
+
         sinchClient.checkManifest();
         sinchClient.start();
     }
@@ -80,6 +88,7 @@ public class CallService extends Service implements SinchClientListener {
 
         client.startListeningOnActiveConnection();
         callClient = client.getCallClient();
+        messageClient = client.getMessageClient();
     }
 
     @Override
@@ -100,6 +109,7 @@ public class CallService extends Service implements SinchClientListener {
     public void onRegistrationCredentialsRequired(SinchClient client, ClientRegistration clientRegistration) {
     }
 
+    // Call
     public void startCall(String recipientUserId) {
         if (callClient != null) {
             callClient.callUser(recipientUserId);
@@ -112,6 +122,16 @@ public class CallService extends Service implements SinchClientListener {
             call.hangup();
     }
 
+
+    //Message
+    public void sendMessage(String recipientUserId, String textBody) {
+        if (messageClient != null) {
+            WritableMessage message = new WritableMessage(recipientUserId, textBody);
+            messageClient.send(message);
+        }
+    }
+
+    // CallListener
     private class SinchCallClientListener implements CallClientListener {
         @Override
         public void onIncomingCall(CallClient callClient, Call incomingCall) {
@@ -122,24 +142,59 @@ public class CallService extends Service implements SinchClientListener {
         }
     }
 
+    //    MessageListener
+    public void addMessageClientListener(MessageClientListener listener) {
+        if (messageClient != null) {
+            messageClient.addMessageClientListener(listener);
+        }
+    }
+
+    public void removeMessageClientListener(MessageClientListener listener) {
+        if (messageClient != null) {
+            messageClient.removeMessageClientListener(listener);
+        }
+    }
+
+
+    //     Binder fof CallService
+    public class CallServiceInterface extends Binder {
+        public void startCall(String recipientUserId) {
+            SinchService.this.startCall(recipientUserId);
+        }
+
+        public void endCall(String recipientUserId) {
+            SinchService.this.endCall(recipientUserId);
+        }
+
+        public boolean isSinchClientStarted() {
+            return SinchService.this.isSinchClientStarted();
+        }
+    }
+
+    //    Binder for MessageService
+    public class MessageServiceInterface extends Binder {
+        public void sendMessage(String recipientUserId, String textBody) {
+            SinchService.this.sendMessage(recipientUserId, textBody);
+        }
+
+        public void addMessageClientListener(MessageClientListener listener) {
+            SinchService.this.addMessageClientListener(listener);
+        }
+
+        public void removeMessageClientListener(MessageClientListener listener) {
+            SinchService.this.removeMessageClientListener(listener);
+        }
+
+        public boolean isSinchClientStarted() {
+            return SinchService.this.isSinchClientStarted();
+        }
+    }
+
     @Override
     public void onDestroy() {
         sinchClient.stopListeningOnActiveConnection();
         sinchClient.terminate();
     }
-
-    public class CallServiceInterface extends Binder {
-        public void startCall(String recipientUserId) {
-            CallService.this.startCall(recipientUserId);
-        }
-
-        public void endCall(String recipientUserId) {
-            CallService.this.endCall(recipientUserId);
-        }
-
-        public boolean isSinchClientStarted() {
-            return CallService.this.isSinchClientStarted();
-        }
-    }
 }
+
 

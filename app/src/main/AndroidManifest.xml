@@ -19,7 +19,7 @@
         android:name=".ChatApp"
         android:theme="@style/Theme.AppCompat">
 
-        <service android:name=".utils.CallService" />
+        <service android:name=".utils.SinchService" />
 
         <activity
             android:name=".Activities.Login"

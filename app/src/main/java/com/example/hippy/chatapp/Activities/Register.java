@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.utils.CallService;
+import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -31,7 +31,7 @@ public class Register extends CustomActivity {
         setTouchNClick(R.id.btnReg);
 
         intent = new Intent(Register.this, UserList.class);
-        serviceIntent = new Intent(getApplicationContext(), CallService.class);
+        serviceIntent = new Intent(getApplicationContext(), SinchService.class);
 
         edtRUser = (EditText) findViewById(R.id.user);
         edtRPass = (EditText) findViewById(R.id.pwd);
