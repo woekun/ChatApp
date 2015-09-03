@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
+public class UserAdapter extends BaseAdapter {
 
     private ArrayList<ParseUser> uList;
     private LayoutInflater layoutInflater;
@@ -30,35 +31,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        final View convertView = layoutInflater.inflate(R.layout.item_list, null);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        return new ViewHolder(convertView);
+    public int getCount() {
+        return uList.size();
     }
 
-
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-
-        ParseUser parseUser = uList.get((int) getItemId(position));
-
-        holder.contactName.setText(parseUser.getUsername());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(holder.itemView.getContext(), uList.get(holder.getAdapterPosition()).getUsername(), Toast.LENGTH_SHORT).show();
-
-                holder.itemView.getContext().startActivity(new Intent(holder.itemView.getContext(), Chat.class)
-                        .putExtra(Const.EXTRA_DATA, uList.get(holder.getAdapterPosition()).getUsername()));
-            }
-        });
-
+    public ParseUser getItem(int position) {
+        return uList.get(position);
     }
 
     @Override
@@ -67,22 +46,24 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     }
 
     @Override
-    public int getItemCount() {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        return uList.size();
+        ParseUser parseUser = getItem(position);
+
+        convertView = layoutInflater.inflate(R.layout.item_list, parent, false);
+
+        ViewHolder viewHolder = new ViewHolder();
+        TextView contactName = (TextView) convertView.findViewById(R.id.list_item);
+        ImageView avatar = (ImageView) convertView.findViewById(R.id.avatar);
+
+        contactName.setText(parseUser.getUsername());
+
+        return convertView;
     }
 
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder {
         private TextView contactName;
         private ImageView avatar;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            contactName = (TextView) itemView.findViewById(R.id.list_item);
-            avatar = (ImageView) itemView.findViewById(R.id.avatar);
-
-        }
 
     }
 }

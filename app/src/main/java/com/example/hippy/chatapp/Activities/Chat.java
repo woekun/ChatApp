@@ -73,17 +73,6 @@ public class Chat extends NavigationDrawer {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isRunning = true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        isRunning = false;
-    }
 
     @Override
     protected void onDestroy() {
@@ -169,14 +158,14 @@ public class Chat extends NavigationDrawer {
             parseObject.put("receiver", recipientId);
             parseObject.put("message", message.getTextBody());
 
-            parseObject.saveEventually();
+            parseObject.saveInBackground();
 
             chatAdapter.addMessage(new Conversation(message.getTextBody(), message.getTimestamp(), currentUser));
         }
 
         @Override
         public void onMessageFailed(MessageClient messageClient, Message message, MessageFailureInfo messageFailureInfo) {
-            Toast.makeText(Chat.this, "Message failed to send.", Toast.LENGTH_LONG).show();
+            Toast.makeText(Chat.this, messageFailureInfo.toString(), Toast.LENGTH_LONG).show();
         }
 
         @Override

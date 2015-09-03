@@ -31,7 +31,7 @@ public class Action_Call extends CustomActivity {
         setTouchNClick(R.id.btnCall);
 
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        callService.startCall(buddy);
+//        callService.startCall(buddy);
 
     }
 
@@ -52,7 +52,7 @@ public class Action_Call extends CustomActivity {
         super.onClick(view);
 
         if (view.getId() == R.id.btnCall) {
-            callService.endCall(buddy);
+//            callService.endCall(buddy);
         }
     }
 

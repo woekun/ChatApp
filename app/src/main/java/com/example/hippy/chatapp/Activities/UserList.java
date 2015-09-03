@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.UserAdapter;
+import com.example.hippy.chatapp.utils.Const;
 import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -27,7 +31,7 @@ public class UserList extends NavigationDrawer {
     private ArrayList<ParseUser> uList;
     private BroadcastReceiver receiver = null;
     private ProgressDialog progressDialog;
-    private RecyclerView listView;
+    private ListView listView;
 
 
     @Override
@@ -45,8 +49,7 @@ public class UserList extends NavigationDrawer {
 
     private void loadContacts() {
 
-        listView = (RecyclerView) findViewById(R.id.list);
-        listView.setLayoutManager(new LinearLayoutManager(UserList.this));
+        listView = (ListView) findViewById(R.id.list);
 
         ParseUser.getQuery().whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername())
                 .findInBackground(new FindCallback<ParseUser>() {
@@ -59,7 +62,14 @@ public class UserList extends NavigationDrawer {
 
                             uList = new ArrayList<>(list);
                             listView.setAdapter(new UserAdapter(UserList.this, uList));
-
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(getApplicationContext(), Chat.class);
+                                    intent.putExtra(Const.EXTRA_DATA, uList.get(position).getUsername());
+                                    startActivity(intent);
+                                }
+                            });
 
                         } else Toast.makeText(UserList.this, e.toString(), Toast.LENGTH_LONG).show();
                     }
