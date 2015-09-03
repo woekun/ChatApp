@@ -26,10 +26,10 @@
         <EditText
             android:id="@+id/email"
             style="@style/editext_graybg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_username"
-            android:hint="email"
+            android:hint="Email"
             android:inputType="textEmailAddress">
 
             <requestFocus />
@@ -38,36 +38,41 @@
         <EditText
             android:id="@+id/user"
             style="@style/editext_graybg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/ic_username"
-            android:hint="username" />
+            android:hint="Username" />
 
         <EditText
             android:id="@+id/pwd"
             style="@style/editext_graybg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="5dp"
             android:drawableLeft="@drawable/ic_pwd"
-            android:hint="password"
+            android:hint="Password"
             android:inputType="textPassword" />
 
         <LinearLayout
             android:id="@+id/main"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <Button
                 android:id="@+id/btnReg"
-                style="@style/btn_white_large"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="register" />
+                android:background="@drawable/my_button"
+                android:text="REGISTER"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                />
         </LinearLayout>
     </LinearLayout>
 

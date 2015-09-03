@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
     tools:context="com.example.hippy.chatapp.Activities.Chat">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <ListView
-            android:id="@+id/list_chat"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:dividerHeight="5dp"
-            android:divider="#ffffff"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:fastScrollEnabled="true"
-            tools:listitem="@layout/item_chat_recv" />
 
-        <LinearLayout
+    <ListView
+        android:id="@+id/list_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:divider="#ffffff"
+        android:dividerHeight="5dp"
+        android:fastScrollEnabled="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        tools:listitem="@layout/item_chat_recv" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:background="#e8e8e8"
+        android:layout_gravity="bottom"
+        android:padding="5dp"
+        android:layout_alignParentBottom="true"
+        tools:context=".MainActivity">
+
+        <EditText
+            android:id="@+id/edtMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#e8e8e8"
-            android:gravity="center_vertical"
-            android:padding="5dp"
-            tools:context=".MainActivity">
+            android:layout_weight="1"
+            android:hint="Type message"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btnSend"/>
 
-            <EditText
-                android:id="@+id/edtMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxHeight="100dp"
-                android:layout_weight="1"
-                android:hint="Type message" />
+        <Button
+            android:id="@+id/btnSend"
+            style="@style/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="send"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 
-            <Button
-                android:id="@+id/btnSend"
-                style="@style/btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="send" />
-        </LinearLayout>
-    </LinearLayout>
 </RelativeLayout>

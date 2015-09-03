@@ -7,4 +7,7 @@
     <dimen name="status_bar_kitkat_height">0dp</dimen>
     <dimen name="status_bar_lollipop_height">0dp</dimen>
     <dimen name="status_bar_margin_top">0dp</dimen>
+    <integer name="button_pressed_animation_duration">200</integer>
+    <integer name="button_pressed_animation_delay">300</integer>
+
 </resources>
