@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#7ba4bcff">
-    <item android:drawable="@drawable/card_layout" />
+    android:color="#a60dff26">
+    <item>
+        <shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#3f81d7"/>
+            <corners android:radius="10dp" />
+        </shape>
+    </item>
 </ripple>

@@ -7,9 +7,9 @@
     </style>
 
     <style name="AppTheme.ActionBar.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#673AB7</item>
-        <item name="android:colorPrimaryDark">#512DA8</item>
-        <item name="android:colorAccent">#7C4DFF</item>
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="android:colorPrimaryDark">#303F9F</item>
+        <item name="android:colorAccent">#448AFF</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
