@@ -29,7 +29,7 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
         this.getTheme().resolveAttribute(R.attr.colorPrimaryDark, colorDarkPrimary, true);
 
         if(Build.VERSION.SDK_INT>=21){
-            getWindow().setStatusBarColor(colorDarkPrimary.data);
+          //  getWindow().setStatusBarColor(colorDarkPrimary.data);
         }
 
 

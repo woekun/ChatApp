@@ -3,17 +3,14 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
     android:gravity="center_vertical"
     android:paddingBottom="5dp"
-    android:paddingRight="30dp"
     android:paddingTop="5dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
-        android:layout_marginRight="5dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:scaleType="centerCrop"
         android:src="@drawable/image" />
 
@@ -21,8 +18,8 @@
         android:id="@+id/list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:text="TextView"
-        android:textColor="#000000"
-        android:textSize="13sp" />
+        android:layout_marginLeft="16dp"
+        android:textColor="#4a0eff"
+        android:textSize="18sp" />
 </LinearLayout>

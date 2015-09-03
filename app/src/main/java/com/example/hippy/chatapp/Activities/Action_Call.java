@@ -17,7 +17,7 @@ public class Action_Call extends CustomActivity {
 
     private String buddy;
     private TextView callState;
-    private SinchService.CallServiceInterface callService;
+    private SinchService.ServiceInterface callService;
     private ServiceConnection serviceConnection = new MyServiceConnection();
 
     @Override
@@ -38,7 +38,7 @@ public class Action_Call extends CustomActivity {
     private class MyServiceConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            callService = (SinchService.CallServiceInterface) iBinder;
+            callService = (SinchService.ServiceInterface) iBinder;
         }
 
         @Override
