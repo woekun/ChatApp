@@ -76,7 +76,6 @@ public class Chat extends NavigationDrawer {
 
     }
 
-
     @Override
     protected void onDestroy() {
         messageService.removeMessageClientListener(messageClientListener);
