@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.ActionBar;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -57,7 +58,9 @@ public class Chat extends NavigationDrawer {
 
         currentUser = UserList.user.getUsername();
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
-        getSupportActionBar().setTitle(buddy);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null)
+            actionBar.setTitle(buddy);
 
         list_chat = (ListView) findViewById(R.id.list_chat);
         chatAdapter = new ChatAdapter(Chat.this);
@@ -157,7 +160,6 @@ public class Chat extends NavigationDrawer {
             parseObject.put("sender", currentUser);
             parseObject.put("receiver", recipientId);
             parseObject.put("message", message.getTextBody());
-
             parseObject.saveInBackground();
 
             chatAdapter.addMessage(new Conversation(message.getTextBody(), message.getTimestamp(), currentUser));
@@ -165,7 +167,7 @@ public class Chat extends NavigationDrawer {
 
         @Override
         public void onMessageFailed(MessageClient messageClient, Message message, MessageFailureInfo messageFailureInfo) {
-            Toast.makeText(Chat.this, messageFailureInfo.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(Chat.this, messageFailureInfo.getSinchError().getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override

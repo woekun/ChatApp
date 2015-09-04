@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.hippy.chatapp.Activities.UserList;
-import com.parse.ParseUser;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
@@ -64,7 +63,7 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.setSupportMessaging(true);
         sinchClient.setSupportActiveConnectionInBackground(true);
 
-//        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
+        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
 
         sinchClient.checkManifest();
         sinchClient.start();
@@ -88,7 +87,7 @@ public class SinchService extends Service implements SinchClientListener {
         broadcaster.sendBroadcast(broadcastIntent);
 
         client.startListeningOnActiveConnection();
-//        callClient = client.getCallClient();
+        callClient = client.getCallClient();
         messageClient = client.getMessageClient();
     }
 
@@ -111,17 +110,17 @@ public class SinchService extends Service implements SinchClientListener {
     }
 
     // Call
-//    public void startCall(String recipientUserId) {
-//        if (callClient != null) {
-//            callClient.callUser(recipientUserId);
-//        }
-//    }
+    public void startCall(String recipientUserId) {
+        if (callClient != null) {
+            callClient.callUser(recipientUserId);
+        }
+    }
 
-//    public void endCall(String recipientUserId) {
-//        call = callClient.getCall(recipientUserId);
-//        if (call != null)
-//            call.hangup();
-//    }
+    public void endCall(String recipientUserId) {
+        call = callClient.getCall(recipientUserId);
+        if (call != null)
+            call.hangup();
+    }
 
 
     //Message
@@ -132,16 +131,16 @@ public class SinchService extends Service implements SinchClientListener {
         }
     }
 
-//    // CallListener
-//    private class SinchCallClientListener implements CallClientListener {
-//        @Override
-//        public void onIncomingCall(CallClient callClient, Call incomingCall) {
-//            call = incomingCall;
-////            show custom dialog(accept or decline)
-////            if accept ---> answer else hangup
-////                call.answer();
-//        }
-//    }
+    // CallListener
+    private class SinchCallClientListener implements CallClientListener {
+        @Override
+        public void onIncomingCall(CallClient callClient, Call incomingCall) {
+            call = incomingCall;
+//            show custom dialog(accept or decline)
+//            if accept ---> answer else hangup
+//                call.answer();
+        }
+    }
 
     //    MessageListener
     public void addMessageClientListener(MessageClientListener listener) {

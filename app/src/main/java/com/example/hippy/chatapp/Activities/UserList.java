@@ -85,7 +85,7 @@ public class UserList extends NavigationDrawer {
                 Boolean success = intent.getBooleanExtra("success", false);
                 progressDialog.dismiss();
                 if (!success) {
-                    Toast.makeText(getApplicationContext(), "Call service failed to start", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Sinch service failed to start", Toast.LENGTH_LONG).show();
                 }
             }
         };
