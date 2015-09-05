@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/noti_ava"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@mipmap/ava_notification_test"/>
+    <TextView
+        android:id="@+id/noti_mess"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:text="   U have a new message  "
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:background="#aa000000"/>
+
+</LinearLayout>

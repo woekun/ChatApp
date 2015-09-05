@@ -3,28 +3,28 @@ package com.example.hippy.chatapp.utils;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.example.hippy.chatapp.R;
 
 public class Notifications {
-    private int initialX;
-    private int initialY;
-    private float initialTouchX;
-    private float initialTouchY;
-    private Context context;
+    private static int initialX;
+    private static int initialY;
+    private static float initialTouchX;
+    private static float initialTouchY;
 
-    public void Notification(Context context) {
-        this.context = context;
-        createChatHead();
-    }
+    public static void createChatHead(Context context, String mess) {
 
-    private void createChatHead() {
         final WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        final ImageView chatHead = new ImageView(context);
-        chatHead.setImageResource(R.drawable.logo);
+        final View chatHead = LayoutInflater.from(context).inflate(R.layout.floating_notification, null);
+
+        final TextView textView = (TextView) chatHead.findViewById(R.id.noti_mess);
+        textView.setText(mess);
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -59,12 +59,13 @@ public class Notifications {
             }
         });
 
-        chatHead.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        chatHead.findViewById(R.id.noti_ava)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        windowManager.removeView(chatHead);
+                    }
+                });
 
         windowManager.addView(chatHead, params);
     }

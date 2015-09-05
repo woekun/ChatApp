@@ -19,6 +19,7 @@ import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.ChatAdapter;
 import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
+import com.example.hippy.chatapp.utils.Notifications;
 import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -59,7 +60,7 @@ public class Chat extends NavigationDrawer {
         currentUser = UserList.user.getUsername();
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar!=null)
+        if (actionBar != null)
             actionBar.setTitle(buddy);
 
         list_chat = (ListView) findViewById(R.id.list_chat);
@@ -150,6 +151,8 @@ public class Chat extends NavigationDrawer {
         public void onIncomingMessage(MessageClient messageClient, Message message) {
             if (message.getSenderId().equals(buddy)) {
                 chatAdapter.addMessage(new Conversation(message.getTextBody(), message.getTimestamp(), buddy));
+            } else {
+                Notifications.createChatHead(getApplicationContext(), "new mess from " + message.getSenderId());
             }
         }
 

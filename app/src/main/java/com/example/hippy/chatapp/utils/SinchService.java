@@ -44,11 +44,12 @@ public class SinchService extends Service implements SinchClientListener {
         }
 
         broadcaster = LocalBroadcastManager.getInstance(this);
+//        Notifications.createChatHead(this);
 
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public void startSinchClient(String username) {
+    private void startSinchClient(String username) {
         sinchClient = Sinch.getSinchClientBuilder()
                 .context(this)
                 .userId(username)
