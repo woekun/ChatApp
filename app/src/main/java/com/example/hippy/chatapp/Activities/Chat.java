@@ -152,7 +152,7 @@ public class Chat extends NavigationDrawer {
             if (message.getSenderId().equals(buddy)) {
                 chatAdapter.addMessage(new Conversation(message.getTextBody(), message.getTimestamp(), buddy));
             } else {
-                Notifications.createChatHead(getApplicationContext(), "new mess from " + message.getSenderId());
+                messageService.addView("  U have 1 new message from "+ message.getSenderId()+"  ");
             }
         }
 
