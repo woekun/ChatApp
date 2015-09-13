@@ -1,8 +1,6 @@
 package com.example.hippy.chatapp.custom;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,12 +47,12 @@ public class ChatAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         Conversation conversation = getItem(position);
-
-        if (conversation.isSent()) {
-            convertView = layoutInflater.inflate(R.layout.item_chat_sent, parent, false);
-        } else {
-            convertView = layoutInflater.inflate(R.layout.item_chat_recv, parent, false);
-        }
+        if(convertView==null)
+            if (conversation.isSent()) {
+                convertView = layoutInflater.inflate(R.layout.item_chat_sent, parent, false);
+            } else {
+                convertView = layoutInflater.inflate(R.layout.item_chat_recv, parent, false);
+            }
 
         // setup viewHolder
         viewHolder = new ViewHolder();
@@ -75,3 +73,4 @@ public class ChatAdapter extends BaseAdapter {
         private ImageView ivAvatar;
     }
 }
+

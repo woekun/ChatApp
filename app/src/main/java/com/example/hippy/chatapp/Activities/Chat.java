@@ -151,8 +151,6 @@ public class Chat extends NavigationDrawer {
         public void onIncomingMessage(MessageClient messageClient, Message message) {
             if (message.getSenderId().equals(buddy)) {
                 chatAdapter.addMessage(new Conversation(message.getTextBody(), message.getTimestamp(), buddy));
-            } else {
-                messageService.addView("  U have 1 new message from "+ message.getSenderId()+"  ");
             }
         }
 

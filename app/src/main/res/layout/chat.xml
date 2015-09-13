@@ -28,8 +28,7 @@
             android:layout_height="wrap_content"
             android:background="#e8e8e8"
             android:gravity="center_vertical"
-            android:padding="5dp"
-            tools:context=".MainActivity">
+            android:layout_marginTop="5dp">
 
             <EditText
                 android:id="@+id/edtMessage"
@@ -39,7 +38,7 @@
                 android:layout_weight="1"
                 android:hint="Type message" />
 
-            <Button
+            <ImageView
                 android:id="@+id/btnSend"
                 style="@style/btn"
                 android:layout_width="wrap_content"

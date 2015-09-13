@@ -34,8 +34,12 @@ public class NavigationDrawer extends CustomActivity{
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if(actionBar!=null) {
+            actionBar.setElevation(4);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(true);
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }

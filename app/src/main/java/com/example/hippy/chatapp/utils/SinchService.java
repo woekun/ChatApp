@@ -90,32 +90,6 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.setSupportActiveConnectionInBackground(true);
 
         sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
-        sinchClient.getMessageClient().addMessageClientListener(new MessageClientListener() {
-            @Override
-            public void onIncomingMessage(MessageClient messageClient, Message message) {
-                setChatHead("  U have 1 new message from "+message.getSenderId()+"  ");
-            }
-
-            @Override
-            public void onMessageSent(MessageClient messageClient, Message message, String s) {
-
-            }
-
-            @Override
-            public void onMessageFailed(MessageClient messageClient, Message message, MessageFailureInfo messageFailureInfo) {
-
-            }
-
-            @Override
-            public void onMessageDelivered(MessageClient messageClient, MessageDeliveryInfo messageDeliveryInfo) {
-
-            }
-
-            @Override
-            public void onShouldSendPushData(MessageClient messageClient, Message message, List<PushPair> list) {
-
-            }
-        });
 
         sinchClient.checkManifest();
         sinchClient.start();
@@ -123,6 +97,13 @@ public class SinchService extends Service implements SinchClientListener {
 
     private boolean isSinchClientStarted() {
         return sinchClient != null && sinchClient.isStarted();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        this.windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
     }
 
     @Override
