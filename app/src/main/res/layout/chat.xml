@@ -18,6 +18,7 @@
             android:layout_weight="1"
             android:dividerHeight="5dp"
             android:divider="#ffffff"
+            android:listSelector="#ffffff"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:fastScrollEnabled="true"

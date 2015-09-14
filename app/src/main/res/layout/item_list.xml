@@ -20,6 +20,7 @@
         android:id="@+id/list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:text="TextView"
         android:layout_marginLeft="16dp"
         android:textColor="#4a0eff"
