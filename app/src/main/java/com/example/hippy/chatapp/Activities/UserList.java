@@ -51,7 +51,7 @@ public class UserList extends NavigationDrawer {
 
         listView = (ListView) findViewById(R.id.list);
 
-        ParseUser.getQuery().whereNotEqualTo("username", ParseUser.getCurrentUser().getUsername())
+        ParseUser.getQuery().whereEqualTo("username", ParseUser.getCurrentUser().getUsername())
                 .findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
@@ -60,13 +60,19 @@ public class UserList extends NavigationDrawer {
                             if (list.size() == 0)
                                 Toast.makeText(UserList.this, "No user found!!", Toast.LENGTH_SHORT).show();
 
-                            uList = new ArrayList<>(list);
-                            listView.setAdapter(new UserAdapter(UserList.this, uList));
+
+
+                            final ArrayList<String> listGroup =(ArrayList<String>) list.get(0).get("Groups");
+                            final ArrayList<String> listContacts =(ArrayList<String>) list.get(0).get("Contacts");
+                            listContacts.addAll(listGroup);
+
+
+                            listView.setAdapter(new UserAdapter(UserList.this, listContacts));
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Intent intent = new Intent(getApplicationContext(), Chat.class);
-                                    intent.putExtra(Const.EXTRA_DATA, uList.get(position).getUsername());
+                                    intent.putExtra(Const.EXTRA_DATA, listContacts.get(position));
                                     startActivity(intent);
                                 }
                             });

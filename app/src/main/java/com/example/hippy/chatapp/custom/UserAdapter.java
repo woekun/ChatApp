@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 public class UserAdapter extends BaseAdapter {
 
-    private ArrayList<ParseUser> uList;
+    private ArrayList<String> uList;
     private LayoutInflater layoutInflater;
 
-    public UserAdapter(Activity activity, ArrayList<ParseUser> uList) {
+    public UserAdapter(Activity activity, ArrayList<String> uList) {
         this.layoutInflater = activity.getLayoutInflater();
         this.uList = uList;
     }
@@ -36,7 +36,7 @@ public class UserAdapter extends BaseAdapter {
     }
 
     @Override
-    public ParseUser getItem(int position) {
+    public String getItem(int position) {
         return uList.get(position);
     }
 
@@ -48,15 +48,15 @@ public class UserAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ParseUser parseUser = getItem(position);
+        String parseUser = getItem(position);
 
         convertView = layoutInflater.inflate(R.layout.item_list, parent, false);
 
         ViewHolder viewHolder = new ViewHolder();
-        TextView contactName = (TextView) convertView.findViewById(R.id.list_item);
-        ImageView avatar = (ImageView) convertView.findViewById(R.id.avatar);
+        viewHolder.contactName = (TextView) convertView.findViewById(R.id.list_item);
+        viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
 
-        contactName.setText(parseUser.getUsername());
+        viewHolder.contactName.setText(parseUser);
 
         return convertView;
     }
@@ -64,6 +64,7 @@ public class UserAdapter extends BaseAdapter {
     static class ViewHolder {
         private TextView contactName;
         private ImageView avatar;
+
 
     }
 }
