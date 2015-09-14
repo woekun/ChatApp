@@ -1,5 +1,6 @@
 package com.example.hippy.chatapp.Activities;
 
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -19,10 +20,12 @@ import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.ChatAdapter;
 import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
+import com.example.hippy.chatapp.utils.FileChooser;
 import com.example.hippy.chatapp.utils.Notifications;
 import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.sinch.android.rtc.PushPair;
@@ -32,6 +35,8 @@ import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,6 +135,60 @@ public class Chat extends NavigationDrawer {
             }
         });
     }
+
+    Dialog dialog;
+    String path;
+
+    public void OpenDrawing(View view){
+        Intent intent = new Intent(Chat.this,Drawing.class);
+
+        startActivity(intent);
+
+
+    }
+
+
+    public void onbtnSendFileClicked(View view){
+        final FileChooser fileChooser = new FileChooser(this);
+        dialog = fileChooser.getDialog();
+
+        fileChooser.setActionAfterChoose(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Upload file code here.
+                path = fileChooser.getPath();
+                EditText editText = (EditText) dialog.findViewById(R.id.editText);
+                File file = new File(path);
+                Toast.makeText(Chat.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                byte[] data = new byte[(int) file.length()];
+                FileInputStream fis;
+
+                try {
+                    fis = new FileInputStream(file);
+                    fis.read(data);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                ParseFile parseFile = new ParseFile(file.getName(), data);
+                parseFile.saveInBackground();
+
+                ParseObject parseObject = new ParseObject("fileupload");
+                parseObject.put("FileName", "abc");
+                parseObject.put("File", parseFile);
+                parseObject.saveInBackground();
+
+                dialog.dismiss();
+            }
+
+
+        });
+    }
+
+
+
 
 
     private class MyServiceConnection implements ServiceConnection {

@@ -35,8 +35,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxHeight="100dp"
-                android:layout_weight="1"
+                android:layout_weight="0.82"
                 android:hint="Type message" />
+
+            <Button
+                android:layout_width="54dp"
+                android:layout_height="wrap_content"
+                android:text="A"
+                android:id="@+id/btnFileSend"
+                android:onClick="OpenDrawing" />
 
             <ImageView
                 android:id="@+id/btnSend"
