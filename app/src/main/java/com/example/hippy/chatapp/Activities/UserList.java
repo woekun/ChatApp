@@ -79,6 +79,7 @@ public class UserList extends NavigationDrawer {
                             collections.put(dataHeader.get(1), listContacts);
                             expandableListView.setAdapter(new UserAdapter(UserList.this, dataHeader, collections));
 
+
                             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                                 @Override
                                 public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
