@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,15 +24,20 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserList extends NavigationDrawer {
 
     public static ParseUser user;
-    private ArrayList<ParseUser> uList;
+    private ArrayList<String> conList;
+    private ArrayList<String> dataHeader; //data header
+    private HashMap<String, List<String>> collections; // data child
+
     private BroadcastReceiver receiver = null;
     private ProgressDialog progressDialog;
-    private ListView listView;
+    private ExpandableListView expandableListView;
 
 
     @Override
@@ -39,6 +45,12 @@ public class UserList extends NavigationDrawer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_list);
         showSpinner();
+
+        collections = new HashMap<>();
+
+        dataHeader = new ArrayList<>();
+        dataHeader.add("Groups");
+        dataHeader.add("Contacts");
     }
 
     @Override
@@ -49,7 +61,7 @@ public class UserList extends NavigationDrawer {
 
     private void loadContacts() {
 
-        listView = (ListView) findViewById(R.id.list);
+        expandableListView = (ExpandableListView) findViewById(R.id.list);
 
         ParseUser.getQuery().whereEqualTo("username", ParseUser.getCurrentUser().getUsername())
                 .findInBackground(new FindCallback<ParseUser>() {
@@ -60,23 +72,22 @@ public class UserList extends NavigationDrawer {
                             if (list.size() == 0)
                                 Toast.makeText(UserList.this, "No user found!!", Toast.LENGTH_SHORT).show();
 
-
-
                             final ArrayList<String> listGroup =(ArrayList<String>) list.get(0).get("Groups");
                             final ArrayList<String> listContacts =(ArrayList<String>) list.get(0).get("Contacts");
-                            listContacts.addAll(listGroup);
 
+                            collections.put(dataHeader.get(0), listGroup);
+                            collections.put(dataHeader.get(1), listContacts);
+                            expandableListView.setAdapter(new UserAdapter(UserList.this, dataHeader, collections));
 
-                            listView.setAdapter(new UserAdapter(UserList.this, listContacts));
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                                     Intent intent = new Intent(getApplicationContext(), Chat.class);
-                                    intent.putExtra(Const.EXTRA_DATA, listContacts.get(position));
+                                    intent.putExtra(Const.EXTRA_DATA, collections.get(dataHeader.get(groupPosition)).get(childPosition));
                                     startActivity(intent);
+                                    return false;
                                 }
                             });
-
                         } else Toast.makeText(UserList.this, e.toString(), Toast.LENGTH_LONG).show();
                     }
                 });

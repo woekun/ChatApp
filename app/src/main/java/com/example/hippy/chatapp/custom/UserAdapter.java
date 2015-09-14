@@ -1,14 +1,13 @@
 package com.example.hippy.chatapp.custom;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,52 +18,92 @@ import com.example.hippy.chatapp.utils.Const;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class UserAdapter extends BaseAdapter {
+public class UserAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<String> uList;
+    private ArrayList<String> dataHeader;
     private LayoutInflater layoutInflater;
+    private HashMap<String, List<String>> collections;
 
-    public UserAdapter(Activity activity, ArrayList<String> uList) {
+    public UserAdapter(Activity activity, ArrayList<String> dataHeader, HashMap<String, List<String>> collections) {
         this.layoutInflater = activity.getLayoutInflater();
-        this.uList = uList;
+        this.collections = collections;
+        this.dataHeader = dataHeader;
     }
 
     @Override
-    public int getCount() {
-        return uList.size();
+    public int getGroupCount() {
+        return dataHeader.size();
     }
 
     @Override
-    public String getItem(int position) {
-        return uList.get(position);
+    public int getChildrenCount(int groupPosition) {
+        return collections.get(dataHeader.get(groupPosition)).size();
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public String getGroup(int groupPosition) {
+        return dataHeader.get(groupPosition);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public String getChild(int groupPosition, int childPosition) {
+        return collections.get(dataHeader.get(groupPosition)).get(childPosition);
+    }
 
-        String parseUser = getItem(position);
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
 
-        convertView = layoutInflater.inflate(R.layout.item_list, parent, false);
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        String groupHeader = getGroup(groupPosition);
+        if (convertView == null)
+            convertView = layoutInflater.inflate(R.layout.item_group, parent,false);
+        TextView header = (TextView)convertView.findViewById(R.id.group_header);
+        header.setTypeface(null, Typeface.BOLD);
+        header.setText(groupHeader);
+        return convertView;
+    }
+
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+        String contact = getChild(groupPosition,childPosition);
+        if (convertView == null)
+            convertView = layoutInflater.inflate(R.layout.item_list, parent, false);
 
         ViewHolder viewHolder = new ViewHolder();
         viewHolder.contactName = (TextView) convertView.findViewById(R.id.list_item);
         viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
 
-        viewHolder.contactName.setText(parseUser);
+        viewHolder.contactName.setText(contact);
 
         return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
     }
 
     static class ViewHolder {
         private TextView contactName;
         private ImageView avatar;
-
 
     }
 }

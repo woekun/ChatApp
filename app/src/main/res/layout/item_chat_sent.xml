@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/cell_sent"
-        android:gravity="center"
+        android:gravity="left|center"
         android:paddingTop="4dp"
         android:paddingBottom="6dp"
         android:paddingLeft="12dp"

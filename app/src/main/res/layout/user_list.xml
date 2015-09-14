@@ -2,15 +2,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
+
     android:background="#ffffff"
     android:orientation="vertical"
     tools:context="com.example.hippy.chatapp.Activities.UserList">
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:dividerHeight="5dp"
         android:divider="#ffffff"
-        tools:listitem="@layout/item_list" />
+        android:childDivider="#ffffff" />
+
 </LinearLayout>

@@ -38,6 +38,7 @@ public class ChatAdapter extends BaseAdapter {
         return convList.get(position);
     }
 
+
     @Override
     public long getItemId(int position) {
         return position;
