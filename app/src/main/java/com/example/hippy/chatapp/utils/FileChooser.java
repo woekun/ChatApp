@@ -15,9 +15,6 @@ import com.example.hippy.chatapp.custom.FileAdapter;
 
 import java.io.File;
 
-/**
- * Created by kum on 17/08/2015.
- */
 public class FileChooser {
 
     ListView listView;
@@ -37,7 +34,7 @@ public class FileChooser {
 
     public String getPath() {
         EditText editText = (EditText) dialog.findViewById(R.id.editText);
-        return path+editText.getText().toString();
+        return path+"/"+editText.getText().toString().trim();
     }
 
     public void setPath(String path) {
@@ -64,7 +61,6 @@ public class FileChooser {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 path = listDir[position].getPath();
                 loadDir(path);
-
             }
         });
 
@@ -76,8 +72,8 @@ public class FileChooser {
             }
         });
 
-
         Button btnOK = (Button) dialog.findViewById(R.id.btnOK);
+
         btnOK.setOnClickListener(listener);
 
         dialog.show();
@@ -89,16 +85,14 @@ public class FileChooser {
             if (new File(dir).list()==null) {
                 listView.setAdapter(null);
                 textView.setText(dir);
-            }
-            else {
+            } else {
 
                 listDir = new File(dir).listFiles();
                 listDirAdapter = new FileAdapter(act, listDir);
                 listView.setAdapter(listDirAdapter);
                 textView.setText(dir);
             }
-        }
-        else{
+        } else{
 
             EditText editText = (EditText) dialog.findViewById(R.id.editText);
             editText.setText(new File(dir).getName());
@@ -108,8 +102,10 @@ public class FileChooser {
 
     public void btnUpClicked(View view){
         try{
-            path = new File(path).getParentFile().getAbsolutePath();}
-        catch (NullPointerException e){return;}
+            path = new File(path).getParentFile().getAbsolutePath();
+        } catch (NullPointerException e){
+            return;
+        }
 
         loadDir(path);
     }

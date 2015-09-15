@@ -26,6 +26,7 @@ import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
+import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.utils.FileChooser;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -159,13 +160,13 @@ public class Drawing extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which){
+        newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
         newDialog.show();
-
+        drawingView.setErase(false);
 
     }
 
@@ -223,12 +224,12 @@ public class Drawing extends AppCompatActivity {
                 fileChooser.setActionAfterChoose(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        path = fileChooser.getPath();
+                        path=fileChooser.getPath();
                         File file = new File(path);
-
+                        Toast.makeText(Drawing.this, path, Toast.LENGTH_SHORT).show();
                         FileOutputStream fos;
                         try {
-                            if ( file.createNewFile()) {
+                            if (file.createNewFile()) {
                                 fos = new FileOutputStream(file);
                                 bm.compress(Bitmap.CompressFormat.PNG, 100, fos);
                                 fos.close();
@@ -243,6 +244,7 @@ public class Drawing extends AppCompatActivity {
                     }
                 });
             }
+
         });
 
         saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -252,7 +254,7 @@ public class Drawing extends AppCompatActivity {
             }
         });
         saveDialog.show();
-
+        drawingView.setErase(false);
     }
 
     public void btnLoadClicked(View view){
@@ -296,7 +298,7 @@ public class Drawing extends AppCompatActivity {
                 fileChooser.getDialog().dismiss();
             }
         });
-
+        drawingView.setErase(false);
     }
 
     public void btnRefreshClicked(View view){
@@ -322,6 +324,7 @@ public class Drawing extends AppCompatActivity {
                 }
             }
         });
+        drawingView.setErase(false);
     }
 
     private static int getPowerOfTwoForSampleRatio(double ratio){

@@ -52,6 +52,11 @@ public class FileAdapter extends BaseAdapter {
             final Holder holder = new Holder();
             convertView =layoutInflater.inflate(R.layout.item,null);
 
+            if(arr[position].isFile()) {
+                convertView.findViewById(R.id.imageView1).setBackgroundResource(R.mipmap.file);
+            }
+        else convertView.findViewById(R.id.imageView1).setBackgroundResource(R.mipmap.folder);
+
             holder.tv = (TextView) convertView.findViewById(R.id.Dir);
             holder.tv.setText(arr[position].getName());
 
