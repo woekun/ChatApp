@@ -181,6 +181,8 @@ public class Chat extends NavigationDrawer {
                 parseObject.saveInBackground();
 
                 dialog.dismiss();
+
+
             }
 
 
