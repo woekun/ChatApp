@@ -206,10 +206,8 @@ public class DrawingView extends View {
 
 
         canvas.drawBitmap(bm, new Rect(0, 0, bm.getWidth(), bm.getHeight()),
-                new Rect(0, 0,(int) (bm.getWidth()*ratio),(int) (bm.getHeight()*ratio)), drawPaint);
-
-
-
+                //new Rect(0, 0,(int) (bm.getWidth()*ratio),(int) (bm.getHeight()*ratio))
+                new Rect(0,0,canvas.getWidth(),canvas.getHeight()) , drawPaint);
 
     }
 
