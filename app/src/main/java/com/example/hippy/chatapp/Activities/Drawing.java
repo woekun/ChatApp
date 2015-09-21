@@ -206,7 +206,6 @@ public class Drawing extends AppCompatActivity {
             currentColor = (ImageButton) view;
         }
         drawingView.setErase(false);
-
     }
 
     private AlertDialog.Builder saveDialog;
