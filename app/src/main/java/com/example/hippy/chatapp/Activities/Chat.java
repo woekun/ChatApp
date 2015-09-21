@@ -119,6 +119,7 @@ public class Chat extends NavigationDrawer {
         parseQuery.whereContainedIn("sender", arrayList);
         parseQuery.whereContainedIn("receiver", arrayList);
         parseQuery.orderByDescending("createdAt");
+
         parseQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
