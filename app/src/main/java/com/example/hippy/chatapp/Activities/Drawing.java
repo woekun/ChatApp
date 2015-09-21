@@ -148,6 +148,8 @@ public class Drawing extends AppCompatActivity {
             }
         });
 
+
+        btnRefreshClicked(this.getCurrentFocus());
     }
 
     public void newClicked(View view){
@@ -274,14 +276,9 @@ public class Drawing extends AppCompatActivity {
                     BitmapFactory.decodeStream(is, null, op);
                     is.close();
 
-                    //if (op.outWidth == -1 || op.outHeight == -1) return;
-                    int origin = (op.outHeight > op.outWidth) ? op.outHeight : op.outWidth;
 
-                    double ratio = (origin > 1200) ? (origin / 1200) : 1.0;
 
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                    bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
-
 
                     is = Drawing.this.getContentResolver().openInputStream(uri);
                     Bitmap bitmap = BitmapFactory.decodeStream(is, null, bitmapOptions);
@@ -303,10 +300,11 @@ public class Drawing extends AppCompatActivity {
 
     public void btnRefreshClicked(View view){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
-
-        query.getInBackground("q00ARDXTDs", new GetCallback<ParseObject>() {
+        query.whereEqualTo("Receiver", "kum");
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
+
                 if (e ==null){
                     try {
                         ParseFile parseFile = parseObject.getParseFile("File");
@@ -323,7 +321,11 @@ public class Drawing extends AppCompatActivity {
                     Toast.makeText(Drawing.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
+
+
+
         drawingView.setErase(false);
     }
 
