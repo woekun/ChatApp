@@ -99,7 +99,7 @@
             android:layout_height="0dp"
             android:id="@+id/colorspane"
             android:layout_weight="1"
-            android:weightSum="6">
+            android:weightSum="10">
 
             <ImageButton
                 android:layout_width="@dimen/large_brush"
@@ -107,8 +107,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#FF660000"
-                android:tag="#FF660000"
+                android:background="#f1c40f"
+                android:tag="#f1c40f"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -118,8 +118,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#FFFF0000"
-                android:tag="#FFFF0000"
+                android:background="#e74c3c"
+                android:tag="#e74c3c"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -130,8 +130,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#FFFF6600"
-                android:tag="#FFFF6600"
+                android:background="#d35400"
+                android:tag="#d35400"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -152,8 +152,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#000000"
-                android:tag="#000000"
+                android:background="#2ecc71"
+                android:tag="#2ecc71"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -163,8 +163,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#30ff47"
-                android:tag="#30ff47"
+                android:background="#1dd2af"
+                android:tag="#1dd2af"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -174,8 +174,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#2e34ff"
-                android:tag="#2e34ff"
+                android:background="#3498db"
+                android:tag="#3498db"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -185,8 +185,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#ff48dc"
-                android:tag="#ff48dc"
+                android:background="#9b59b6"
+                android:tag="#9b59b6"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -196,8 +196,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#39ebff"
-                android:tag="#39ebff"
+                android:background="#34495e"
+                android:tag="#34495e"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 
@@ -207,8 +207,8 @@
                 android:layout_margin="2dp"
                 android:onClick="paintClicked"
                 android:contentDescription="@string/paint"
-                android:background="#155c1a"
-                android:tag="#155c1a"
+                android:background="#95a5a6"
+                android:tag="#95a5a6"
                 android:src="@drawable/paint"
                 android:layout_weight="1" />
 

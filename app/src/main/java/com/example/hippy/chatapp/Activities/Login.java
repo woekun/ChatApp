@@ -3,6 +3,8 @@ package com.example.hippy.chatapp.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
@@ -90,7 +92,7 @@ public class Login extends CustomActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Const.REQUEST_CODE && requestCode == RESULT_OK)
+        if (requestCode == Const.REQUEST_CODE )
             finish();
     }
 }

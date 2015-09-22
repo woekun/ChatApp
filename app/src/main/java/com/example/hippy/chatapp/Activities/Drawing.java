@@ -205,7 +205,7 @@ public class Drawing extends AppCompatActivity {
             currentColor.setImageDrawable(getResources().getDrawable(R.drawable.paint));
             currentColor = (ImageButton) view;
         }
-        drawingView.setErase(false);
+
 
     }
 
@@ -301,23 +301,22 @@ public class Drawing extends AppCompatActivity {
     public void btnRefreshClicked(View view){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
         query.whereEqualTo("Receiver", "kum");
+
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
 
-                if (e ==null){
+                if (e == null) {
                     try {
                         ParseFile parseFile = parseObject.getParseFile("File");
                         byte[] data = parseFile.getData();
                         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                         drawingView.drawImage(bitmap);
 
-
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(Drawing.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }

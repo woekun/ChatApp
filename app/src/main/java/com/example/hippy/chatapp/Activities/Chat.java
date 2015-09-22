@@ -183,7 +183,6 @@ public class Chat extends NavigationDrawer {
 
                 dialog.dismiss();
 
-
             }
 
 

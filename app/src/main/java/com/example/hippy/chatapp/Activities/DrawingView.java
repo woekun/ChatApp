@@ -15,6 +15,7 @@ import android.graphics.RectF;
 import android.graphics.Xfermode;
 import android.media.Image;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -35,9 +36,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-/**
- * Created by kum on 01/08/2015.
- */
 public class DrawingView extends View {
 
     private Path drawPath;
@@ -65,15 +63,15 @@ public class DrawingView extends View {
         drawPaint.setXfermode(new PorterDuffXfermode(mode));
     }
 
-
+    int temp = Color.BLACK;
     public void setErase(boolean value){
         erase = value;
         if(erase)
-        {tmp = new Paint(drawPaint);
+        {temp = drawPaint.getColor();
             drawPaint.setColor(Color.WHITE);
         }
         else {
-            if (tmp!=null) drawPaint = new Paint(tmp);
+            drawPaint.setColor(temp);
 
         }
 
@@ -86,8 +84,7 @@ public class DrawingView extends View {
     }
 
     public void setBrushSize(float newSize){
-        float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, getResources().getDisplayMetrics());
-        brushSize = pixelAmount;
+        brushSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, getResources().getDisplayMetrics());
         drawPaint.setStrokeWidth(brushSize);
 
     }
@@ -108,7 +105,6 @@ public class DrawingView extends View {
     private void setupDrawing() {
         drawPath =  new Path();
         drawPaint = new Paint();
-
 
 
         brushSize = getResources().getInteger(R.integer.medium_size);
@@ -147,7 +143,7 @@ public class DrawingView extends View {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
 
@@ -174,16 +170,20 @@ public class DrawingView extends View {
     private void sendFileToServer() {
         this.setDrawingCacheEnabled(true);
         Bitmap bm = this.getDrawingCache();
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
         byte[] data = stream.toByteArray();
         final ParseFile parseFile = new ParseFile("ass", data);
+
         parseFile.saveInBackground();
 
 
-
         ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
+        query.whereEqualTo("Sender","1");
         query.whereEqualTo("Receiver","kum");
+
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
@@ -191,6 +191,7 @@ public class DrawingView extends View {
                 parseObject.put("FileName", "asd");
                 parseObject.put("File", parseFile);
                 parseObject.put("Receiver","kum");
+                parseObject.put("Sender","1");
                 parseObject.saveInBackground();
             }
         });
@@ -201,8 +202,8 @@ public class DrawingView extends View {
         //Ve
 
         //ratio = min {origin height/bm height, origin width/bm width}
-        double ratio = (double) canvas.getHeight()/bm.getHeight();
-        if (ratio> (double)canvas.getWidth()/bm.getWidth()) ratio =(double)canvas.getWidth()/bm.getWidth();
+//        double ratio = (double) canvas.getHeight()/bm.getHeight();
+//        if (ratio> (double)canvas.getWidth()/bm.getWidth()) ratio =(double)canvas.getWidth()/bm.getWidth();
 
 
         canvas.drawBitmap(bm, new Rect(0, 0, bm.getWidth(), bm.getHeight()),

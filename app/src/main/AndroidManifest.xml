@@ -64,7 +64,6 @@
             android:label="Dashboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
     </application>
 
 </manifest>
