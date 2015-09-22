@@ -64,7 +64,10 @@
             android:label="Dashboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-
+        <activity
+            android:name=".Activities.search_contact"
+            android:label="@string/title_activity_search_contact" >
+        </activity>
     </application>
 
 </manifest>

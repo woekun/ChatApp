@@ -63,34 +63,34 @@ public class UserList extends NavigationDrawer {
 
         expandableListView = (ExpandableListView) findViewById(R.id.list);
 
-        ParseUser.getQuery().whereEqualTo("username", ParseUser.getCurrentUser().getUsername())
-                .findInBackground(new FindCallback<ParseUser>() {
-                    @Override
-                    public void done(List<ParseUser> list, ParseException e) {
+        ParseUser.getQuery().whereEqualTo("username", ParseUser.getCurrentUser().getUsername()).findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> list, ParseException e) {
 
-                        if (list != null) {
-                            if (list.size() == 0)
-                                Toast.makeText(UserList.this, "No user found!!", Toast.LENGTH_SHORT).show();
+                if (list != null) {
+                    if (list.size() == 0)
+                        Toast.makeText(UserList.this, "No user found!!", Toast.LENGTH_SHORT).show();
+                    else {
+                        final ArrayList<String> listGroup = (ArrayList<String>) list.get(0).get("Groups");
+                        final ArrayList<String> listContacts = (ArrayList<String>) list.get(0).get("Contacts");
 
-                            final ArrayList<String> listGroup =(ArrayList<String>) list.get(0).get("Groups");
-                            final ArrayList<String> listContacts =(ArrayList<String>) list.get(0).get("Contacts");
+                        collections.put(dataHeader.get(0), listGroup);
+                        collections.put(dataHeader.get(1), listContacts);
+                        expandableListView.setAdapter(new UserAdapter(UserList.this, dataHeader, collections));
 
-                            collections.put(dataHeader.get(0), listGroup);
-                            collections.put(dataHeader.get(1), listContacts);
-                            expandableListView.setAdapter(new UserAdapter(UserList.this, dataHeader, collections));
-
-                            expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-                                @Override
-                                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                                    Intent intent = new Intent(getApplicationContext(), Chat.class);
-                                    intent.putExtra(Const.EXTRA_DATA, collections.get(dataHeader.get(groupPosition)).get(childPosition));
-                                    startActivity(intent);
-                                    return false;
-                                }
-                            });
-                        } else Toast.makeText(UserList.this, e.toString(), Toast.LENGTH_LONG).show();
+                        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                            @Override
+                            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                                Intent intent = new Intent(getApplicationContext(), Chat.class);
+                                intent.putExtra(Const.EXTRA_DATA, collections.get(dataHeader.get(groupPosition)).get(childPosition));
+                                startActivity(intent);
+                                return false;
+                            }
+                        });
                     }
-                });
+                } else Toast.makeText(UserList.this, e.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     //show a loading spinner while the sinch client starts
