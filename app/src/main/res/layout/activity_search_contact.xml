@@ -10,14 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <EditText
+        <AutoCompleteTextView
+            android:id="@+id/actSearch"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/edtSearch" />
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/result" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </RelativeLayout>

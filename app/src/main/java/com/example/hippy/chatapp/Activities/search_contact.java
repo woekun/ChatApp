@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,9 +22,7 @@ import java.util.List;
 
 public class search_contact extends NavigationDrawer {
 
-    EditText edtSearch;
-
-    Spinner edtResult;
+    AutoCompleteTextView actSearch;
     ArrayList<String> contactsList;
     ArrayAdapter<String> arrayAdapter;
 
@@ -34,48 +33,28 @@ public class search_contact extends NavigationDrawer {
 
         contactsList = new ArrayList<>();
         arrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item);
+        actSearch = (AutoCompleteTextView) findViewById(R.id.actSearch);
+        actSearch.setThreshold(1);
+    }
 
-        edtSearch = (EditText) findViewById(R.id.edtSearch);
-        edtResult = (Spinner) findViewById(R.id.result);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ParseUser.getQuery()
+                .whereNotEqualTo("username", UserList.user.getUsername())
+                .findInBackground(new FindCallback<ParseUser>() {
+                    @Override
+                    public void done(List<ParseUser> list, ParseException e) {
+                        if (list != null && list.size() > 0) {
+                            for (ParseUser pu : list)
+                                contactsList.add(pu.getUsername());
 
-        edtSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            arrayAdapter.addAll(contactsList);
+                            actSearch.setAdapter(arrayAdapter);
 
-            }
+                        }
+                    }
+                });
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(charSequence.length()>0)
-                    ParseUser.getQuery()
-                            .whereNotEqualTo("username", UserList.user.getUsername())
-                            .whereContains("username",charSequence.toString())
-                            .findInBackground(new FindCallback<ParseUser>() {
-                                @Override
-                                public void done(List<ParseUser> list, ParseException e) {
-                                    if(list!=null && list.size()>0)
-                                        for (ParseUser pu : list) {
-                                            contactsList.add(pu.getUsername());
-                                        }
-                                    else {
-                                        arrayAdapter.clear();
-                                        arrayAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            });
-                else{
-                    arrayAdapter.clear();
-                    arrayAdapter.notifyDataSetChanged();
-                }
-                arrayAdapter.addAll(contactsList);
-                edtResult.setAdapter(arrayAdapter);
-                arrayAdapter.notifyDataSetChanged();
-                edtResult.callOnClick();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
     }
 }
