@@ -38,7 +38,7 @@ public class UserList extends NavigationDrawer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_list);
-        showSpinner();
+        showDialog();
 
         collections = new HashMap<>();
 
@@ -57,7 +57,7 @@ public class UserList extends NavigationDrawer {
 
         expandableListView = (ExpandableListView) findViewById(R.id.list);
 
-        ParseUser.getQuery().whereEqualTo("username", UserList.user.getUsername())
+        ParseUser.getQuery().whereEqualTo("username", user.getUsername())
                 .findInBackground(new FindCallback<ParseUser>() {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
@@ -90,8 +90,8 @@ public class UserList extends NavigationDrawer {
                 });
     }
 
-    //show a loading spinner while the sinch client starts
-    private void showSpinner() {
+    //show a loading dialog while the sinch client starts
+    private void showDialog() {
         progressDialog = ProgressDialog.show(this, "Loading", "Please wait...");
         receiver = new BroadcastReceiver() {
             @Override
