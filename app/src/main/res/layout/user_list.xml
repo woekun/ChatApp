@@ -2,8 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="#ffffff"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp"
     android:orientation="vertical"
     tools:context="com.example.hippy.chatapp.Activities.UserList">
 
@@ -13,7 +14,6 @@
         android:layout_height="match_parent"
         android:dividerHeight="5dp"
         android:divider="#ffffff"
-
         android:childDivider="#ffffff" />
 
 </LinearLayout>

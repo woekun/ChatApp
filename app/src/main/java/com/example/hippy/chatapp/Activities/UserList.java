@@ -54,7 +54,6 @@ public class UserList extends NavigationDrawer {
     }
 
     private void loadContacts() {
-
         expandableListView = (ExpandableListView) findViewById(R.id.list);
 
         ParseUser.getQuery().whereEqualTo("username", user.getUsername())
@@ -62,8 +61,8 @@ public class UserList extends NavigationDrawer {
                     @Override
                     public void done(List<ParseUser> list, ParseException e) {
                         if (e == null) {
-                            final ArrayList<String> listGroup = new ArrayList<>((ArrayList<String>) list.get(0).get("Groups"));
-                            final ArrayList<String> listContacts = new ArrayList<>((ArrayList<String>) list.get(0).get("Contacts"));
+                            List<String> listGroup = list.get(0).getList("Groups");
+                            List<String> listContacts = list.get(0).getList("Contacts");
 
                             if (listContacts.size() > 0 || listContacts.size() > 0) {
                                 if (listGroup.size() > 0)
