@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.utils.Const;
 import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -49,6 +48,12 @@ public class Login extends CustomActivity {
 
 //        Helper.loadSavedPreferences(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        findViewById(R.id.imageView1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Login.this, Register.class));
+            }
+        });
 
     }
 
@@ -83,14 +88,14 @@ public class Login extends CustomActivity {
                 }
             });
         } else {
-            startActivityForResult(new Intent(this, Register.class), Const.REQUEST_CODE);
+            startActivityForResult(new Intent(this, Register.class), RESULT_OK);
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Const.REQUEST_CODE && requestCode == RESULT_OK)
+        if (requestCode == RESULT_OK)
             finish();
     }
 }
