@@ -141,7 +141,7 @@ public class Chat extends NavigationDrawer {
     String path;
 
     public void OpenDrawing(View view){
-        Intent intent = new Intent(Chat.this,Drawing.class);
+        Intent intent = new Intent(Chat.this,search_contact.class);
 
         startActivity(intent);
 
@@ -189,9 +189,6 @@ public class Chat extends NavigationDrawer {
 
         });
     }
-
-
-
 
 
     private class MyServiceConnection implements ServiceConnection {
