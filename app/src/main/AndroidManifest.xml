@@ -64,6 +64,14 @@
             android:label="Dashboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".Activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".Activities.NavigationDrawer" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.hippy.chatapp.Activities.NavigationDrawer" />
+        </activity>
     </application>
 
 </manifest>

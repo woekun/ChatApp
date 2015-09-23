@@ -25,7 +25,6 @@ dependencies {
     compile files('libs/sinch-android-rtc-3.6.1.jar')
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile 'com.android.support:appcompat-v7:22.+'
-    compile 'com.android.support:recyclerview-v7:22.+'
     compile 'com.android.support:design:22.+'
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'com.parse.bolts:bolts-android:1.+'

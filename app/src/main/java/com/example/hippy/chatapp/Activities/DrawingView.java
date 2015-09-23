@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class DrawingView extends View {
@@ -47,12 +48,16 @@ public class DrawingView extends View {
     private float brushSize,lastBrushSize;
     private boolean erase = false;
 
-
+    private String sender;
+    private String receiver;
+    ParseFile parseFile;
 
     public DrawingView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         setupDrawing();
     }
+
+
 
 
     public void setMode(){
@@ -167,7 +172,7 @@ public class DrawingView extends View {
 
     }
 
-    private void sendFileToServer() {
+    private void saveImageBackground(){
         this.setDrawingCacheEnabled(true);
         Bitmap bm = this.getDrawingCache();
 
@@ -175,14 +180,21 @@ public class DrawingView extends View {
         bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
         byte[] data = stream.toByteArray();
-        final ParseFile parseFile = new ParseFile("ass", data);
+        parseFile = new ParseFile("ass", data);
 
         parseFile.saveInBackground();
+        this.setDrawingCacheEnabled(false);
 
+    }
 
+    public void uploadExistFile(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
-        query.whereEqualTo("Sender","1");
-        query.whereEqualTo("Receiver","kum");
+        ArrayList<String> arrayList = new ArrayList<>();
+        Toast.makeText(this.getContext(), sender+" "+receiver, Toast.LENGTH_SHORT).show();
+        arrayList.add(sender);
+        arrayList.add(receiver);
+        query.whereContainedIn("Sender", arrayList);
+        query.whereContainedIn("Receiver", arrayList);
 
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
@@ -190,13 +202,45 @@ public class DrawingView extends View {
 
                 parseObject.put("FileName", "asd");
                 parseObject.put("File", parseFile);
-                parseObject.put("Receiver","kum");
-                parseObject.put("Sender","1");
                 parseObject.saveInBackground();
             }
         });
-        this.destroyDrawingCache();
     }
+
+    public void uploadNewFile(){
+
+
+        ParseObject parseObject = new ParseObject("fileupload");
+        parseObject.put("FileName", "abc");
+        byte[] data = "no thing".getBytes();
+        parseObject.put("File", new ParseFile("new",data));
+        parseObject.put("Sender",sender);
+        parseObject.put("Receiver",receiver);
+        parseObject.saveInBackground();
+    }
+
+    public boolean checkFileInServer(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
+        ArrayList<String> arrayList = new ArrayList<>();
+        Toast.makeText(this.getContext(), sender+" "+receiver, Toast.LENGTH_SHORT).show();
+        arrayList.add(sender);
+        arrayList.add(receiver);
+        query.whereContainedIn("Sender", arrayList);
+        query.whereContainedIn("Receiver", arrayList);
+
+        try {
+            return (query.getFirst()!=null);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void sendFileToServer() {
+        saveImageBackground();
+        uploadExistFile();
+    }
+
 
     public void drawImage(Bitmap bm){
         //Ve
@@ -216,4 +260,11 @@ public class DrawingView extends View {
         return bitmap;
     }
 
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 }

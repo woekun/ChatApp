@@ -2,25 +2,22 @@ package com.example.hippy.chatapp.custom;
 
 import android.app.Activity;
 import android.graphics.Typeface;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.hippy.chatapp.Activities.Chat;
 import com.example.hippy.chatapp.R;
-import com.example.hippy.chatapp.utils.Const;
-import com.parse.ParseUser;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class UserAdapter extends BaseExpandableListAdapter {
 

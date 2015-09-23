@@ -39,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 
 
@@ -47,14 +48,20 @@ public class Drawing extends AppCompatActivity {
     private DrawingView drawingView;
     private ImageButton currentColor,drawButton, eraseButton;
     private float smallBrush,mediumBrush,largeBrush;
-
+    private String currentUser,buddy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle= getIntent().getExtras();
+        currentUser = bundle.getString("Sender");
+        buddy = bundle.getString("Receiver");
+
         setContentView(R.layout.activity_drawing);
 
         drawingView = (DrawingView) findViewById(R.id.drawing);
+        drawingView.setSender(currentUser);
+        drawingView.setReceiver(buddy);
 
         LinearLayout lnrLay = (LinearLayout) findViewById(R.id.colorspane);
         currentColor = (ImageButton) lnrLay.getChildAt(0);
@@ -148,8 +155,11 @@ public class Drawing extends AppCompatActivity {
             }
         });
 
-
-        btnRefreshClicked(this.getCurrentFocus());
+        Toast.makeText(Drawing.this, drawingView.checkFileInServer()+"", Toast.LENGTH_SHORT).show();
+        if(drawingView.checkFileInServer()){
+            btnRefreshClicked(this.getCurrentFocus());
+        }
+        else drawingView.uploadNewFile();
     }
 
     public void newClicked(View view){
@@ -277,7 +287,6 @@ public class Drawing extends AppCompatActivity {
                     is.close();
 
 
-
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 
                     is = Drawing.this.getContentResolver().openInputStream(uri);
@@ -300,13 +309,20 @@ public class Drawing extends AppCompatActivity {
 
     public void btnRefreshClicked(View view){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
-        query.whereEqualTo("Receiver", "kum");
 
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        Toast.makeText(this, currentUser+" "+buddy, Toast.LENGTH_SHORT).show();
+        arrayList.add(currentUser);
+        arrayList.add(buddy);
+        query.whereContainedIn("Sender", arrayList);
+        query.whereContainedIn("Receiver", arrayList);
+        Toast.makeText(Drawing.this, currentUser+" "+buddy, Toast.LENGTH_SHORT).show();
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
 
-                if (e == null) {
+                if (e == null&&parseObject!=null) {
                     try {
                         ParseFile parseFile = parseObject.getParseFile("File");
                         byte[] data = parseFile.getData();
@@ -316,7 +332,7 @@ public class Drawing extends AppCompatActivity {
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }
-                } else {
+                } else{
                     Toast.makeText(Drawing.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
