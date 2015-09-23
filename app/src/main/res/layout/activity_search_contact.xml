@@ -10,10 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <AutoCompleteTextView
-            android:id="@+id/actSearch"
+        <MultiAutoCompleteTextView
+            android:id="@+id/mactSearch"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"/>
     </LinearLayout>
 
 </RelativeLayout>
