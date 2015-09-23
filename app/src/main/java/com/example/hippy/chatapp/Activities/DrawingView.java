@@ -52,12 +52,12 @@ public class DrawingView extends View {
     private String receiver;
     ParseFile parseFile;
 
+    private String group;
+
     public DrawingView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         setupDrawing();
     }
-
-
 
 
     public void setMode(){
@@ -189,17 +189,20 @@ public class DrawingView extends View {
 
     public void uploadExistFile(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
-        ArrayList<String> arrayList = new ArrayList<>();
-        Toast.makeText(this.getContext(), sender+" "+receiver, Toast.LENGTH_SHORT).show();
-        arrayList.add(sender);
-        arrayList.add(receiver);
-        query.whereContainedIn("Sender", arrayList);
-        query.whereContainedIn("Receiver", arrayList);
-
+        if(group!=null){
+            query.whereEqualTo("GroupID",group);
+        }
+        else {
+            ArrayList<String> arrayList = new ArrayList<>();
+            Toast.makeText(this.getContext(), sender + " " + receiver, Toast.LENGTH_SHORT).show();
+            arrayList.add(sender);
+            arrayList.add(receiver);
+            query.whereContainedIn("Sender", arrayList);
+            query.whereContainedIn("Receiver", arrayList);
+        }
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
-
                 parseObject.put("FileName", "asd");
                 parseObject.put("File", parseFile);
                 parseObject.saveInBackground();
@@ -213,21 +216,32 @@ public class DrawingView extends View {
         ParseObject parseObject = new ParseObject("fileupload");
         parseObject.put("FileName", "abc");
         byte[] data = "no thing".getBytes();
-        parseObject.put("File", new ParseFile("new",data));
-        parseObject.put("Sender",sender);
-        parseObject.put("Receiver",receiver);
+
+        parseObject.put("File", new ParseFile("new", data));
+        if(group!=null){
+            parseObject.put("GroupID",group);
+        } else {
+            parseObject.put("Sender", sender);
+            parseObject.put("Receiver", receiver);
+        }
+
         parseObject.saveInBackground();
+
     }
 
     public boolean checkFileInServer(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("fileupload");
-        ArrayList<String> arrayList = new ArrayList<>();
-        Toast.makeText(this.getContext(), sender+" "+receiver, Toast.LENGTH_SHORT).show();
-        arrayList.add(sender);
-        arrayList.add(receiver);
-        query.whereContainedIn("Sender", arrayList);
-        query.whereContainedIn("Receiver", arrayList);
-
+        if(group!=null){
+            query.whereEqualTo("GroupID",group);
+        }
+        else {
+            ArrayList<String> arrayList = new ArrayList<>();
+            Toast.makeText(this.getContext(), sender+" "+receiver, Toast.LENGTH_SHORT).show();
+            arrayList.add(sender);
+            arrayList.add(receiver);
+            query.whereContainedIn("Sender", arrayList);
+            query.whereContainedIn("Receiver", arrayList);
+        }
         try {
             return (query.getFirst()!=null);
         } catch (ParseException e) {
@@ -266,5 +280,10 @@ public class DrawingView extends View {
 
     public void setSender(String sender) {
         this.sender = sender;
+    }
+
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

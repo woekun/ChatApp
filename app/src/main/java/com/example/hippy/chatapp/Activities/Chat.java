@@ -145,6 +145,7 @@ public class Chat extends NavigationDrawer {
         Bundle bundle = new Bundle();
         bundle.putString("Sender",currentUser);
         bundle.putString("Receiver",buddy);
+        bundle.putString("Group", "1");
         intent.putExtras(bundle);
         startActivity(intent);
 

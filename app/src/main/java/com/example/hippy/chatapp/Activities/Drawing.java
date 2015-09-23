@@ -49,6 +49,7 @@ public class Drawing extends AppCompatActivity {
     private ImageButton currentColor,drawButton, eraseButton;
     private float smallBrush,mediumBrush,largeBrush;
     private String currentUser,buddy;
+    private String group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +57,14 @@ public class Drawing extends AppCompatActivity {
         Bundle bundle= getIntent().getExtras();
         currentUser = bundle.getString("Sender");
         buddy = bundle.getString("Receiver");
+        group = bundle.getString("Group");
 
         setContentView(R.layout.activity_drawing);
 
         drawingView = (DrawingView) findViewById(R.id.drawing);
         drawingView.setSender(currentUser);
         drawingView.setReceiver(buddy);
+        drawingView.setGroup(group);
 
         LinearLayout lnrLay = (LinearLayout) findViewById(R.id.colorspane);
         currentColor = (ImageButton) lnrLay.getChildAt(0);
@@ -332,8 +335,6 @@ public class Drawing extends AppCompatActivity {
                     } catch (ParseException e1) {
                         e1.printStackTrace();
                     }
-                } else{
-                    Toast.makeText(Drawing.this, e.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
