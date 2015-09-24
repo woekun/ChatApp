@@ -1,5 +1,6 @@
 package com.example.hippy.chatapp.Activities;
 
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.CustomActivity;
@@ -22,11 +24,16 @@ public class NavigationDrawer extends CustomActivity{
         LinearLayout linearLayout = (LinearLayout) drawerLayout.findViewById(R.id.customLayout);
         getLayoutInflater().inflate(layoutResID, linearLayout, true);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationView navigationView = (NavigationView) drawerLayout.findViewById(R.id.navigation_view);
+
+
 
         if (navigationView != null) {
             setupNavigationDrawerContent(navigationView);
+            Toast.makeText(NavigationDrawer.this, "haha", Toast.LENGTH_SHORT).show();
         }
+
+
 
         super.setContentView(drawerLayout);
 
@@ -52,22 +59,27 @@ public class NavigationDrawer extends CustomActivity{
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                        // textView = (TextView) findViewById(R.id.textView);
                         switch (menuItem.getItemId()) {
-                            case R.id.item_navigation_drawer_inbox:
+                            case R.id.navProfile:
                                 menuItem.setChecked(true);
                            //     textView.setText(menuItem.getTitle());
+
                                 drawerLayout.closeDrawer(GravityCompat.START);
+
+                                Toast.makeText(NavigationDrawer.this, "haha", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), Information.class);
+                                startActivity(intent);
                                 return true;
-                            case R.id.item_navigation_drawer_starred:
+                            case R.id.navGroup:
                                 menuItem.setChecked(true);
                          //       textView.setText(menuItem.getTitle());
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.item_navigation_drawer_sent_mail:
+                            case R.id.navSignout:
                                 menuItem.setChecked(true);
                          //       textView.setText(menuItem.getTitle());
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.item_navigation_drawer_settings:
+                            case R.id.navSetting:
                                 menuItem.setChecked(true);
                          //       textView.setText(menuItem.getTitle());
                                 //Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
@@ -75,7 +87,7 @@ public class NavigationDrawer extends CustomActivity{
                                 //Intent intent = new Intent(this, SettingsActivity.class);
                                 //startActivity(intent);
                                 return true;
-                            case R.id.item_navigation_drawer_help_and_feedback:
+                            case R.id.navHelp:
                                 menuItem.setChecked(true);
                                 //Toast.makeText(MainActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);

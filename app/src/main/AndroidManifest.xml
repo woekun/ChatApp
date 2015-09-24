@@ -68,6 +68,10 @@
             android:name=".Activities.search_contact"
             android:label="@string/title_activity_search_contact" >
         </activity>
+        <activity
+            android:name=".Activities.Information"
+            android:label="@string/title_activity_information" >
+        </activity>
     </application>
 
 </manifest>

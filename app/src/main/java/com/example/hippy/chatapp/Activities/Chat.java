@@ -114,8 +114,8 @@ public class Chat extends NavigationDrawer {
         ParseQuery<ParseObject> parseQuery = ParseQuery.getQuery("Chat");
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add(buddy);
-
         arrayList.add(UserList.user.getUsername());
+
         parseQuery.whereContainedIn("sender", arrayList);
         parseQuery.whereContainedIn("receiver", arrayList);
         parseQuery.orderByDescending("createdAt");
