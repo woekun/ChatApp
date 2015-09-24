@@ -63,22 +63,15 @@ public class Information extends NavigationDrawer {
 
     public void loadInformation(String username){
         //Create query (username) -> ParseUser
-        ParseQuery<ParseUser> query  = ParseQuery.getQuery("User");
-        //query.whereEqualTo("username", "1");
-        //OK -> Info
-        query.getFirstInBackground(new GetCallback<ParseUser>() {
-            @Override
-            public void done(ParseUser parseUser, ParseException e) {
-                //Show
-
-                txtName.setText(parseUser.getUsername());
-                txtNick.setText(parseUser.getString("nickname"));
-                txtSdt.setText(parseUser.getString("phonenumber"));
-
-                edtEmail.setText(parseUser.getString("email"));
-            }
-        });
-
-
+       ParseUser.getQuery().getFirstInBackground(new GetCallback<ParseUser>() {
+           @Override
+           public void done(ParseUser parseUser, ParseException e) {
+               //Show
+               txtName.setText(parseUser.getUsername());
+               txtNick.setText(parseUser.getString("nickname"));
+               txtSdt.setText(parseUser.getString("phonenumber"));
+               edtEmail.setText(parseUser.getString("email"));
+           }
+       });
     }
 }
