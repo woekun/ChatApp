@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
+import com.example.hippy.chatapp.Service.SinchService;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;

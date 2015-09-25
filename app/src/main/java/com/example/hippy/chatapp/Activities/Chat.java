@@ -19,11 +19,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
+import com.example.hippy.chatapp.Service.SinchService;
 import com.example.hippy.chatapp.custom.ChatAdapter;
 import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
 import com.example.hippy.chatapp.utils.FileChooser;
-import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -55,7 +55,6 @@ public class Chat extends NavigationDrawer {
     private String currentUser;
     private LinearLayout callInterface;
     private Call call;
-
 
     private SinchService.ServiceInterface sinchService;
     private ServiceConnection serviceConnection = new MyServiceConnection();

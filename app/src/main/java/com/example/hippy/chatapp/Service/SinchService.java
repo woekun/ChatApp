@@ -1,4 +1,4 @@
-package com.example.hippy.chatapp.utils;
+package com.example.hippy.chatapp.Service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -53,17 +53,11 @@ public class SinchService extends Service implements SinchClientListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         currentUser = UserList.user.getUsername();
-
         if (currentUser != null && !isSinchClientStarted()) {
             startSinchClient(currentUser);
         }
-
         broadcaster = LocalBroadcastManager.getInstance(this);
-//        Notifications.createChatHead(this);
-        createChatHead();
-
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -81,9 +75,6 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.setSupportCalling(true);
         sinchClient.setSupportMessaging(true);
         sinchClient.setSupportActiveConnectionInBackground(true);
-
-//        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
-
         sinchClient.checkManifest();
         sinchClient.startListeningOnActiveConnection();
         sinchClient.start();
@@ -152,7 +143,6 @@ public class SinchService extends Service implements SinchClientListener {
             call.hangup();
         }
     }
-
 
     // Message
     public void sendMessage(String recipientUserId, String textBody) {
@@ -232,8 +222,6 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.stopListeningOnActiveConnection();
         sinchClient.terminate();
     }
-
-
 
     public void setChatHead(String mess){
         chatHead = LayoutInflater.from(this).inflate(R.layout.floating_notification, null);

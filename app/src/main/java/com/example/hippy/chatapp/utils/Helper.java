@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.example.hippy.chatapp.Activities.UserList;
+import com.example.hippy.chatapp.Service.SinchService;
 import com.parse.ParseUser;
 
 public class Helper {
