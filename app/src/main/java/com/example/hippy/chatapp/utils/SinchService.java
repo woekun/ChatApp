@@ -85,6 +85,7 @@ public class SinchService extends Service implements SinchClientListener {
 //        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
 
         sinchClient.checkManifest();
+        sinchClient.startListeningOnActiveConnection();
         sinchClient.start();
     }
 
@@ -141,16 +142,15 @@ public class SinchService extends Service implements SinchClientListener {
             callClient.callUser(recipientUserId);
     }
 
-    public void answerCall(String recipientUserId) {
-        call = callClient.getCall(recipientUserId);
+    public void answerCall(String recipientUserId, Call call) {
         if (call != null)
             call.answer();
     }
 
-    public void endCall(String recipientUserId) {
-        call = callClient.getCall(recipientUserId);
-        if (call != null)
+    public void endCall(String recipientUserId, Call call) {
+        if (call != null) {
             call.hangup();
+        }
     }
 
 
@@ -161,17 +161,6 @@ public class SinchService extends Service implements SinchClientListener {
             messageClient.send(message);
         }
     }
-
-//    // CallListener
-//    private class SinchCallClientListener implements CallClientListener {
-//        @Override
-//        public void onIncomingCall(CallClient callClient, Call incomingCall) {
-//            call = incomingCall;
-////            show custom dialog(accept or decline)
-////            if accept ---> answer else hangup
-////                call.answer();
-//        }
-//    }
 
     // MessageListener
     public void addMessageClientListener(MessageClientListener listener) {
@@ -229,12 +218,12 @@ public class SinchService extends Service implements SinchClientListener {
             SinchService.this.startCall(recipientUserId);
         }
 
-        public void answerCall(String recipientUserId) {
-            SinchService.this.answerCall(recipientUserId);
+        public void answerCall(String recipientUserId, Call call) {
+            SinchService.this.answerCall(recipientUserId, call);
         }
 
-        public void endCall(String recipientUserId) {
-            SinchService.this.endCall(recipientUserId);
+        public void endCall(String recipientUserId, Call call) {
+            SinchService.this.endCall(recipientUserId, call);
         }
 
         public boolean isSinchClientStarted() {

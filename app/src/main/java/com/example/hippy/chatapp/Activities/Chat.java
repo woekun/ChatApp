@@ -52,6 +52,7 @@ public class Chat extends NavigationDrawer {
     private ListView list_chat;
     private String currentUser;
     private LinearLayout callInterface;
+    private Call call;
 
 
     private SinchService.ServiceInterface sinchService;
@@ -106,10 +107,11 @@ public class Chat extends NavigationDrawer {
             sinchService.startCall(buddy);
         }
         if (view.getId() == R.id.btnDecline) {
-            sinchService.endCall(buddy);
+            sinchService.endCall(buddy, call);
+            callInterface.setVisibility(View.INVISIBLE);
         }
         if (view.getId() == R.id.btnAccept) {
-            sinchService.answerCall(buddy);
+            sinchService.answerCall(buddy, call);
         }
     }
 
@@ -254,7 +256,8 @@ public class Chat extends NavigationDrawer {
     private class MyCallClientListener implements CallClientListener {
 
         @Override
-        public void onIncomingCall(CallClient callClient, Call call) {
+        public void onIncomingCall(CallClient callClient, Call incomingCall) {
+            call = incomingCall;
             callInterface.setVisibility(View.VISIBLE);
         }
     }
