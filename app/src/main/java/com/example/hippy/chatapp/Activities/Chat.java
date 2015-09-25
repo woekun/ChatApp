@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.ActionBar;
@@ -32,6 +33,7 @@ import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.calling.CallListener;
 import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
@@ -59,6 +61,7 @@ public class Chat extends NavigationDrawer {
     private ServiceConnection serviceConnection = new MyServiceConnection();
     private MessageClientListener messageClientListener = new MyMessageClientListener();
     private CallClientListener callClientListener = new MyCallClientListener();
+    private CallListener callListener = new MyCallListener();
 
 
     @Override
@@ -105,6 +108,7 @@ public class Chat extends NavigationDrawer {
         if (view.getId() == R.id.btnSend) {
 //            sendMessages();
             sinchService.startCall(buddy);
+            callInterface.setVisibility(View.VISIBLE);
         }
         if (view.getId() == R.id.btnDecline) {
             sinchService.endCall(buddy, call);
@@ -258,7 +262,33 @@ public class Chat extends NavigationDrawer {
         @Override
         public void onIncomingCall(CallClient callClient, Call incomingCall) {
             call = incomingCall;
+            call.addCallListener(callListener);
             callInterface.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class MyCallListener implements CallListener {
+
+        @Override
+        public void onCallProgressing(Call call) {
+
+        }
+
+        @Override
+        public void onCallEstablished(Call call) {
+            setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+        }
+
+        @Override
+        public void onCallEnded(Call endedCall) {
+            call = null;
+            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
+            callInterface.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        public void onShouldSendPushNotification(Call call, List<PushPair> list) {
+
         }
     }
 

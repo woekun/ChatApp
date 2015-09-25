@@ -210,10 +210,6 @@ public class SinchService extends Service implements SinchClientListener {
             SinchService.this.removeCallClientListener(listener);
         }
 
-//        public void addView(String mess) {
-//            SinchService.this.setChatHead(mess);
-//        }
-
         public void startCall(String recipientUserId) {
             SinchService.this.startCall(recipientUserId);
         }
