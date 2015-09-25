@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -21,7 +22,6 @@ import com.example.hippy.chatapp.custom.ChatAdapter;
 import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
 import com.example.hippy.chatapp.utils.FileChooser;
-import com.example.hippy.chatapp.utils.Notifications;
 import com.example.hippy.chatapp.utils.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -29,6 +29,9 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.sinch.android.rtc.PushPair;
+import com.sinch.android.rtc.calling.Call;
+import com.sinch.android.rtc.calling.CallClient;
+import com.sinch.android.rtc.calling.CallClientListener;
 import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
@@ -46,13 +49,15 @@ public class Chat extends NavigationDrawer {
     private ChatAdapter chatAdapter;
     private EditText edtMess;
     private String buddy;
-    private boolean isRunning;
     private ListView list_chat;
     private String currentUser;
+    private LinearLayout callInterface;
 
-    private SinchService.ServiceInterface messageService;
+
+    private SinchService.ServiceInterface sinchService;
     private ServiceConnection serviceConnection = new MyServiceConnection();
     private MessageClientListener messageClientListener = new MyMessageClientListener();
+    private CallClientListener callClientListener = new MyCallClientListener();
 
 
     @Override
@@ -62,6 +67,7 @@ public class Chat extends NavigationDrawer {
 
         bindService(new Intent(this, SinchService.class), serviceConnection, BIND_AUTO_CREATE);
 
+        callInterface = (LinearLayout) findViewById(R.id.call_interface);
         currentUser = UserList.user.getUsername();
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
         ActionBar actionBar = getSupportActionBar();
@@ -76,6 +82,8 @@ public class Chat extends NavigationDrawer {
         loadConversation();
 
         setTouchNClick(R.id.btnSend);
+        setTouchNClick(R.id.btnAccept);
+        setTouchNClick(R.id.btnDecline);
 
         edtMess = (EditText) findViewById(R.id.edtMessage);
         edtMess.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -84,7 +92,8 @@ public class Chat extends NavigationDrawer {
 
     @Override
     protected void onDestroy() {
-        messageService.removeMessageClientListener(messageClientListener);
+        sinchService.removeMessageClientListener(messageClientListener);
+        sinchService.removeCallClientListener(callClientListener);
         unbindService(serviceConnection);
         super.onDestroy();
     }
@@ -93,7 +102,14 @@ public class Chat extends NavigationDrawer {
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.btnSend) {
-            sendMessages();
+//            sendMessages();
+            sinchService.startCall(buddy);
+        }
+        if (view.getId() == R.id.btnDecline) {
+            sinchService.endCall(buddy);
+        }
+        if (view.getId() == R.id.btnAccept) {
+            sinchService.answerCall(buddy);
         }
     }
 
@@ -105,7 +121,7 @@ public class Chat extends NavigationDrawer {
         imm.hideSoftInputFromWindow(edtMess.getWindowToken(), 0);
 
         String mess = edtMess.getText().toString();
-        messageService.sendMessage(buddy, mess);
+        sinchService.sendMessage(buddy, mess);
         edtMess.setText(null);
 
     }
@@ -142,12 +158,8 @@ public class Chat extends NavigationDrawer {
 
     public void OpenDrawing(View view){
         Intent intent = new Intent(Chat.this,search_contact.class);
-
         startActivity(intent);
-
-
     }
-
 
     public void onbtnSendFileClicked(View view){
         final FileChooser fileChooser = new FileChooser(this);
@@ -182,8 +194,6 @@ public class Chat extends NavigationDrawer {
                 parseObject.saveInBackground();
 
                 dialog.dismiss();
-
-
             }
 
 
@@ -194,13 +204,14 @@ public class Chat extends NavigationDrawer {
     private class MyServiceConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            messageService = (SinchService.ServiceInterface) iBinder;
-            messageService.addMessageClientListener(messageClientListener);
+            sinchService = (SinchService.ServiceInterface) iBinder;
+            sinchService.addMessageClientListener(messageClientListener);
+            sinchService.addCalleClientListener(callClientListener);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            messageService = null;
+            sinchService = null;
         }
     }
 
@@ -237,6 +248,14 @@ public class Chat extends NavigationDrawer {
         @Override
         public void onShouldSendPushData(MessageClient messageClient, Message message, List<PushPair> list) {
 
+        }
+    }
+
+    private class MyCallClientListener implements CallClientListener {
+
+        @Override
+        public void onIncomingCall(CallClient callClient, Call call) {
+            callInterface.setVisibility(View.VISIBLE);
         }
     }
 

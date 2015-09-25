@@ -1,7 +1,6 @@
 package com.example.hippy.chatapp.utils;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Binder;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import com.example.hippy.chatapp.Activities.UserList;
 import com.example.hippy.chatapp.R;
 import com.sinch.android.rtc.ClientRegistration;
-import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
 import com.sinch.android.rtc.SinchClientListener;
@@ -25,14 +23,9 @@ import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
-import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
-import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
-import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
-
-import java.util.List;
 
 public class SinchService extends Service implements SinchClientListener {
 
@@ -89,7 +82,7 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.setSupportMessaging(true);
         sinchClient.setSupportActiveConnectionInBackground(true);
 
-        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
+//        sinchClient.getCallClient().addCallClientListener(new SinchCallClientListener());
 
         sinchClient.checkManifest();
         sinchClient.start();
@@ -144,9 +137,14 @@ public class SinchService extends Service implements SinchClientListener {
 
     // Call
     public void startCall(String recipientUserId) {
-        if (callClient != null) {
+        if (callClient != null)
             callClient.callUser(recipientUserId);
-        }
+    }
+
+    public void answerCall(String recipientUserId) {
+        call = callClient.getCall(recipientUserId);
+        if (call != null)
+            call.answer();
     }
 
     public void endCall(String recipientUserId) {
@@ -164,16 +162,16 @@ public class SinchService extends Service implements SinchClientListener {
         }
     }
 
-    // CallListener
-    private class SinchCallClientListener implements CallClientListener {
-        @Override
-        public void onIncomingCall(CallClient callClient, Call incomingCall) {
-            call = incomingCall;
-//            show custom dialog(accept or decline)
-//            if accept ---> answer else hangup
-//                call.answer();
-        }
-    }
+//    // CallListener
+//    private class SinchCallClientListener implements CallClientListener {
+//        @Override
+//        public void onIncomingCall(CallClient callClient, Call incomingCall) {
+//            call = incomingCall;
+////            show custom dialog(accept or decline)
+////            if accept ---> answer else hangup
+////                call.answer();
+//        }
+//    }
 
     // MessageListener
     public void addMessageClientListener(MessageClientListener listener) {
@@ -188,6 +186,18 @@ public class SinchService extends Service implements SinchClientListener {
         }
     }
 
+    // CallListener
+    public void addCallClientListener(CallClientListener listener) {
+        if (callClient != null) {
+            callClient.addCallClientListener(listener);
+        }
+    }
+
+    public void removeCallClientListener(CallClientListener listener) {
+        if (callClient != null) {
+            callClient.removeCallClientListener(listener);
+        }
+    }
 
     //     Binder fof Service
     public class ServiceInterface extends Binder {
@@ -203,12 +213,24 @@ public class SinchService extends Service implements SinchClientListener {
             SinchService.this.removeMessageClientListener(listener);
         }
 
-        public void addView(String mess) {
-            SinchService.this.setChatHead(mess);
+        public void addCalleClientListener(CallClientListener listener) {
+            SinchService.this.addCallClientListener(listener);
         }
+
+        public void removeCallClientListener(CallClientListener listener) {
+            SinchService.this.removeCallClientListener(listener);
+        }
+
+//        public void addView(String mess) {
+//            SinchService.this.setChatHead(mess);
+//        }
 
         public void startCall(String recipientUserId) {
             SinchService.this.startCall(recipientUserId);
+        }
+
+        public void answerCall(String recipientUserId) {
+            SinchService.this.answerCall(recipientUserId);
         }
 
         public void endCall(String recipientUserId) {
