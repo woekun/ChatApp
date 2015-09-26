@@ -1,13 +1,7 @@
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:background="#ffffff"-->
-    <!--android:orientation="vertical"-->
-    <!--tools:context="com.example.hippy.chatapp.Activities.Login">-->
-
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
@@ -17,7 +11,8 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingTop="20dp"
-    android:weightSum="10">
+    android:weightSum="10"
+    tools:context="com.example.hippy.chatapp.Activities.Login">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -60,7 +55,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="2"
-        android:layout_weight="3"
+        android:layout_marginTop="10dp"
         android:gravity="center">
 
         <Button
@@ -78,7 +73,7 @@
             android:id="@+id/btnReg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:text="REGISTER"
             android:textSize="18sp"

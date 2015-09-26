@@ -3,15 +3,15 @@
     <item android:title="Information">
         <menu>
             <item
-                android:id="@+id/item_navigation_drawer_inbox"
+                android:id="@+id/navProfile"
                 android:icon="@drawable/ic_nav_person"
                 android:title="Profile" />
             <item
-                android:id="@+id/item_navigation_drawer_starred"
+                android:id="@+id/navGroup"
                 android:icon="@drawable/ic_nav_group"
                 android:title="Group" />
             <item
-                android:id="@+id/item_navigation_drawer_sent_mail"
+                android:id="@+id/navSignout"
                 android:icon="@drawable/ic_nav_signout"
                 android:title="Sign out" />
         </menu>
@@ -19,11 +19,11 @@
     <item android:title="Support">
         <menu>
             <item
-                android:id="@+id/item_navigation_drawer_settings"
+                android:id="@+id/navSetting"
                 android:icon="@drawable/ic_nav_setting"
                 android:title="Settings" />
             <item
-                android:id="@+id/item_navigation_drawer_help_and_feedback"
+                android:id="@+id/navHelp"
                 android:icon="@drawable/ic_nav_help"
                 android:title="Help and feedback" />
         </menu>

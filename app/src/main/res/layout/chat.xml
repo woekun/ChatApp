@@ -7,51 +7,86 @@
     android:background="#ffffff"
     android:orientation="vertical"
     tools:context="com.example.hippy.chatapp.Activities.Chat">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <ListView
-            android:id="@+id/list_chat"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:dividerHeight="5dp"
-            android:divider="#ffffff"
-            android:listSelector="#ffffff"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:fastScrollEnabled="true"
-            tools:listitem="@layout/item_chat_recv" />
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/list_chat"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:dividerHeight="5dp"
+                android:divider="#ffffff"
+                android:listSelector="#ffffff"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:fastScrollEnabled="true"
+                tools:listitem="@layout/item_chat_recv" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e8e8e8"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <EditText
+                    android:id="@+id/edtMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="100dp"
+                    android:layout_weight="0.82"
+                    android:hint="Type message" />
+
+                <Button
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:text="A"
+                    android:id="@+id/btnFileSend"
+                    android:onClick="OpenDrawing" />
+
+                <ImageView
+                    android:id="@+id/btnSend"
+                    style="@style/btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_action_send" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#e8e8e8"
-            android:gravity="center_vertical"
-            android:layout_marginTop="5dp">
+            android:id="@+id/call_interface"
+            android:layout_width="fill_parent"
+            android:layout_height="300dp"
+            android:background="#000000"
+            android:visibility="invisible"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edtMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxHeight="100dp"
-                android:layout_weight="0.82"
-                android:hint="Type message" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="50dp">
 
-            <Button
-                android:layout_width="54dp"
-                android:layout_height="wrap_content"
-                android:text="A"
-                android:id="@+id/btnFileSend"
-                android:onClick="OpenDrawing" />
+                <Button
+                    android:id="@+id/btnAccept"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:text="ACCEPT"
+                    android:layout_marginEnd="10dp" />
 
-            <ImageView
-                android:id="@+id/btnSend"
-                style="@style/btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_action_send"/>
+                <Button
+                    android:id="@+id/btnDecline"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:text="DECLINE" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>
