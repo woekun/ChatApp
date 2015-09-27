@@ -26,14 +26,9 @@ public class NavigationDrawer extends CustomActivity{
 
         NavigationView navigationView = (NavigationView) drawerLayout.findViewById(R.id.navigation_view);
 
-
-
         if (navigationView != null) {
             setupNavigationDrawerContent(navigationView);
-            Toast.makeText(NavigationDrawer.this, "haha", Toast.LENGTH_SHORT).show();
         }
-
-
 
         super.setContentView(drawerLayout);
 

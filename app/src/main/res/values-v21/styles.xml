@@ -1,3 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="AppTheme.ActionBar.Transparent_v21" parent="AppTheme.ActionBar.Transparent">
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="android:colorPrimaryDark">#303F9F</item>
+        <item name="android:colorAccent">#448AFF</item>
+    </style>
 </resources>

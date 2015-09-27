@@ -32,9 +32,9 @@
         <item name="android:minWidth">1dp</item>
     </style>
 
-    <style name="btn_white_large" parent="@style/btn">
-        <item name="android:background">@drawable/blue_btn</item>
+    <style name="btn_white_large" parent="Widget.AppCompat.ActionButton">
+        <item name="android:background">@drawable/my_button</item>
         <item name="android:textColor">#ffffff</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 </resources>

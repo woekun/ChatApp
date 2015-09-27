@@ -34,5 +34,6 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_search_contact">search_contact</string>
     <string name="title_activity_information">Information</string>
+    <string name="edtPass">Password</string>
 
 </resources>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:paddingBottom="16dp"
-    android:paddingTop="16dp"
+    android:paddingTop="8dp"
     android:orientation="vertical"
     tools:context="com.example.hippy.chatapp.Activities.UserList">
 
@@ -13,8 +13,8 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="5dp"
+        android:layout_gravity=""
+        android:dividerHeight="1dp"
         android:divider="#ffffff"
         android:childDivider="#ffffff" />
-
 </LinearLayout>

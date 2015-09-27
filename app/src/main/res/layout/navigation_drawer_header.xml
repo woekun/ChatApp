@@ -4,8 +4,7 @@
     android:layout_height="192dp"
     android:gravity="bottom"
     android:theme="@style/AppTheme.ActionBar.Transparent"
-    android:background="#512DA8">
-
+    android:background="@drawable/header_img">
 
     <ImageView
         android:layout_marginLeft="16dp"
