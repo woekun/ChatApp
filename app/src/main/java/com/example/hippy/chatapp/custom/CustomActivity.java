@@ -3,6 +3,8 @@ package com.example.hippy.chatapp.custom;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
+
 import com.example.hippy.chatapp.utils.TouchEffect;
 
 public class CustomActivity extends AppCompatActivity implements View.OnClickListener {
@@ -11,6 +13,7 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void setContentView(int layoutResID) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.setContentView(layoutResID);
     }
 

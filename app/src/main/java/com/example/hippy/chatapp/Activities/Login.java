@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,13 +46,7 @@ public class Login extends CustomActivity {
 //        }
 
 //        Helper.loadSavedPreferences(this);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        findViewById(R.id.imageView1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Login.this, Register.class));
-            }
-        });
+
 
     }
 
@@ -87,7 +80,8 @@ public class Login extends CustomActivity {
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
                 }
             });
-        } else {
+        }
+        if (view.getId() == R.id.btnReg) {
             startActivityForResult(new Intent(this, Register.class), RESULT_OK);
         }
     }

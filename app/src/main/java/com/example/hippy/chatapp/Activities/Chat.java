@@ -280,7 +280,7 @@ public class Chat extends NavigationDrawer {
 
         @Override
         public void onCallEnded(Call endedCall) {
-            call = null;
+            call = endedCall;
             setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
             callInterface.setVisibility(View.INVISIBLE);
         }
