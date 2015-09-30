@@ -2,20 +2,14 @@ package com.example.hippy.chatapp.Service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
 
+import com.example.hippy.chatapp.Activities.Chat;
 import com.example.hippy.chatapp.Activities.UserList;
-import com.example.hippy.chatapp.R;
 import com.sinch.android.rtc.ClientRegistration;
+import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
 import com.sinch.android.rtc.SinchClientListener;
@@ -23,9 +17,14 @@ import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
+import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
+import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
+
+import java.util.List;
 
 public class SinchService extends Service implements SinchClientListener {
 
@@ -39,17 +38,9 @@ public class SinchService extends Service implements SinchClientListener {
     private CallClient callClient = null;
     private MessageClient messageClient = null;
     private String currentUser;
-    private Call call;
     private LocalBroadcastManager broadcaster;
 
-    private int initialX;
-    private int initialY;
-    private float initialTouchX;
-    private float initialTouchY;
-    private WindowManager windowManager;
-    private View chatHead;
-    private TextView textView;
-    private WindowManager.LayoutParams params;
+    private MessageClientListener listener = new DefaultMessageListener();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -80,22 +71,15 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.start();
     }
 
+
     private boolean isSinchClientStarted() {
         return sinchClient != null && sinchClient.isStarted();
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        this.windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
     }
 
     @Override
     public void onClientFailed(SinchClient client, SinchError error) {
         broadcastIntent.putExtra("success", false);
         broadcaster.sendBroadcast(broadcastIntent);
-
         sinchClient = null;
     }
 
@@ -107,6 +91,7 @@ public class SinchService extends Service implements SinchClientListener {
         client.startListeningOnActiveConnection();
         callClient = client.getCallClient();
         messageClient = client.getMessageClient();
+        messageClient.addMessageClientListener(listener);
     }
 
     @Override
@@ -217,67 +202,55 @@ public class SinchService extends Service implements SinchClientListener {
         }
     }
 
+    // Default Listener
+
+    private class DefaultMessageListener implements MessageClientListener {
+        @Override
+        public void onIncomingMessage(MessageClient messageClient, Message message) {
+            if (!Chat.isRunning) {
+                //TODO: show chathead
+            }
+        }
+
+        @Override
+        public void onMessageSent(MessageClient messageClient, Message message, String s) {
+
+        }
+
+        @Override
+        public void onMessageFailed(MessageClient messageClient, Message message, MessageFailureInfo messageFailureInfo) {
+
+        }
+
+        @Override
+        public void onMessageDelivered(MessageClient messageClient, MessageDeliveryInfo messageDeliveryInfo) {
+
+        }
+
+        @Override
+        public void onShouldSendPushData(MessageClient messageClient, Message message, List<PushPair> list) {
+
+        }
+
+    }
+
+    private class DefaultCallListener implements CallClientListener {
+        @Override
+        public void onIncomingCall(CallClient callClient, Call call) {
+            if (!Chat.isRunning) {
+                //TODO: show call notification
+            }
+        }
+    }
+
     @Override
     public void onDestroy() {
         sinchClient.stopListeningOnActiveConnection();
         sinchClient.terminate();
     }
 
-    public void setChatHead(String mess){
-        chatHead = LayoutInflater.from(this).inflate(R.layout.floating_notification, null);
-        textView = (TextView) chatHead.findViewById(R.id.noti_mess);
-        textView.setText(mess);
-
-        chatHead.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        initialX = params.x;
-                        initialY = params.y;
-                        initialTouchX = event.getRawX();
-                        initialTouchY = event.getRawY();
-                        return true;
-                    case MotionEvent.ACTION_UP:
-                        return true;
-                    case MotionEvent.ACTION_MOVE:
-                        params.x = initialX + (int) (event.getRawX() - initialTouchX);
-                        params.y = initialY + (int) (event.getRawY() - initialTouchY);
-                        windowManager.updateViewLayout(chatHead, params);
-                        return true;
-                }
-                return false;
-            }
-        });
-
-        chatHead.findViewById(R.id.noti_ava)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        windowManager.removeView(chatHead);
-                    }
-                });
 
 
-
-        windowManager.addView(chatHead,params);
-
-    }
-    public void createChatHead() {
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
-        params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_PHONE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT);
-
-        params.gravity = Gravity.TOP | Gravity.LEFT;
-        params.x = 0;
-        params.y = 100;
-
-    }
 }
 
 

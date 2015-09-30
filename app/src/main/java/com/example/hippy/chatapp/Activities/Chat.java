@@ -48,6 +48,8 @@ import java.util.List;
 
 public class Chat extends NavigationDrawer {
 
+    public static boolean isRunning;
+
     private ChatAdapter chatAdapter;
     private EditText edtMess;
     private String buddy;
@@ -61,7 +63,6 @@ public class Chat extends NavigationDrawer {
     private MessageClientListener messageClientListener = new MyMessageClientListener();
     private CallClientListener callClientListener = new MyCallClientListener();
     private CallListener callListener = new MyCallListener();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,18 @@ public class Chat extends NavigationDrawer {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        isRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isRunning = false;
+    }
+
+    @Override
     protected void onDestroy() {
         sinchService.removeMessageClientListener(messageClientListener);
         sinchService.removeCallClientListener(callClientListener);
@@ -105,17 +118,17 @@ public class Chat extends NavigationDrawer {
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.btnSend) {
-//            sendMessages();
-            sinchService.startCall(buddy);
-            callInterface.setVisibility(View.VISIBLE);
+            sendMessages();
+//            sinchService.startCall(buddy);
+//            callInterface.setVisibility(View.VISIBLE);
         }
-        if (view.getId() == R.id.btnDecline) {
-            sinchService.endCall(buddy, call);
-            callInterface.setVisibility(View.INVISIBLE);
-        }
-        if (view.getId() == R.id.btnAccept) {
-            sinchService.answerCall(buddy, call);
-        }
+//        if (view.getId() == R.id.btnDecline) {
+//            sinchService.endCall(buddy, call);
+//            callInterface.setVisibility(View.INVISIBLE);
+//        }
+//        if (view.getId() == R.id.btnAccept) {
+//            sinchService.answerCall(buddy, call);
+//        }
     }
 
     private void sendMessages() {
@@ -260,9 +273,13 @@ public class Chat extends NavigationDrawer {
 
         @Override
         public void onIncomingCall(CallClient callClient, Call incomingCall) {
-            call = incomingCall;
-            call.addCallListener(callListener);
-            callInterface.setVisibility(View.VISIBLE);
+            if (incomingCall.getCallId().equals(buddy)) {
+                call = incomingCall;
+                call.addCallListener(callListener);
+                callInterface.setVisibility(View.VISIBLE);
+            } else {
+                //TODO: show call notification from other
+            }
         }
     }
 
