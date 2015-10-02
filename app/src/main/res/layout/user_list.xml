@@ -7,7 +7,7 @@
     android:paddingBottom="16dp"
     android:paddingTop="8dp"
     android:orientation="vertical"
-    tools:context="com.example.hippy.chatapp.Activities.UserList">
+    tools:context="com.example.hippy.chatapp.activities.UserList">
 
     <ExpandableListView
         android:id="@+id/list"

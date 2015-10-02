@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    tools:context="com.example.hippy.chatapp.Activities.Chat">
+    tools:context="com.example.hippy.chatapp.activities.Chat">
 
     <FrameLayout
         android:layout_width="fill_parent"

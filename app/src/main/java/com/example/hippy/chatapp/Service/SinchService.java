@@ -6,8 +6,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.example.hippy.chatapp.Activities.Chat;
-import com.example.hippy.chatapp.Activities.UserList;
+import com.example.hippy.chatapp.activities.Chat;
+import com.example.hippy.chatapp.activities.UserList;
+import com.example.hippy.chatapp.utils.Const;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.Sinch;
@@ -40,7 +41,8 @@ public class SinchService extends Service implements SinchClientListener {
     private String currentUser;
     private LocalBroadcastManager broadcaster;
 
-    private MessageClientListener listener = new DefaultMessageListener();
+    private MessageClientListener messListener = new DefaultMessageListener();
+    private CallClientListener callListener = new DefaultCallListener();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -89,9 +91,12 @@ public class SinchService extends Service implements SinchClientListener {
         broadcaster.sendBroadcast(broadcastIntent);
 
         client.startListeningOnActiveConnection();
+
         callClient = client.getCallClient();
+        callClient.addCallClientListener(callListener);
+
         messageClient = client.getMessageClient();
-        messageClient.addMessageClientListener(listener);
+        messageClient.addMessageClientListener(messListener);
     }
 
     @Override
@@ -209,6 +214,10 @@ public class SinchService extends Service implements SinchClientListener {
         public void onIncomingMessage(MessageClient messageClient, Message message) {
             if (!Chat.isRunning) {
                 //TODO: show chathead
+                Intent intent = new Intent(SinchService.this, Chat.class);
+                intent.putExtra(Const.EXTRA_DATA, message.getSenderId());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         }
 
@@ -238,7 +247,10 @@ public class SinchService extends Service implements SinchClientListener {
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
             if (!Chat.isRunning) {
-                //TODO: show call notification
+                Intent intent = new Intent(SinchService.this, Chat.class);
+                intent.putExtra(Const.EXTRA_DATA, call.getRemoteUserId());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         }
     }

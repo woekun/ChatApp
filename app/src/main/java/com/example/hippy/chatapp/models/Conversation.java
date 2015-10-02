@@ -1,6 +1,6 @@
 package com.example.hippy.chatapp.models;
 
-import com.example.hippy.chatapp.Activities.UserList;
+import com.example.hippy.chatapp.activities.UserList;
 
 import java.util.Date;
 
