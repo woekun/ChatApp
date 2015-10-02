@@ -40,10 +40,12 @@ public class Login extends CustomActivity {
         edtPass = (EditText) findViewById(R.id.edtPass);
         chkRemember = (CheckBox) findViewById(R.id.chkRemember);
 
-//        ParseUser currentUser = ParseUser.getCurrentUser();
-//        if(currentUser!=null){
-//              startActivity(intent);
-//        }
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            UserList.user = currentUser;
+            startActivity(intent);
+            startService(serviceIntent);
+        }
 
 //        Helper.loadSavedPreferences(this);
 
