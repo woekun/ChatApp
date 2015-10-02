@@ -24,7 +24,7 @@
         <service android:name=".Service.SinchService" />
 
         <activity
-            android:name=".Activities.Login"
+            android:name=".activities.Login"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar.Transparent"
@@ -36,36 +36,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.Register"
+            android:name=".activities.Register"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar.Transparent"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".Activities.UserList"
+            android:name=".activities.UserList"
             android:label="@string/title_activity_user_list"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".Activities.Chat"
+            android:name=".activities.Chat"
             android:label="@string/title_activity_chat"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.ActionBar.Transparent"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".Activities.NavigationDrawer"
+            android:name=".activities.NavigationDrawer"
             android:label="Nav"
             android:theme="@style/AppTheme.ActionBar.Transparent" />
         <activity
-            android:name=".Activities.Drawing"
+            android:name=".activities.Drawing"
             android:label="Dashboard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".Activities.search_contact"
+            android:name=".activities.search_contact"
             android:label="@string/title_activity_search_contact" />
         <activity
-            android:name=".Activities.Information"
+            android:name=".activities.Information"
             android:label="@string/title_activity_information" />
         <activity
             android:name=".SettingsActivity"
