@@ -9,10 +9,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
+import com.example.hippy.chatapp.Service.SinchService;
+import com.example.hippy.chatapp.SettingsActivity;
 import com.example.hippy.chatapp.custom.CustomActivity;
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 public class NavigationDrawer extends CustomActivity{
     private DrawerLayout drawerLayout;
@@ -52,39 +56,35 @@ public class NavigationDrawer extends CustomActivity{
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                       // textView = (TextView) findViewById(R.id.textView);
                         switch (menuItem.getItemId()) {
                             case R.id.navProfile:
                                 menuItem.setChecked(true);
-                           //     textView.setText(menuItem.getTitle());
-
                                 drawerLayout.closeDrawer(GravityCompat.START);
-
-                                Toast.makeText(NavigationDrawer.this, "haha", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), Information.class);
                                 startActivity(intent);
                                 return true;
                             case R.id.navGroup:
                                 menuItem.setChecked(true);
-                         //       textView.setText(menuItem.getTitle());
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
                             case R.id.navSignout:
                                 menuItem.setChecked(true);
-                         //       textView.setText(menuItem.getTitle());
                                 drawerLayout.closeDrawer(GravityCompat.START);
+                                ParseUser.logOutInBackground(new LogOutCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        stopService(new Intent(getApplicationContext(), SinchService.class));
+                                        startActivity(new Intent(getApplicationContext(), Login.class));
+                                    }
+                                });
                                 return true;
                             case R.id.navSetting:
                                 menuItem.setChecked(true);
-                         //       textView.setText(menuItem.getTitle());
-                                //Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                //Intent intent = new Intent(this, SettingsActivity.class);
-                                //startActivity(intent);
+                                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                                 return true;
                             case R.id.navHelp:
                                 menuItem.setChecked(true);
-                                //Toast.makeText(MainActivity.this, menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
                         }
