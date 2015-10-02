@@ -8,13 +8,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hippy.chatapp.R;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 public class Information extends NavigationDrawer {
 

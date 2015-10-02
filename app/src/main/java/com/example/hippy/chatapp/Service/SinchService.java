@@ -6,8 +6,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.example.hippy.chatapp.activities.Chat;
-import com.example.hippy.chatapp.activities.UserList;
+import com.example.hippy.chatapp.Activities.Chat;
+import com.example.hippy.chatapp.Activities.UserList;
 import com.example.hippy.chatapp.utils.Const;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.PushPair;

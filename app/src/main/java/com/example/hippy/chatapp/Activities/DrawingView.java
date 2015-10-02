@@ -5,21 +5,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Xfermode;
-import android.media.Image;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.parse.GetCallback;
@@ -29,10 +23,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 
 /**

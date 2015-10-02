@@ -3,30 +3,20 @@ package com.example.hippy.chatapp.Activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
-import com.example.hippy.chatapp.custom.CustomActivity;
 import com.example.hippy.chatapp.utils.FileChooser;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -35,11 +25,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
 
 public class Drawing extends AppCompatActivity {
