@@ -45,11 +45,8 @@ public class Login extends CustomActivity {
             UserList.user = currentUser;
             startActivity(intent);
             startService(serviceIntent);
+            finish();
         }
-
-//        Helper.loadSavedPreferences(this);
-
-
     }
 
     @Override
@@ -72,9 +69,6 @@ public class Login extends CustomActivity {
                     dialog.dismiss();
                     if (parseUser != null) {
                         UserList.user = parseUser;
-//                        if (chkRemember.isChecked()) {
-//                            Helper.savePreferences("sp_user", "sp_pass", user, pass, Login.this);
-//                        }
                         startActivity(intent);
                         startService(serviceIntent);
                         finish();
