@@ -98,12 +98,12 @@ public class UserList extends NavigationDrawer {
                 Boolean success = intent.getBooleanExtra("success", false);
                 progressDialog.dismiss();
                 if (!success) {
-                    Toast.makeText(getApplicationContext(), "Sinch service failed to start", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Sinch Service failed to start", Toast.LENGTH_LONG).show();
                 }
             }
         };
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("com.example.hippy.chatapp.Activities.UserList"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
     }
 
     @Override

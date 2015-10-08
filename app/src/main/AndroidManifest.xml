@@ -70,6 +70,16 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
+
+        <receiver
+            android:exported="false"
+            android:name="com.example.hippy.chatapp.custom.CustomReceiver">
+            <intent-filter>
+                <action android:name="com.example.hippy.chatapp.Activities.UserList" />
+                <action android:name="com.example.hippy.chatapp.Service.SinchService.Message" />
+                <action android:name="com.example.hippy.chatapp.Service.SinchService.Call" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

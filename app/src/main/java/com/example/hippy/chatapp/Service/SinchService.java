@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.View;
 
 import com.example.hippy.chatapp.Activities.Chat;
 import com.example.hippy.chatapp.Activities.UserList;
@@ -18,6 +19,7 @@ import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.calling.CallListener;
 import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
@@ -29,10 +31,7 @@ import java.util.List;
 
 public class SinchService extends Service implements SinchClientListener {
 
-    private static final String APP_KEY = "59ecf280-0506-4d4b-bfa0-4b4ca98d1019";
-    private static final String APP_SECRET = "qd4AsZncokSj+UNrSdD5TA==";
-    private static final String ENVIRONMENT = "sandbox.sinch.com";
-    private Intent broadcastIntent = new Intent("com.example.hippy.chatapp.Activities.UserList");
+    private Intent broadcastIntent = new Intent(Const.ACTION_SINCH_SERVICE);
 
     private final ServiceInterface serviceInterface = new ServiceInterface();
     private SinchClient sinchClient = null;
@@ -42,7 +41,9 @@ public class SinchService extends Service implements SinchClientListener {
     private LocalBroadcastManager broadcaster;
 
     private MessageClientListener messListener = new DefaultMessageListener();
-    private CallClientListener callListener = new DefaultCallListener();
+    private CallClientListener callClientListener = new DefaultCallListener();
+
+    private CallListener callListener = new MyCallListener();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -58,9 +59,9 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient = Sinch.getSinchClientBuilder()
                 .context(this)
                 .userId(username)
-                .applicationKey(APP_KEY)
-                .applicationSecret(APP_SECRET)
-                .environmentHost(ENVIRONMENT)
+                .applicationKey(Const.SINCH_APP_KEY)
+                .applicationSecret(Const.SINCH_APP_SECRET)
+                .environmentHost(Const.SINCH_ENVIRONMENT)
                 .build();
 
         sinchClient.addSinchClientListener(this);
@@ -73,6 +74,9 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.start();
     }
 
+    public CallClient getCallClient() {
+        return callClient;
+    }
 
     private boolean isSinchClientStarted() {
         return sinchClient != null && sinchClient.isStarted();
@@ -93,7 +97,7 @@ public class SinchService extends Service implements SinchClientListener {
         client.startListeningOnActiveConnection();
 
         callClient = client.getCallClient();
-        callClient.addCallClientListener(callListener);
+        callClient.addCallClientListener(callClientListener);
 
         messageClient = client.getMessageClient();
         messageClient.addMessageClientListener(messListener);
@@ -124,8 +128,9 @@ public class SinchService extends Service implements SinchClientListener {
     }
 
     public void answerCall(String recipientUserId, Call call) {
-        if (call != null)
+        if (call != null) {
             call.answer();
+        }
     }
 
     public void endCall(String recipientUserId, Call call) {
@@ -170,6 +175,8 @@ public class SinchService extends Service implements SinchClientListener {
 
     //     Binder fof Service
     public class ServiceInterface extends Binder {
+
+
         public void sendMessage(String recipientUserId, String textBody) {
             SinchService.this.sendMessage(recipientUserId, textBody);
         }
@@ -214,10 +221,6 @@ public class SinchService extends Service implements SinchClientListener {
         public void onIncomingMessage(MessageClient messageClient, Message message) {
             if (!Chat.isRunning) {
                 //TODO: show chathead
-                Intent intent = new Intent(SinchService.this, Chat.class);
-                intent.putExtra(Const.EXTRA_DATA, message.getSenderId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
             }
         }
 
@@ -246,12 +249,13 @@ public class SinchService extends Service implements SinchClientListener {
     private class DefaultCallListener implements CallClientListener {
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
-            if (!Chat.isRunning) {
-                Intent intent = new Intent(SinchService.this, Chat.class);
-                intent.putExtra(Const.EXTRA_DATA, call.getRemoteUserId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+            call.addCallListener(callListener);
+            Chat.instance().setCall(call);
+            Intent intent = new Intent(Const.ACTION_SINCH_CALL);
+            String s = call.getRemoteUserId();
+            intent.putExtra(Const.SENDER, s);
+            intent.putExtra(Const.TYPE, "calling");
+            sendBroadcast(intent);
         }
     }
 
@@ -259,6 +263,31 @@ public class SinchService extends Service implements SinchClientListener {
     public void onDestroy() {
         sinchClient.stopListeningOnActiveConnection();
         sinchClient.terminate();
+    }
+
+    private class MyCallListener implements CallListener {
+
+        @Override
+        public void onCallProgressing(Call call) {
+
+        }
+
+        @Override
+        public void onCallEstablished(Call call) {
+//            setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
+        }
+
+        @Override
+        public void onCallEnded(Call endedCall) {
+            Chat.instance().setCall(endedCall);
+//            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
+            Chat.instance().setCallInterface(View.INVISIBLE);
+        }
+
+        @Override
+        public void onShouldSendPushNotification(Call call, List<PushPair> list) {
+
+        }
     }
 
 

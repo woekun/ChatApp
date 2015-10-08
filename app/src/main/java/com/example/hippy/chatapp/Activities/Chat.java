@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.ActionBar;
@@ -21,6 +20,7 @@ import android.widget.Toast;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.Service.SinchService;
 import com.example.hippy.chatapp.custom.ChatAdapter;
+import com.example.hippy.chatapp.custom.CustomReceiver;
 import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
 import com.example.hippy.chatapp.utils.FileChooser;
@@ -31,9 +31,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.calling.Call;
-import com.sinch.android.rtc.calling.CallClient;
-import com.sinch.android.rtc.calling.CallClientListener;
-import com.sinch.android.rtc.calling.CallListener;
 import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
@@ -49,10 +46,11 @@ import java.util.List;
 public class Chat extends NavigationDrawer {
 
     public static boolean isRunning;
+    private static Chat inst;
 
     private ChatAdapter chatAdapter;
     private EditText edtMess;
-    private String buddy;
+    private static String buddy;
     private ListView list_chat;
     private String currentUser;
     private LinearLayout callInterface;
@@ -61,8 +59,9 @@ public class Chat extends NavigationDrawer {
     private SinchService.ServiceInterface sinchService;
     private ServiceConnection serviceConnection = new MyServiceConnection();
     private MessageClientListener messageClientListener = new MyMessageClientListener();
-    private CallClientListener callClientListener = new MyCallClientListener();
-    private CallListener callListener = new MyCallListener();
+    //    private CallClientListener callClientListener = new MyCallClientListener();
+//    private CallListener callListener = new MyCallListener();
+    private CustomReceiver myCustomReceiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +97,7 @@ public class Chat extends NavigationDrawer {
     protected void onStart() {
         super.onStart();
         isRunning = true;
+        inst = this;
     }
 
     @Override
@@ -109,7 +109,7 @@ public class Chat extends NavigationDrawer {
     @Override
     protected void onDestroy() {
         sinchService.removeMessageClientListener(messageClientListener);
-        sinchService.removeCallClientListener(callClientListener);
+//        sinchService.removeCallClientListener(callClientListener);
         unbindService(serviceConnection);
         super.onDestroy();
     }
@@ -119,16 +119,20 @@ public class Chat extends NavigationDrawer {
         super.onClick(view);
         if (view.getId() == R.id.btnSend) {
             sendMessages();
-//            sinchService.startCall(buddy);
-//            callInterface.setVisibility(View.VISIBLE);
+            sinchService.startCall(buddy);
+            callInterface.setVisibility(View.VISIBLE);
         }
-//        if (view.getId() == R.id.btnDecline) {
-//            sinchService.endCall(buddy, call);
-//            callInterface.setVisibility(View.INVISIBLE);
-//        }
-//        if (view.getId() == R.id.btnAccept) {
-//            sinchService.answerCall(buddy, call);
-//        }
+        if (view.getId() == R.id.btnDecline) {
+            sinchService.endCall(buddy, call);
+            callInterface.setVisibility(View.INVISIBLE);
+        }
+        if (view.getId() == R.id.btnAccept) {
+            sinchService.answerCall(buddy, call);
+        }
+    }
+
+    public static Chat instance() {
+        return inst;
     }
 
     private void sendMessages() {
@@ -224,7 +228,7 @@ public class Chat extends NavigationDrawer {
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             sinchService = (SinchService.ServiceInterface) iBinder;
             sinchService.addMessageClientListener(messageClientListener);
-            sinchService.addCalleClientListener(callClientListener);
+//            sinchService.addCalleClientListener(callClientListener);
         }
 
         @Override
@@ -269,43 +273,30 @@ public class Chat extends NavigationDrawer {
         }
     }
 
-    private class MyCallClientListener implements CallClientListener {
+//    private class MyCallClientListener implements CallClientListener {
+//
+//        @Override
+//        public void onIncomingCall(CallClient callClient, Call incomingCall) {
+//            if (incomingCall.getRemoteUserId().equals(buddy)) {
+//                call = incomingCall;
+//                call.addCallListener(callListener);
+//                callInterface.setVisibility(View.VISIBLE);
+//            } else {
+//                //TODO: show call notification from other
+//            }
+//        }
+//    }
 
-        @Override
-        public void onIncomingCall(CallClient callClient, Call incomingCall) {
-            if (incomingCall.getCallId().equals(buddy)) {
-                call = incomingCall;
-                call.addCallListener(callListener);
-                callInterface.setVisibility(View.VISIBLE);
-            } else {
-                //TODO: show call notification from other
-            }
-        }
+
+    public void setCallInterface(int visibility) {
+        callInterface.setVisibility(visibility);
     }
 
-    private class MyCallListener implements CallListener {
-
-        @Override
-        public void onCallProgressing(Call call) {
-
-        }
-
-        @Override
-        public void onCallEstablished(Call call) {
-            setVolumeControlStream(AudioManager.STREAM_VOICE_CALL);
-        }
-
-        @Override
-        public void onCallEnded(Call endedCall) {
-            call = endedCall;
-            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
-            callInterface.setVisibility(View.INVISIBLE);
-        }
-
-        @Override
-        public void onShouldSendPushNotification(Call call, List<PushPair> list) {
-
-        }
+    public static String getBuddy() {
+        return buddy;
     }
 
+    public void setCall(Call call) {
+        this.call = call;
+    }
 }

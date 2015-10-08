@@ -10,6 +10,6 @@ public class ChatApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Parse.initialize(this, Const.APP_ID, Const.CLIENT_KEY);
+        Parse.initialize(this, Const.PARSE_APP_ID, Const.PARSE_CLIENT_KEY);
     }
 }
