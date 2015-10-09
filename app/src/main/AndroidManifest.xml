@@ -67,9 +67,6 @@
         <activity
             android:name=".Activities.Information"
             android:label="@string/title_activity_information" />
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
 
         <receiver
             android:exported="false"

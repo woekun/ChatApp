@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.Service.SinchService;
-import com.example.hippy.chatapp.SettingsActivity;
 import com.example.hippy.chatapp.custom.CustomActivity;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
@@ -81,7 +80,7 @@ public class NavigationDrawer extends CustomActivity{
                             case R.id.navSetting:
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+//                                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                                 return true;
                             case R.id.navHelp:
                                 menuItem.setChecked(true);
