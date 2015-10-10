@@ -119,7 +119,7 @@ public class Chat extends NavigationDrawer {
         super.onClick(view);
         if (view.getId() == R.id.btnSend) {
             sendMessages();
-            sinchService.startCall(buddy);
+            sinchService.startCall(buddy,call);
             callInterface.setVisibility(View.VISIBLE);
         }
         if (view.getId() == R.id.btnDecline) {

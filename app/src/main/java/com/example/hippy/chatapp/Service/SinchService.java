@@ -122,9 +122,11 @@ public class SinchService extends Service implements SinchClientListener {
     }
 
     // Call
-    public void startCall(String recipientUserId) {
-        if (callClient != null)
-            callClient.callUser(recipientUserId);
+    public void startCall(String recipientUserId, Call call) {
+        if (callClient != null) {
+            call = callClient.callUser(recipientUserId);
+            callClient.getCall(recipientUserId).addCallListener(callListener);
+        }
     }
 
     public void answerCall(String recipientUserId, Call call) {
@@ -197,8 +199,8 @@ public class SinchService extends Service implements SinchClientListener {
             SinchService.this.removeCallClientListener(listener);
         }
 
-        public void startCall(String recipientUserId) {
-            SinchService.this.startCall(recipientUserId);
+        public void startCall(String recipientUserId, Call call) {
+            SinchService.this.startCall(recipientUserId, call);
         }
 
         public void answerCall(String recipientUserId, Call call) {
@@ -279,7 +281,7 @@ public class SinchService extends Service implements SinchClientListener {
 
         @Override
         public void onCallEnded(Call endedCall) {
-            Chat.instance().setCall(endedCall);
+            Chat.instance().setCall(null);
 //            setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE);
             Chat.instance().setCallInterface(View.INVISIBLE);
         }
