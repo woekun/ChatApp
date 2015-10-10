@@ -125,7 +125,7 @@ public class SinchService extends Service implements SinchClientListener {
     public void startCall(String recipientUserId, Call call) {
         if (callClient != null) {
             call = callClient.callUser(recipientUserId);
-            callClient.getCall(recipientUserId).addCallListener(callListener);
+            call.addCallListener(callListener);
         }
     }
 
