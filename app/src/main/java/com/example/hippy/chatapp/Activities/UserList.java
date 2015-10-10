@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.custom.UserAdapter;
 import com.example.hippy.chatapp.utils.Const;
-import com.example.hippy.chatapp.utils.SinchService;
+import com.example.hippy.chatapp.Service.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;

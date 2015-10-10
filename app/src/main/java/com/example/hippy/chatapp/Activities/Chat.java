@@ -22,7 +22,7 @@ import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
 import com.example.hippy.chatapp.utils.FileChooser;
 import com.example.hippy.chatapp.utils.Notifications;
-import com.example.hippy.chatapp.utils.SinchService;
+import com.example.hippy.chatapp.Service.SinchService;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
