@@ -69,14 +69,21 @@
             android:label="@string/title_activity_information" />
 
         <receiver
-            android:exported="false"
-            android:name="com.example.hippy.chatapp.custom.CustomReceiver">
+            android:name=".custom.CustomReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.example.hippy.chatapp.Activities.UserList" />
                 <action android:name="com.example.hippy.chatapp.Service.SinchService.Message" />
                 <action android:name="com.example.hippy.chatapp.Service.SinchService.Call" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".Activities.CallScreen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_call_screen"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
     </application>
 
 </manifest>

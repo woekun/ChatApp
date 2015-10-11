@@ -76,6 +76,7 @@ public class NavigationDrawer extends CustomActivity{
                                         startActivity(new Intent(getApplicationContext(), Login.class));
                                     }
                                 });
+                                stopService(new Intent(getApplicationContext(), SinchService.class));
                                 return true;
                             case R.id.navSetting:
                                 menuItem.setChecked(true);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.Service.SinchService;
+import com.example.hippy.chatapp.custom.BaseConnection;
 import com.example.hippy.chatapp.custom.UserAdapter;
 import com.example.hippy.chatapp.utils.Const;
 import com.parse.FindCallback;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class UserList extends NavigationDrawer {
+public class UserList extends BaseConnection {
 
     public static ParseUser user;
     private ArrayList<String> dataHeader; //data header
@@ -104,11 +105,5 @@ public class UserList extends NavigationDrawer {
         };
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
-    }
-
-    @Override
-    public void onDestroy() {
-        stopService(new Intent(this, SinchService.class));
-        super.onDestroy();
     }
 }

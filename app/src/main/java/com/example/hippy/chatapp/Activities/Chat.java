@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.Service.SinchService;
+import com.example.hippy.chatapp.custom.BaseConnection;
 import com.example.hippy.chatapp.custom.ChatAdapter;
 import com.example.hippy.chatapp.custom.CustomReceiver;
 import com.example.hippy.chatapp.models.Conversation;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Chat extends NavigationDrawer {
+public class Chat extends BaseConnection {
 
     public static boolean isRunning;
     private static Chat inst;
@@ -53,24 +54,16 @@ public class Chat extends NavigationDrawer {
     private static String buddy;
     private ListView list_chat;
     private String currentUser;
-    private LinearLayout callInterface;
     private Call call;
 
     private SinchService.ServiceInterface sinchService;
-    private ServiceConnection serviceConnection = new MyServiceConnection();
     private MessageClientListener messageClientListener = new MyMessageClientListener();
-    //    private CallClientListener callClientListener = new MyCallClientListener();
-//    private CallListener callListener = new MyCallListener();
-    private CustomReceiver myCustomReceiver = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat);
 
-        bindService(new Intent(this, SinchService.class), serviceConnection, BIND_AUTO_CREATE);
-
-        callInterface = (LinearLayout) findViewById(R.id.call_interface);
         currentUser = UserList.user.getUsername();
         buddy = getIntent().getStringExtra(Const.EXTRA_DATA);
         ActionBar actionBar = getSupportActionBar();
@@ -85,11 +78,19 @@ public class Chat extends NavigationDrawer {
         loadConversation();
 
         setTouchNClick(R.id.btnSend);
-        setTouchNClick(R.id.btnAccept);
-        setTouchNClick(R.id.btnDecline);
 
         edtMess = (EditText) findViewById(R.id.edtMessage);
         edtMess.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
+    }
+
+    @Override
+    protected void onServiceConnected() {
+        getSinchServiceInterface().getMessageClient().addMessageClientListener(messageClientListener);
+    }
+
+    @Override
+    protected void onServiceDisconnected() {
 
     }
 
@@ -108,9 +109,7 @@ public class Chat extends NavigationDrawer {
 
     @Override
     protected void onDestroy() {
-        sinchService.removeMessageClientListener(messageClientListener);
-//        sinchService.removeCallClientListener(callClientListener);
-        unbindService(serviceConnection);
+
         super.onDestroy();
     }
 
@@ -118,16 +117,9 @@ public class Chat extends NavigationDrawer {
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.btnSend) {
-            sendMessages();
-            sinchService.startCall(buddy,call);
-            callInterface.setVisibility(View.VISIBLE);
-        }
-        if (view.getId() == R.id.btnDecline) {
-            sinchService.endCall(buddy, call);
-            callInterface.setVisibility(View.INVISIBLE);
-        }
-        if (view.getId() == R.id.btnAccept) {
-            sinchService.answerCall(buddy, call);
+//            sendMessages();
+            getSinchServiceInterface().callUser(buddy);
+
         }
     }
 
@@ -222,21 +214,6 @@ public class Chat extends NavigationDrawer {
         });
     }
 
-
-    private class MyServiceConnection implements ServiceConnection {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            sinchService = (SinchService.ServiceInterface) iBinder;
-            sinchService.addMessageClientListener(messageClientListener);
-//            sinchService.addCalleClientListener(callClientListener);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            sinchService = null;
-        }
-    }
-
     private class MyMessageClientListener implements MessageClientListener {
 
         @Override
@@ -271,32 +248,5 @@ public class Chat extends NavigationDrawer {
         public void onShouldSendPushData(MessageClient messageClient, Message message, List<PushPair> list) {
 
         }
-    }
-
-//    private class MyCallClientListener implements CallClientListener {
-//
-//        @Override
-//        public void onIncomingCall(CallClient callClient, Call incomingCall) {
-//            if (incomingCall.getRemoteUserId().equals(buddy)) {
-//                call = incomingCall;
-//                call.addCallListener(callListener);
-//                callInterface.setVisibility(View.VISIBLE);
-//            } else {
-//                //TODO: show call notification from other
-//            }
-//        }
-//    }
-
-
-    public void setCallInterface(int visibility) {
-        callInterface.setVisibility(visibility);
-    }
-
-    public static String getBuddy() {
-        return buddy;
-    }
-
-    public void setCall(Call call) {
-        this.call = call;
     }
 }
