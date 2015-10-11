@@ -75,7 +75,7 @@ public class SinchService extends Service implements SinchClientListener {
         broadcastIntent.putExtra("success", true);
         broadcaster.sendBroadcast(broadcastIntent);
 
-        client.startListeningOnActiveConnection();
+//        client.startListeningOnActiveConnection();
 
         callClient = client.getCallClient();
         callClient.addCallClientListener(callClientListener);
