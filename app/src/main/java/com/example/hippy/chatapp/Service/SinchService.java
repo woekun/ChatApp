@@ -130,7 +130,7 @@ public class SinchService extends Service implements SinchClientListener {
         }
 
         public MessageClient getMessageClient(){
-            return sinchClient.getMessageClient();
+            return messageClient;
         }
     }
 

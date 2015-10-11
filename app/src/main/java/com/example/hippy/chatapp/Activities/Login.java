@@ -73,7 +73,7 @@ public class Login extends CustomActivity {
                         startService(serviceIntent);
                         finish();
                     } else
-                        Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG);
+                        Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG).show();
                 }
             });
         }

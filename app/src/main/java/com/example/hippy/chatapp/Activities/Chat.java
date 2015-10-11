@@ -56,9 +56,6 @@ public class Chat extends BaseConnection {
     private String currentUser;
     private Call call;
 
-    private SinchService.ServiceInterface sinchService;
-    private MessageClientListener messageClientListener = new MyMessageClientListener();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +83,8 @@ public class Chat extends BaseConnection {
 
     @Override
     protected void onServiceConnected() {
-        getSinchServiceInterface().getMessageClient().addMessageClientListener(messageClientListener);
+        MessageClient messageClient= getSinchServiceInterface().getMessageClient();
+        messageClient.addMessageClientListener(new MyMessageClientListener());
     }
 
     @Override
@@ -117,8 +115,8 @@ public class Chat extends BaseConnection {
     public void onClick(View view) {
         super.onClick(view);
         if (view.getId() == R.id.btnSend) {
-//            sendMessages();
-            getSinchServiceInterface().callUser(buddy);
+            sendMessages();
+//            getSinchServiceInterface().callUser(buddy);
 
         }
     }
@@ -135,9 +133,8 @@ public class Chat extends BaseConnection {
         imm.hideSoftInputFromWindow(edtMess.getWindowToken(), 0);
 
         String mess = edtMess.getText().toString();
-        sinchService.sendMessage(buddy, mess);
+        getSinchServiceInterface().sendMessage(buddy, mess);
         edtMess.setText(null);
-
     }
 
     private void loadConversation() {
