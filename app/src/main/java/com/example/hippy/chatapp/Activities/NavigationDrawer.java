@@ -73,10 +73,13 @@ public class NavigationDrawer extends CustomActivity{
                                     @Override
                                     public void done(ParseException e) {
                                         stopService(new Intent(getApplicationContext(), SinchService.class));
-                                        startActivity(new Intent(getApplicationContext(), Login.class));
+                                        Intent intent = new Intent(getApplicationContext(), Login.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                        |Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
                                     }
                                 });
-                                stopService(new Intent(getApplicationContext(), SinchService.class));
                                 return true;
                             case R.id.navSetting:
                                 menuItem.setChecked(true);

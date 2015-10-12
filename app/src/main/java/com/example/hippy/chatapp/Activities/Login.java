@@ -1,8 +1,12 @@
 package com.example.hippy.chatapp.Activities;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -11,6 +15,7 @@ import android.widget.Toast;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.Service.SinchService;
 import com.example.hippy.chatapp.custom.CustomActivity;
+import com.example.hippy.chatapp.utils.Const;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -21,8 +26,9 @@ public class Login extends CustomActivity {
     private EditText edtUser;
     private EditText edtPass;
     private CheckBox chkRemember;
-    private Intent intent;
+    private Intent intentUserList;
     private Intent serviceIntent;
+    private BroadcastReceiver receiver = null;
 
 
     @Override
@@ -33,7 +39,7 @@ public class Login extends CustomActivity {
         setTouchNClick(R.id.btnLogin);
         setTouchNClick(R.id.btnReg);
 
-        intent = new Intent(getApplicationContext(), UserList.class);
+        intentUserList = new Intent(getApplicationContext(), UserList.class);
         serviceIntent = new Intent(getApplicationContext(), SinchService.class);
 
         edtUser = (EditText) findViewById(R.id.edtUser);
@@ -43,8 +49,7 @@ public class Login extends CustomActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             UserList.user = currentUser;
-            startActivity(intent);
-            startService(serviceIntent);
+            startActivity(intentUserList);
             finish();
         }
     }
@@ -66,14 +71,27 @@ public class Login extends CustomActivity {
             ParseUser.logInInBackground(user, pass, new LogInCallback() {
                 @Override
                 public void done(ParseUser parseUser, ParseException e) {
-                    dialog.dismiss();
                     if (parseUser != null) {
                         UserList.user = parseUser;
-                        startActivity(intent);
                         startService(serviceIntent);
-                        finish();
                     } else
                         Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG).show();
+
+                    receiver = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            Boolean success = intent.getBooleanExtra("success", false);
+                            dialog.dismiss();
+                            if (!success) {
+                                Toast.makeText(getApplicationContext(), "Sinch Service failed to start", Toast.LENGTH_LONG).show();
+                            }else {
+                                startActivity(intentUserList);
+                                finish();
+                            }
+                        }
+                    };
+
+                    LocalBroadcastManager.getInstance(Login.this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
                 }
             });
         }

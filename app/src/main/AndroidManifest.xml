@@ -78,12 +78,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".Activities.CallScreen"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_call_screen"
-            android:theme="@style/FullscreenTheme" >
-        </activity>
     </application>
 
 </manifest>

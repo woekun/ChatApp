@@ -6,9 +6,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.example.hippy.chatapp.Activities.CallScreen;
 import com.example.hippy.chatapp.Activities.UserList;
 import com.example.hippy.chatapp.utils.Const;
+import com.parse.ParseUser;
 import com.sinch.android.rtc.ClientRegistration;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
@@ -36,7 +36,7 @@ public class SinchService extends Service implements SinchClientListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        currentUser = UserList.user.getUsername();
+        currentUser = ParseUser.getCurrentUser().getUsername();
         if (currentUser != null && !isSinchClientStarted()) {
             startSinchClient(currentUser);
         }
@@ -75,7 +75,7 @@ public class SinchService extends Service implements SinchClientListener {
         broadcastIntent.putExtra("success", true);
         broadcaster.sendBroadcast(broadcastIntent);
 
-//        client.startListeningOnActiveConnection();
+        client.startListeningOnActiveConnection();
 
         callClient = client.getCallClient();
         callClient.addCallClientListener(callClientListener);
@@ -132,21 +132,25 @@ public class SinchService extends Service implements SinchClientListener {
         public MessageClient getMessageClient(){
             return messageClient;
         }
+
+        public boolean isSinchClientStarted() {
+            return SinchService.this.isSinchClientStarted();
+        }
     }
 
     private class DefaultCallListener implements CallClientListener {
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
-            Intent intent = new Intent(SinchService.this, CallScreen.class);
-            intent.putExtra(Const.SENDER, call.getCallId());
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            SinchService.this.startActivity(intent);
+//            Intent intent = new Intent(SinchService.this, CallScreen.class);
+//            intent.putExtra(Const.SENDER, call.getCallId());
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            SinchService.this.startActivity(intent);
         }
     }
 
     @Override
     public void onDestroy() {
-        if (!isSinchClientStarted()) {
+        if (isSinchClientStarted()) {
             sinchClient.stopListeningOnActiveConnection();
             sinchClient.terminate();
         }

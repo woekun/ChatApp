@@ -33,15 +33,4 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="FullscreenTheme" parent="AppTheme.ActionBar.Transparent">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="metaButtonBarStyle">?android:attr/buttonBarStyle</item>
-        <item name="metaButtonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
-    </style>
-
-    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">#66000000</item>
-    </style>
 </resources>

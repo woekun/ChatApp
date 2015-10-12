@@ -39,7 +39,8 @@ public class UserList extends BaseConnection {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_list);
-        showDialog();
+
+//        showDialog();
 
         collections = new HashMap<>();
 
@@ -47,6 +48,8 @@ public class UserList extends BaseConnection {
         dataHeader.add("Groups");
         dataHeader.add("Contacts");
     }
+
+
 
     @Override
     protected void onResume() {
@@ -88,22 +91,5 @@ public class UserList extends BaseConnection {
                             Toast.makeText(UserList.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    //show a loading dialog while the sinch client starts
-    private void showDialog() {
-        progressDialog = ProgressDialog.show(this, "Loading", "Please wait...");
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Boolean success = intent.getBooleanExtra("success", false);
-                progressDialog.dismiss();
-                if (!success) {
-                    Toast.makeText(getApplicationContext(), "Sinch Service failed to start", Toast.LENGTH_LONG).show();
-                }
-            }
-        };
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
     }
 }
