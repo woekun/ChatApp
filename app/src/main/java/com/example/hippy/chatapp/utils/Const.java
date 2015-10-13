@@ -5,9 +5,7 @@ public class Const {
     public static final String TYPE = "type_receiver";
     public static final String SENDER = "name";
 
-    public static final String ACTION_SINCH_CALL = "com.example.hippy.chatapp.Service.SinchService.Call";
-    public static final String ACTION_SINCH_MESSAGE = "com.example.hippy.chatapp.Service.SinchService.Message";
-    public static final String ACTION_SINCH_SERVICE = "com.example.hippy.chatapp.Activities.Login";
+    public static final String ACTION_SINCH_SERVICE = "com.example.hippy.chatapp.Activities.UserList";
 
     public static final String SINCH_APP_KEY = "59ecf280-0506-4d4b-bfa0-4b4ca98d1019";
     public static final String SINCH_APP_SECRET = "qd4AsZncokSj+UNrSdD5TA==";

@@ -2,10 +2,12 @@ package com.example.hippy.chatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -19,6 +21,7 @@ import com.example.hippy.chatapp.utils.Const;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.sinch.android.rtc.SinchError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +43,7 @@ public class UserList extends BaseConnection {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_list);
 
-//        showDialog();
+        showDialog();
 
         collections = new HashMap<>();
 
@@ -48,8 +51,6 @@ public class UserList extends BaseConnection {
         dataHeader.add("Groups");
         dataHeader.add("Contacts");
     }
-
-
 
     @Override
     protected void onResume() {
@@ -75,12 +76,15 @@ public class UserList extends BaseConnection {
                                     collections.put(dataHeader.get(1), listContacts);
 
                                 expandableListView.setAdapter(new UserAdapter(UserList.this, dataHeader, collections));
-
+                                expandableListView.expandGroup(0);
+                                expandableListView.expandGroup(1);
                                 expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                                     @Override
-                                    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                                    public boolean onChildClick(ExpandableListView parent, View v,
+                                                                int groupPosition, int childPosition, long id) {
                                         Intent intent = new Intent(getApplicationContext(), Chat.class);
-                                        intent.putExtra(Const.EXTRA_DATA, collections.get(dataHeader.get(groupPosition)).get(childPosition));
+                                        intent.putExtra(Const.EXTRA_DATA, collections.get(
+                                                dataHeader.get(groupPosition)).get(childPosition));
                                         startActivity(intent);
                                         return false;
                                     }
@@ -92,4 +96,22 @@ public class UserList extends BaseConnection {
                     }
                 });
     }
+
+    //show a loading spinner while the sinch client starts
+    private void showDialog() {
+        progressDialog = ProgressDialog.show(this, "Loading", "Please wait...");
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Boolean success = intent.getBooleanExtra("success", false);
+                progressDialog.dismiss();
+                if (!success) {
+                    Toast.makeText(getApplicationContext(), "Sinch service failed to start", Toast.LENGTH_LONG).show();
+                }
+            }
+        };
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
+    }
+
 }

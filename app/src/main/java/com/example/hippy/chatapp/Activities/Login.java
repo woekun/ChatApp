@@ -50,19 +50,10 @@ public class Login extends CustomActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             UserList.user = currentUser;
+            startService(serviceIntent);
             startActivity(intentUserList);
             finish();
         }
-    }
-
-    private boolean isServiceRunning(){
-        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for(ActivityManager.RunningServiceInfo serviceInfo:manager.getRunningServices(Integer.MAX_VALUE)){
-            if(serviceInfo.service.getClassName().equals("com.example.hippy.chatapp.Service.SinchService")){
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
@@ -84,30 +75,14 @@ public class Login extends CustomActivity {
                 public void done(ParseUser parseUser, ParseException e) {
                     if (parseUser != null) {
                         UserList.user = parseUser;
-                        if (isServiceRunning()) {
-                            startActivity(intentUserList);
-                            finish();
-                        } else {
-                            startService(serviceIntent);
-                            receiver = new BroadcastReceiver() {
-                                @Override
-                                public void onReceive(Context context, Intent intent) {
-                                    Boolean success = intent.getBooleanExtra("success", false);
-                                    dialog.dismiss();
-                                    if (!success)
-                                        Toast.makeText(getApplicationContext(), "Sinch Service failed to start", Toast.LENGTH_LONG).show();
-                                    else {
-                                        startActivity(intentUserList);
-                                        finish();
-                                    }
-                                }
-                            };
-                        }
-                        LocalBroadcastManager.getInstance(Login.this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
+                        startService(serviceIntent);
+                        startActivity(intentUserList);
+                        finish();
                     }
                 }
             });
         }
+
         if (view.getId() == R.id.btnReg) {
             startActivityForResult(new Intent(this, Register.class), RESULT_OK);
         }

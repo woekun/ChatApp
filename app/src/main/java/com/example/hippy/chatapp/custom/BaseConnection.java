@@ -37,6 +37,12 @@ public class BaseConnection extends NavigationDrawer implements ServiceConnectio
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getApplicationContext().unbindService(this);
+    }
+
     protected void onServiceConnected() {
         // for subclasses
     }

@@ -20,7 +20,7 @@ import com.sinch.android.rtc.calling.CallClientListener;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.WritableMessage;
 
-public class SinchService extends Service implements SinchClientListener {
+public class SinchService extends Service {
 
     private Intent broadcastIntent = new Intent(Const.ACTION_SINCH_SERVICE);
 
@@ -33,23 +33,13 @@ public class SinchService extends Service implements SinchClientListener {
 
     private CallClientListener callClientListener = new DefaultCallListener();
 
-
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public void onCreate() {
+        super.onCreate();
         currentUser = ParseUser.getCurrentUser().getUsername();
         if (currentUser != null && !isSinchClientStarted()) {
             startSinchClient(currentUser);
         }
-        broadcaster = LocalBroadcastManager.getInstance(this);
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Override
-    public void onRebind(Intent intent) {
-        super.onRebind(intent);
-        broadcastIntent.putExtra("success", true);
-        broadcaster.sendBroadcast(broadcastIntent);
-
     }
 
     private void startSinchClient(String username) {
@@ -61,7 +51,7 @@ public class SinchService extends Service implements SinchClientListener {
                 .environmentHost(Const.SINCH_ENVIRONMENT)
                 .build();
 
-        sinchClient.addSinchClientListener(this);
+        sinchClient.addSinchClientListener(new ClientListener());
 
         sinchClient.setSupportCalling(true);
         sinchClient.setSupportMessaging(true);
@@ -71,57 +61,65 @@ public class SinchService extends Service implements SinchClientListener {
         sinchClient.start();
     }
 
-    @Override
-    public void onClientFailed(SinchClient client, SinchError error) {
-        broadcastIntent.putExtra("success", false);
-        broadcaster.sendBroadcast(broadcastIntent);
-        sinchClient = null;
+    private class ClientListener implements SinchClientListener{
+
+        @Override
+        public void onClientStarted(SinchClient client) {
+            broadcastIntent.putExtra("success", true);
+            broadcaster.sendBroadcast(broadcastIntent);
+
+            client.startListeningOnActiveConnection();
+
+            callClient = client.getCallClient();
+            callClient.addCallClientListener(callClientListener);
+
+            messageClient = client.getMessageClient();
+        }
+
+        @Override
+        public void onClientStopped(SinchClient sinchClient) {
+            sinchClient = null;
+        }
+
+        @Override
+        public void onClientFailed(SinchClient client, SinchError sinchError) {
+            broadcastIntent.putExtra("success", false);
+            broadcaster.sendBroadcast(broadcastIntent);
+            sinchClient = null;
+        }
+
+        @Override
+        public void onRegistrationCredentialsRequired(SinchClient sinchClient, ClientRegistration clientRegistration) {
+
+        }
+
+        @Override
+        public void onLogMessage(int i, String s, String s1) {
+
+        }
     }
 
     @Override
-    public void onClientStarted(SinchClient client) {
-        broadcastIntent.putExtra("success", true);
-        broadcaster.sendBroadcast(broadcastIntent);
-
-        client.startListeningOnActiveConnection();
-
-        callClient = client.getCallClient();
-        callClient.addCallClientListener(callClientListener);
-
-        messageClient = client.getMessageClient();
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        broadcaster = LocalBroadcastManager.getInstance(this);
+        return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
-    public void onClientStopped(SinchClient client) {
-        sinchClient = null;
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
         return serviceInterface;
     }
 
-    @Override
-    public void onLogMessage(int level, String area, String message) {
-    }
-
-    @Override
-    public void onRegistrationCredentialsRequired(SinchClient client, ClientRegistration clientRegistration) {
-    }
-
-    // Message
     public void sendMessage(String recipientUserId, String textBody) {
-        if (messageClient != null) {
-            WritableMessage message = new WritableMessage(recipientUserId, textBody);
-            messageClient.send(message);
-        }
+        if (messageClient != null)
+            messageClient.send(new WritableMessage(recipientUserId, textBody));
     }
 
     private boolean isSinchClientStarted() {
         return sinchClient != null && sinchClient.isStarted();
     }
 
-    //     Binder fof Service
     public class ServiceInterface extends Binder {
 
 
@@ -163,6 +161,8 @@ public class SinchService extends Service implements SinchClientListener {
             sinchClient.terminate();
         }
     }
+
+
 }
 
 
