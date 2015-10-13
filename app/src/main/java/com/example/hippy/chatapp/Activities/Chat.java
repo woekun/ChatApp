@@ -141,7 +141,7 @@ public class Chat extends NavigationDrawer {
     String path;
 
     public void OpenDrawing(View view){
-        Intent intent = new Intent(Chat.this,Drawing.class);
+        Intent intent = new Intent(Chat.this,Cam.class);
         Bundle bundle = new Bundle();
         bundle.putString("Sender",currentUser);
         bundle.putString("Receiver",buddy);

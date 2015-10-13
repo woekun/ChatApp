@@ -35,4 +35,8 @@
     <string name="title_activity_search_contact">search_contact</string>
     <string name="title_activity_information">Information</string>
 
+    <string name="title_activity_camera">Camera</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>
