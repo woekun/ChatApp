@@ -74,7 +74,7 @@ public class NavigationDrawer extends CustomActivity{
                                     public void done(ParseException e) {
                                         stopService(new Intent(getApplicationContext(), SinchService.class));
                                         Intent intent = new Intent(getApplicationContext(), Login.class);
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         |Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                         finish();

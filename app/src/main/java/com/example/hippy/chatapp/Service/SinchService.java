@@ -44,6 +44,14 @@ public class SinchService extends Service implements SinchClientListener {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        broadcastIntent.putExtra("success", true);
+        broadcaster.sendBroadcast(broadcastIntent);
+
+    }
+
     private void startSinchClient(String username) {
         sinchClient = Sinch.getSinchClientBuilder()
                 .context(this)

@@ -1,5 +1,6 @@
 package com.example.hippy.chatapp.Activities;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -54,6 +55,16 @@ public class Login extends CustomActivity {
         }
     }
 
+    private boolean isServiceRunning(){
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo serviceInfo:manager.getRunningServices(Integer.MAX_VALUE)){
+            if(serviceInfo.service.getClassName().equals("com.example.hippy.chatapp.Service.SinchService")){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onClick(View view) {
         super.onClick(view);
@@ -73,25 +84,27 @@ public class Login extends CustomActivity {
                 public void done(ParseUser parseUser, ParseException e) {
                     if (parseUser != null) {
                         UserList.user = parseUser;
-                        startService(serviceIntent);
-                    } else
-                        Toast.makeText(Login.this, e.toString(), Toast.LENGTH_LONG).show();
-
-                    receiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            Boolean success = intent.getBooleanExtra("success", false);
-                            dialog.dismiss();
-                            if (!success) {
-                                Toast.makeText(getApplicationContext(), "Sinch Service failed to start", Toast.LENGTH_LONG).show();
-                            }else {
-                                startActivity(intentUserList);
-                                finish();
-                            }
+                        if (isServiceRunning()) {
+                            startActivity(intentUserList);
+                            finish();
+                        } else {
+                            startService(serviceIntent);
+                            receiver = new BroadcastReceiver() {
+                                @Override
+                                public void onReceive(Context context, Intent intent) {
+                                    Boolean success = intent.getBooleanExtra("success", false);
+                                    dialog.dismiss();
+                                    if (!success)
+                                        Toast.makeText(getApplicationContext(), "Sinch Service failed to start", Toast.LENGTH_LONG).show();
+                                    else {
+                                        startActivity(intentUserList);
+                                        finish();
+                                    }
+                                }
+                            };
                         }
-                    };
-
-                    LocalBroadcastManager.getInstance(Login.this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
+                        LocalBroadcastManager.getInstance(Login.this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
+                    }
                 }
             });
         }
