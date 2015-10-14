@@ -99,7 +99,7 @@ public class UserList extends BaseConnection {
 
     //show a loading spinner while the sinch client starts
     private void showDialog() {
-        progressDialog = ProgressDialog.show(this, "Loading", "Please wait...");
+        progressDialog = ProgressDialog.show(this, "Loading...", "Please wait...");
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -114,4 +114,9 @@ public class UserList extends BaseConnection {
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
 }

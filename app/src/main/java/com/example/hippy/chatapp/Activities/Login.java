@@ -29,14 +29,12 @@ public class Login extends CustomActivity {
     private CheckBox chkRemember;
     private Intent intentUserList;
     private Intent serviceIntent;
-    private BroadcastReceiver receiver = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
 
+        setContentView(R.layout.login);
         setTouchNClick(R.id.btnLogin);
         setTouchNClick(R.id.btnReg);
 
@@ -48,6 +46,7 @@ public class Login extends CustomActivity {
         chkRemember = (CheckBox) findViewById(R.id.chkRemember);
 
         ParseUser currentUser = ParseUser.getCurrentUser();
+
         if (currentUser != null) {
             UserList.user = currentUser;
             startService(serviceIntent);
@@ -68,7 +67,7 @@ public class Login extends CustomActivity {
                 Toast.makeText(Login.this, "Please fill all the fields. ", Toast.LENGTH_LONG).show();
                 return;
             }
-            final ProgressDialog dialog = ProgressDialog.show(this, "Loading", "Please wait...");
+//            final ProgressDialog dialog = ProgressDialog.show(this, "Loading", "Please wait...");
 
             ParseUser.logInInBackground(user, pass, new LogInCallback() {
                 @Override
