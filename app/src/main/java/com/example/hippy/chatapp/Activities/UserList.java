@@ -2,26 +2,21 @@ package com.example.hippy.chatapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
-import com.example.hippy.chatapp.Service.SinchService;
 import com.example.hippy.chatapp.custom.BaseConnection;
 import com.example.hippy.chatapp.custom.UserAdapter;
 import com.example.hippy.chatapp.utils.Const;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.sinch.android.rtc.SinchError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,12 +106,12 @@ public class UserList extends BaseConnection {
             }
         };
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
+        registerReceiver(receiver, new IntentFilter(Const.ACTION_SINCH_SERVICE));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        unregisterReceiver(receiver);
     }
 }

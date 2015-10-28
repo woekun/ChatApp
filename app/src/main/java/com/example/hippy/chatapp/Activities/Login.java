@@ -1,13 +1,7 @@
 package com.example.hippy.chatapp.Activities;
 
-import android.app.ActivityManager;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -16,7 +10,6 @@ import android.widget.Toast;
 import com.example.hippy.chatapp.R;
 import com.example.hippy.chatapp.Service.SinchService;
 import com.example.hippy.chatapp.custom.CustomActivity;
-import com.example.hippy.chatapp.utils.Const;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -44,9 +37,12 @@ public class Login extends CustomActivity {
         edtUser = (EditText) findViewById(R.id.edtUser);
         edtPass = (EditText) findViewById(R.id.edtPass);
         chkRemember = (CheckBox) findViewById(R.id.chkRemember);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         ParseUser currentUser = ParseUser.getCurrentUser();
-
         if (currentUser != null) {
             UserList.user = currentUser;
             startService(serviceIntent);
@@ -67,7 +63,6 @@ public class Login extends CustomActivity {
                 Toast.makeText(Login.this, "Please fill all the fields. ", Toast.LENGTH_LONG).show();
                 return;
             }
-//            final ProgressDialog dialog = ProgressDialog.show(this, "Loading", "Please wait...");
 
             ParseUser.logInInBackground(user, pass, new LogInCallback() {
                 @Override

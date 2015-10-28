@@ -4,9 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.v4.content.LocalBroadcastManager;
 
-import com.example.hippy.chatapp.Activities.UserList;
 import com.example.hippy.chatapp.utils.Const;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.ClientRegistration;
@@ -29,7 +27,6 @@ public class SinchService extends Service {
     private CallClient callClient = null;
     private MessageClient messageClient = null;
     private String currentUser;
-    private LocalBroadcastManager broadcaster;
 
     private CallClientListener callClientListener = new DefaultCallListener();
 
@@ -66,7 +63,7 @@ public class SinchService extends Service {
         @Override
         public void onClientStarted(SinchClient client) {
             broadcastIntent.putExtra("success", true);
-            broadcaster.sendBroadcast(broadcastIntent);
+            sendBroadcast(broadcastIntent);
 
             client.startListeningOnActiveConnection();
 
@@ -77,14 +74,14 @@ public class SinchService extends Service {
         }
 
         @Override
-        public void onClientStopped(SinchClient sinchClient) {
+        public void onClientStopped(SinchClient client) {
             sinchClient = null;
         }
 
         @Override
         public void onClientFailed(SinchClient client, SinchError sinchError) {
             broadcastIntent.putExtra("success", false);
-            broadcaster.sendBroadcast(broadcastIntent);
+            sendBroadcast(broadcastIntent);
             sinchClient = null;
         }
 
@@ -101,10 +98,15 @@ public class SinchService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        broadcaster = LocalBroadcastManager.getInstance(this);
         return super.onStartCommand(intent, flags, startId);
     }
 
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
+        broadcastIntent.putExtra("success", true);
+        sendBroadcast(broadcastIntent);
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
