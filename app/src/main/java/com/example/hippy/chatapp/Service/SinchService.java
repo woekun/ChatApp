@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import com.example.hippy.chatapp.Activities.Chat;
 import com.example.hippy.chatapp.utils.Const;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.ClientRegistration;
+import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
 import com.sinch.android.rtc.SinchClientListener;
@@ -15,8 +17,14 @@ import com.sinch.android.rtc.SinchError;
 import com.sinch.android.rtc.calling.Call;
 import com.sinch.android.rtc.calling.CallClient;
 import com.sinch.android.rtc.calling.CallClientListener;
+import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
+import com.sinch.android.rtc.messaging.MessageClientListener;
+import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
+import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
+
+import java.util.List;
 
 public class SinchService extends Service {
 
@@ -71,6 +79,7 @@ public class SinchService extends Service {
             callClient.addCallClientListener(callClientListener);
 
             messageClient = client.getMessageClient();
+            messageClient.addMessageClientListener(new DefaultMessageListener());
         }
 
         @Override
@@ -149,10 +158,41 @@ public class SinchService extends Service {
     private class DefaultCallListener implements CallClientListener {
         @Override
         public void onIncomingCall(CallClient callClient, Call call) {
-//            Intent intent = new Intent(SinchService.this, CallScreen.class);
-//            intent.putExtra(Const.SENDER, call.getCallId());
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            SinchService.this.startActivity(intent);
+            Intent intent = new Intent(Const.RECEIVER_CALL);
+            intent.putExtra("sender_calling", call.getRemoteUserId());
+            sendBroadcast(intent);
+        }
+    }
+
+    private class DefaultMessageListener implements MessageClientListener{
+        @Override
+        public void onIncomingMessage(MessageClient messageClient, Message message) {
+            Intent intent = new Intent(Const.RECEIVER_MESSAGE);
+            String s = message.getSenderId();
+            intent.putExtra("sender_message", s);
+            intent.putExtra("message", message.getTextBody());
+            intent.putExtra("time", message.getTimestamp());
+            sendBroadcast(intent);
+        }
+
+        @Override
+        public void onMessageSent(MessageClient messageClient, Message message, String s) {
+            Chat.getInstance().onMessageSent(message.getTextBody(),message.getTimestamp(),Chat.getInstance().getBuddy());
+        }
+
+        @Override
+        public void onMessageFailed(MessageClient messageClient, Message message, MessageFailureInfo messageFailureInfo) {
+            Chat.getInstance().onMessageFailed(messageFailureInfo.toString());
+        }
+
+        @Override
+        public void onMessageDelivered(MessageClient messageClient, MessageDeliveryInfo messageDeliveryInfo) {
+
+        }
+
+        @Override
+        public void onShouldSendPushData(MessageClient messageClient, Message message, List<PushPair> list) {
+
         }
     }
 

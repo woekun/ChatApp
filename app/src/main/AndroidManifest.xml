@@ -67,6 +67,16 @@
         <activity
             android:name=".Activities.Information"
             android:label="@string/title_activity_information" />
+
+        <receiver
+            android:name=".custom.MyReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.example.hippy.chatapp.utils.Const.RECEIVER_CALL"/>
+                <action android:name="com.example.hippy.chatapp.utils.Const.RECEIVER_MESSAGE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

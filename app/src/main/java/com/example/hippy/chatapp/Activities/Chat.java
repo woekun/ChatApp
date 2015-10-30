@@ -1,27 +1,21 @@
 package com.example.hippy.chatapp.Activities;
 
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.app.ActionBar;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hippy.chatapp.R;
-import com.example.hippy.chatapp.Service.SinchService;
 import com.example.hippy.chatapp.custom.BaseConnection;
 import com.example.hippy.chatapp.custom.ChatAdapter;
-import com.example.hippy.chatapp.custom.CustomReceiver;
 import com.example.hippy.chatapp.models.Conversation;
 import com.example.hippy.chatapp.utils.Const;
 import com.example.hippy.chatapp.utils.FileChooser;
@@ -41,20 +35,30 @@ import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class Chat extends BaseConnection {
 
     public static boolean isRunning;
-    private static Chat inst;
 
+    private static Chat inst;
     private ChatAdapter chatAdapter;
     private EditText edtMess;
-    private static String buddy;
+    private String buddy;
     private ListView list_chat;
     private String currentUser;
     private Call call;
+
+
+    public static Chat getInstance() {
+        return inst;
+    }
+
+    public String getBuddy() {
+        return buddy;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,8 +87,8 @@ public class Chat extends BaseConnection {
 
     @Override
     protected void onServiceConnected() {
-        MessageClient messageClient= getSinchServiceInterface().getMessageClient();
-        messageClient.addMessageClientListener(new MyMessageClientListener());
+//        MessageClient messageClient= getSinchServiceInterface().getMessageClient();
+//        messageClient.addMessageClientListener(new MyMessageClientListener());
     }
 
     @Override
@@ -119,10 +123,6 @@ public class Chat extends BaseConnection {
 //            getSinchServiceInterface().callUser(buddy);
 
         }
-    }
-
-    public static Chat instance() {
-        return inst;
     }
 
     private void sendMessages() {
@@ -209,6 +209,28 @@ public class Chat extends BaseConnection {
 
 
         });
+    }
+
+    public void onIncommingMessage(String message, Date time, String sender){
+        chatAdapter.addMessage(new Conversation(message, time, sender));
+    }
+
+    public void onMessageSent(String message, Date time, String recipientId){
+        ParseObject parseObject = new ParseObject("Chat");
+        parseObject.put("sender", currentUser);
+        parseObject.put("receiver", recipientId);
+        parseObject.put("message",message);
+        parseObject.saveInBackground();
+
+        chatAdapter.addMessage(new Conversation(message, time, currentUser));
+    }
+
+    public void onMessageFailed(String messageFailureInfo) {
+        Toast.makeText(Chat.this, messageFailureInfo, Toast.LENGTH_LONG).show();
+    }
+
+    public void onMessageDelivered() {
+
     }
 
     private class MyMessageClientListener implements MessageClientListener {
