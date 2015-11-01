@@ -23,6 +23,7 @@ import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
+import com.sinch.android.rtc.video.VideoController;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class SinchService extends Service {
     private String currentUser;
 
     private CallClientListener callClientListener = new DefaultCallListener();
+    private MessageClientListener messageClientListener = new DefaultMessageListener();
 
     @Override
     public void onCreate() {
@@ -79,7 +81,7 @@ public class SinchService extends Service {
             callClient.addCallClientListener(callClientListener);
 
             messageClient = client.getMessageClient();
-            messageClient.addMessageClientListener(new DefaultMessageListener());
+            messageClient.addMessageClientListener(messageClientListener);
         }
 
         @Override
@@ -107,12 +109,15 @@ public class SinchService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        broadcastIntent.putExtra("success", true);
+        sendBroadcast(broadcastIntent);
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onRebind(Intent intent) {
         super.onRebind(intent);
+        currentUser = ParseUser.getCurrentUser().getUsername();
         broadcastIntent.putExtra("success", true);
         sendBroadcast(broadcastIntent);
     }
@@ -153,6 +158,10 @@ public class SinchService extends Service {
         public boolean isSinchClientStarted() {
             return SinchService.this.isSinchClientStarted();
         }
+
+        public VideoController getVideoController() {
+            return sinchClient.getVideoController();
+        }
     }
 
     private class DefaultCallListener implements CallClientListener {
@@ -177,7 +186,9 @@ public class SinchService extends Service {
 
         @Override
         public void onMessageSent(MessageClient messageClient, Message message, String s) {
-            Chat.getInstance().onMessageSent(message.getTextBody(),message.getTimestamp(),Chat.getInstance().getBuddy());
+            if(Chat.getInstance()!=null && Chat.isRunning)
+                Chat.getInstance().onMessageSent(message.getTextBody(), message.getTimestamp(),
+                        message.getRecipientIds().get(0));
         }
 
         @Override
@@ -199,9 +210,9 @@ public class SinchService extends Service {
     @Override
     public void onDestroy() {
         if (isSinchClientStarted()) {
-            sinchClient.stopListeningOnActiveConnection();
-            sinchClient.terminate();
+            sinchClient.terminateGracefully();
         }
+        super.onDestroy();
     }
 
 

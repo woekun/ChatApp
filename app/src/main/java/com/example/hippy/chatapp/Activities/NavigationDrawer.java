@@ -19,6 +19,7 @@ import com.parse.ParseUser;
 
 public class NavigationDrawer extends CustomActivity{
     private DrawerLayout drawerLayout;
+    protected String currentUser;
 
     @Override
     public void setContentView(int layoutResID) {

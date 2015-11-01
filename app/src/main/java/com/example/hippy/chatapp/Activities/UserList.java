@@ -78,8 +78,13 @@ public class UserList extends BaseConnection {
                                     public boolean onChildClick(ExpandableListView parent, View v,
                                                                 int groupPosition, int childPosition, long id) {
                                         Intent intent = new Intent(getApplicationContext(), Chat.class);
-                                        intent.putExtra(Const.EXTRA_DATA, collections.get(
+                                        if(groupPosition == 1)
+                                            intent.putExtra(Const.EXTRA_DATA, collections.get(
                                                 dataHeader.get(groupPosition)).get(childPosition));
+                                        else
+                                            intent.putExtra(Const.EXTRA_DATA, "GROUP " + collections.get(
+                                                    dataHeader.get(groupPosition)).get(childPosition));
+
                                         startActivity(intent);
                                         return false;
                                     }
